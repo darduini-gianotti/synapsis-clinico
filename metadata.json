@@ -1,0 +1,6 @@
+{
+  "name": "PsicoGestão - SaaS Clínico para Psicologia",
+  "description": "Sistema completo de gestão para consultórios e clínicas de psicologia com prontuário criptografado AES-256-GCM (LGPD), conformidade CFP 06/2019, controle de acesso RBAC, agenda inteligente e gestão financeira.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

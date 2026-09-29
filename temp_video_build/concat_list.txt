@@ -1,0 +1,5 @@
+file 'C:/Projetos/Psicogestão/temp_video_build/segment_0.mp3'
+file 'C:/Projetos/Psicogestão/temp_video_build/segment_1.mp3'
+file 'C:/Projetos/Psicogestão/temp_video_build/segment_2.mp3'
+file 'C:/Projetos/Psicogestão/temp_video_build/segment_3.mp3'
+file 'C:/Projetos/Psicogestão/temp_video_build/segment_4.mp3'

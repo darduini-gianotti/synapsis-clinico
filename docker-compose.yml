@@ -1,0 +1,62 @@
+# ==========================================
+# docker-compose.yml — Synapsis Clínico
+# Dois perfis: staging (dados demo) e production (banco limpo)
+# ==========================================
+
+services:
+
+  # ------------------------------------------
+  # STAGING — Dados demo, login Sergio/SuperAdmin
+  # Acesso: https://staging.synapsisclinico.com.br
+  # ------------------------------------------
+  staging:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: synapsis-clinico:staging
+    container_name: synapsis_staging
+    restart: unless-stopped
+    ports:
+      - "3333:3333"
+    volumes:
+      - ./data/staging:/app/data
+    environment:
+      - NODE_ENV=production
+      - PORT=3333
+      - APP_MODE=demo
+      - SEED_DEMO_DATA=true
+      - DB_FILE_PATH=/app/data/psico_database.sqlite
+      - JWT_SECRET=${STAGING_JWT_SECRET}
+      - CLINICAL_ENCRYPTION_KEY=${STAGING_CLINICAL_ENCRYPTION_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - APP_URL=https://staging.synapsisclinico.com.br
+    profiles:
+      - staging
+
+  # ------------------------------------------
+  # PRODUCTION — Banco limpo, onboarding real
+  # Acesso: https://app.synapsisclinico.com.br
+  # ------------------------------------------
+  production:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: synapsis-clinico:latest
+    container_name: synapsis_production
+    restart: unless-stopped
+    ports:
+      - "3334:3333"
+    volumes:
+      - ./data/production:/app/data
+    environment:
+      - NODE_ENV=production
+      - PORT=3333
+      - APP_MODE=clean
+      - SEED_DEMO_DATA=false
+      - DB_FILE_PATH=/app/data/psico_database.sqlite
+      - JWT_SECRET=${PROD_JWT_SECRET}
+      - CLINICAL_ENCRYPTION_KEY=${PROD_CLINICAL_ENCRYPTION_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - APP_URL=https://app.synapsisclinico.com.br
+    profiles:
+      - production

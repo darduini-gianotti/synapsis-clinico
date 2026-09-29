@@ -1,0 +1,14 @@
+node_modules
+dist
+.git
+.gitignore
+.agents
+.gemini
+scratch
+*.sqlite
+*.sqlite-journal
+*.log
+.env
+.env.local
+coverage
+tests

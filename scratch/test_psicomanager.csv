@@ -1,0 +1,4 @@
+Nome,CPF,Telefone Principal,Data de Nascimento,E-mail,Responsável,CPF Responsável,Grau de Parentesco,Observações
+Mariana Silva,12345678909,(11) 98765-4321,15/05/1990,mariana@email.com,,,,Atendimento adulto padrão
+Lucas Mendes,,(11) 97777-8888,10/08/2018,lucas@email.com,Clara Mendes,98765432100,Mãe,Queixa escolar - menor de idade
+João Oliveira,01234567890,11966665555,1955-03-20,joao@email.com,,,,Paciente idoso hipertenso

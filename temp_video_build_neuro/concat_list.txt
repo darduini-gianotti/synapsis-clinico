@@ -1,0 +1,5 @@
+file 'C:/Projetos/Psicogestão/temp_video_build_neuro/segment_0.mp3'
+file 'C:/Projetos/Psicogestão/temp_video_build_neuro/segment_1.mp3'
+file 'C:/Projetos/Psicogestão/temp_video_build_neuro/segment_2.mp3'
+file 'C:/Projetos/Psicogestão/temp_video_build_neuro/segment_3.mp3'
+file 'C:/Projetos/Psicogestão/temp_video_build_neuro/segment_4.mp3'

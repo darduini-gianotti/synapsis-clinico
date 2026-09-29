@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 240" width="100%" height="100%">
+  <defs>
+    <linearGradient id="shieldGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2dd4bf" />
+      <stop offset="60%" stop-color="#0f766e" />
+      <stop offset="100%" stop-color="#134e4a" />
+    </linearGradient>
+    <linearGradient id="crossGrad3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#99f6e4" />
+    </linearGradient>
+    <filter id="glow3" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <rect width="100%" height="100%" fill="#080e18" rx="24" />
+
+  <!-- SÍMBOLO: Escudo Hexagonal Sináptico & Cruz Clínica -->
+  <g transform="translate(40, 24)">
+    <!-- Aura de autoridade -->
+    <polygon points="96,24 162,62 162,138 96,176 30,138 30,62" fill="url(#shieldGrad3)" opacity="0.15" filter="url(#glow3)" />
+
+    <!-- Hexágono Externo (Blindagem / Rede Molecular) -->
+    <polygon points="96,28 158,64 158,136 96,172 34,136 34,64" fill="#0b1322" stroke="url(#shieldGrad3)" stroke-width="3" stroke-linejoin="round" />
+    
+    <!-- Conexões Sinápticas nos 6 vértices -->
+    <circle cx="96" cy="28" r="5" fill="#2dd4bf" filter="url(#glow3)" />
+    <circle cx="158" cy="64" r="5" fill="#2dd4bf" filter="url(#glow3)" />
+    <circle cx="158" cy="136" r="5" fill="#2dd4bf" filter="url(#glow3)" />
+    <circle cx="96" cy="172" r="5" fill="#2dd4bf" filter="url(#glow3)" />
+    <circle cx="34" cy="136" r="5" fill="#2dd4bf" filter="url(#glow3)" />
+    <circle cx="34" cy="64" r="5" fill="#2dd4bf" filter="url(#glow3)" />
+
+    <!-- Linhas internas que convergem ao centro -->
+    <line x1="96" y1="28" x2="96" y2="76" stroke="#14b8a6" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.7" />
+    <line x1="96" y1="172" x2="96" y2="124" stroke="#14b8a6" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.7" />
+    <line x1="34" y1="100" x2="72" y2="100" stroke="#14b8a6" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.7" />
+    <line x1="158" y1="100" x2="120" y2="100" stroke="#14b8a6" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.7" />
+
+    <!-- Cruz Clínica & Psi Estilizado Central -->
+    <!-- Barra vertical da cruz -->
+    <rect x="88" y="74" width="16" height="52" rx="4" fill="url(#crossGrad3)" filter="url(#glow3)" />
+    <!-- Barra horizontal da cruz -->
+    <rect x="70" y="92" width="52" height="16" rx="4" fill="url(#crossGrad3)" filter="url(#glow3)" />
+    
+    <!-- Ponto central de estabilidade -->
+    <circle cx="96" cy="100" r="3.5" fill="#0d9488" />
+  </g>
+
+  <!-- TIPOGRAFIA: SYNAPSIS CLÍNICO -->
+  <g transform="translate(260, 110)">
+    <text x="0" y="0" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="56" font-weight="900" fill="#ffffff" letter-spacing="0">
+      SYNAPSIS
+    </text>
+    
+    <!-- Badge Clínico -->
+    <rect x="295" y="-46" width="145" height="38" rx="8" fill="#134e4a" stroke="#2dd4bf" stroke-width="1.5" />
+    <text x="367" y="-22" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="15" font-weight="800" fill="#5eead4" letter-spacing="3" text-anchor="middle">
+      CLÍNICO
+    </text>
+    
+    <!-- Sub-tagline -->
+    <text x="4" y="32" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="14" font-weight="700" fill="#94a3b8" letter-spacing="2.5">
+      PLATAFORMA INTEGRADA DE SAÚDE MENTAL
+    </text>
+  </g>
+</svg>
