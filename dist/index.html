@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('synapsis_theme');
+          if (saved === 'light') {
+            document.documentElement.classList.remove('dark');
+          } else {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <title>Synapsis Clínico - Gestão Clínica & Neuropsicologia</title>
+    <link rel="icon" type="image/png" href="/landing/synapsi_app_icon.png" />
+    <link rel="apple-touch-icon" href="/landing/synapsi_app_icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Synapsis" />
+    <meta name="description" content="Synapsis Clínico: Ciência clínica, neuropsicologia e gestão em perfeita sintonia. Prontuário imutável CFP 06/2019 e LGPD." />
+    <meta property="og:title" content="Synapsis Clínico - Gestão Clínica & Neuropsicologia" />
+    <meta property="og:description" content="Ciência clínica, neuropsicologia e gestão em perfeita sintonia. Prontuário imutável CFP 06/2019 e LGPD." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="module" crossorigin src="/assets/index-DA-82fe-.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/vendor-core-DGjbz9bL.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-pdf-BooVNSuo.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-icons-Ckrrqt1g.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-DiIzEEiW.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
+

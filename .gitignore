@@ -1,7 +1,8 @@
 node_modules/
-dist/
 build/
 coverage/
+dist/videos/
+*.map
 .DS_Store
 *.log
 .env
