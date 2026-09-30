@@ -105,7 +105,8 @@ export const Header: React.FC<{
 
         {/* Center/Right Actions & RBAC Switcher */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Quick RBAC Switcher dropdown for instant demo evaluation */}
+          {/* Quick RBAC Switcher dropdown for demo evaluation (Hidden in Production) */}
+          {(typeof window !== 'undefined' && !window.location.hostname.startsWith('app.')) && (
           <div className="relative">
             <button
               id="rbac-quick-switch-btn"
@@ -211,6 +212,7 @@ export const Header: React.FC<{
               </div>
             )}
           </div>
+          )}
 
           {/* SuperAdmin Access Button */}
           {isSuperAdmin && (

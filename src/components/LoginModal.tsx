@@ -124,7 +124,9 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, isForce
 
         {view === 'login' ? (
           <>
-            {/* 1-Click Profile Selection for Demo & Evaluation */}
+            {/* 1-Click Profile Selection for Demo & Evaluation (Hidden in Production) */}
+            {(typeof window !== 'undefined' && !window.location.hostname.startsWith('app.')) && (
+            <>
             <div className="mb-6">
               <div className="flex items-center justify-between mb-2.5">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
@@ -210,6 +212,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, isForce
                 <span className="bg-white px-2 text-slate-400 dark:bg-slate-900">Ou entrar com credenciais</span>
               </div>
             </div>
+            </>
+            )}
 
             {/* Manual Login Form */}
             <form onSubmit={handleManualLogin} className="space-y-4 text-xs">

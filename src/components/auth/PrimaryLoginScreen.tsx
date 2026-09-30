@@ -307,8 +307,8 @@ export const PrimaryLoginScreen: React.FC = () => {
               </form>
             )}
 
-            {/* Quick Profiles for Demo/Evaluation */}
-            {view === 'login' && (
+            {/* Quick Profiles for Demo/Evaluation (Hidden in Production) */}
+            {view === 'login' && (typeof window !== 'undefined' && !window.location.hostname.startsWith('app.')) && (
               <div className="pt-4 border-t border-slate-800 space-y-2 text-xs">
                 <div className="flex items-center justify-between">
                   <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
