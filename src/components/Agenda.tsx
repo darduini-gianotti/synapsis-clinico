@@ -44,6 +44,7 @@ import {
   Receipt,
   ExternalLink,
   Brain,
+  ShieldCheck,
 } from 'lucide-react';
 import { WhatsAppSessionReminderModal } from './whatsapp/WhatsAppSessionReminderModal.js';
 import { PrepaidReallocationModal } from './calendar/PrepaidReallocationModal.js';

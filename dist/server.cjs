@@ -17394,7 +17394,7 @@ router.post(
       const procedureDescription = auth?.tuss_description || "Sess\xE3o de psicoterapia individual";
       const executedSessions = auth?.executed_sessions_count || 10;
       const cid = cidOverride || auth?.doctor_referral_cid || "F41.1 (Ansiedade Generalizada / Hip\xF3tese Funcional)";
-      const therapist = queryOne(`SELECT name, crp FROM users WHERE id = ?`, [req.user.id]);
+      const therapist = queryOne(`SELECT name, crp_number FROM users WHERE id = ?`, [req.user.id]);
       const report = await generateInsuranceExtensionReport({
         patientName: patient.full_name,
         insuranceName,
@@ -17409,7 +17409,7 @@ router.post(
         doctorReferralName: auth?.doctor_referral_name,
         doctorReferralCrm: auth?.doctor_referral_crm,
         therapistName: therapist?.name || "Psic\xF3logo(a) Cl\xEDnico(a)",
-        therapistCrp: therapist?.crp || void 0
+        therapistCrp: therapist?.crp_number || void 0
       });
       recordAuditLog(
         req,
