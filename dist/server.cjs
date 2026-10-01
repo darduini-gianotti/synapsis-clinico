@@ -1089,6 +1089,78 @@ function initTables(db) {
       FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE,
       FOREIGN KEY (psychologist_id) REFERENCES users(id)
     );
+
+    -- 27. Conv\xEAnios & Operadoras de Sa\xFAde (Fase 1)
+    CREATE TABLE IF NOT EXISTS health_insurances (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      clinic_id INTEGER DEFAULT 1,
+      name TEXT NOT NULL,
+      ans_code TEXT,
+      cnpj TEXT,
+      payment_deadline_days INTEGER DEFAULT 30,
+      submission_cut_day INTEGER DEFAULT 25,
+      status TEXT DEFAULT 'ACTIVE' CHECK(status IN ('ACTIVE', 'INACTIVE')),
+      repasse_default_mode TEXT DEFAULT 'FIXED' CHECK(repasse_default_mode IN ('FIXED', 'PERCENTAGE')),
+      repasse_default_value REAL DEFAULT 50.0,
+      notes TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_health_insurances_clinic ON health_insurances(clinic_id);
+
+    -- 28. Cat\xE1logo TUSS Multidisciplinar (ANS)
+    CREATE TABLE IF NOT EXISTS tuss_procedures (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      code TEXT NOT NULL UNIQUE,
+      description TEXT NOT NULL,
+      category TEXT NOT NULL CHECK(category IN ('PSICOLOGIA', 'NEUROPSICOLOGIA', 'FONOAUDIOLOGIA', 'TERAPIA_OCUPACIONAL', 'PSIQUIATRIA', 'OUTROS')),
+      standard_session_minutes INTEGER DEFAULT 50,
+      default_suggested_price REAL DEFAULT 150.00,
+      is_active INTEGER NOT NULL DEFAULT 1,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_tuss_code ON tuss_procedures(code);
+
+    -- 29. Tabela de Pre\xE7os e Prazos por Operadora
+    CREATE TABLE IF NOT EXISTS health_insurance_prices (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      insurance_id INTEGER NOT NULL,
+      tuss_id INTEGER NOT NULL,
+      agreed_price REAL NOT NULL,
+      copay_price REAL DEFAULT 0.00,
+      repasse_fixed_amount REAL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (insurance_id) REFERENCES health_insurances(id) ON DELETE CASCADE,
+      FOREIGN KEY (tuss_id) REFERENCES tuss_procedures(id) ON DELETE CASCADE,
+      UNIQUE(insurance_id, tuss_id)
+    );
+
+    -- 30. Autoriza\xE7\xF5es e Guias dos Pacientes (Saldo Regressivo & Preditivo)
+    CREATE TABLE IF NOT EXISTS patient_authorizations (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      clinic_id INTEGER DEFAULT 1,
+      patient_id INTEGER NOT NULL,
+      insurance_id INTEGER NOT NULL,
+      tuss_id INTEGER,
+      card_number TEXT NOT NULL,
+      card_validity TEXT,
+      plan_name TEXT,
+      guide_number TEXT NOT NULL,
+      auth_date DATE,
+      valid_until DATE NOT NULL,
+      total_sessions_authorized INTEGER NOT NULL,
+      executed_sessions_count INTEGER NOT NULL DEFAULT 0,
+      doctor_referral_crm TEXT,
+      doctor_referral_name TEXT,
+      doctor_referral_cid TEXT,
+      status TEXT NOT NULL DEFAULT 'ACTIVE' CHECK(status IN ('ACTIVE', 'EXHAUSTED', 'EXPIRED', 'CANCELED')),
+      notes TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE,
+      FOREIGN KEY (insurance_id) REFERENCES health_insurances(id),
+      FOREIGN KEY (tuss_id) REFERENCES tuss_procedures(id)
+    );
+    CREATE INDEX IF NOT EXISTS idx_patient_auth_patient ON patient_authorizations(patient_id);
+    CREATE INDEX IF NOT EXISTS idx_patient_auth_status ON patient_authorizations(status);
   `);
 }
 function migrateTables(db) {
@@ -2936,6 +3008,147 @@ function migrateTables(db) {
       `, [defaultPassHash]);
     } catch (e) {
       console.error("Error applying multi-tenancy migrations in migrateTables:", e);
+    }
+    try {
+      db.exec(`
+        CREATE TABLE IF NOT EXISTS health_insurances (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          clinic_id INTEGER DEFAULT 1,
+          name TEXT NOT NULL,
+          ans_code TEXT,
+          cnpj TEXT,
+          payment_deadline_days INTEGER DEFAULT 30,
+          submission_cut_day INTEGER DEFAULT 25,
+          status TEXT DEFAULT 'ACTIVE' CHECK(status IN ('ACTIVE', 'INACTIVE')),
+          repasse_default_mode TEXT DEFAULT 'FIXED' CHECK(repasse_default_mode IN ('FIXED', 'PERCENTAGE')),
+          repasse_default_value REAL DEFAULT 50.0,
+          notes TEXT,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE INDEX IF NOT EXISTS idx_health_insurances_clinic ON health_insurances(clinic_id);
+
+        CREATE TABLE IF NOT EXISTS tuss_procedures (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          code TEXT NOT NULL UNIQUE,
+          description TEXT NOT NULL,
+          category TEXT NOT NULL CHECK(category IN ('PSICOLOGIA', 'NEUROPSICOLOGIA', 'FONOAUDIOLOGIA', 'TERAPIA_OCUPACIONAL', 'PSIQUIATRIA', 'OUTROS')),
+          standard_session_minutes INTEGER DEFAULT 50,
+          default_suggested_price REAL DEFAULT 150.00,
+          is_active INTEGER NOT NULL DEFAULT 1,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE INDEX IF NOT EXISTS idx_tuss_code ON tuss_procedures(code);
+
+        CREATE TABLE IF NOT EXISTS health_insurance_prices (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          insurance_id INTEGER NOT NULL,
+          tuss_id INTEGER NOT NULL,
+          agreed_price REAL NOT NULL,
+          copay_price REAL DEFAULT 0.00,
+          repasse_fixed_amount REAL,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (insurance_id) REFERENCES health_insurances(id) ON DELETE CASCADE,
+          FOREIGN KEY (tuss_id) REFERENCES tuss_procedures(id) ON DELETE CASCADE,
+          UNIQUE(insurance_id, tuss_id)
+        );
+
+        CREATE TABLE IF NOT EXISTS patient_authorizations (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          clinic_id INTEGER DEFAULT 1,
+          patient_id INTEGER NOT NULL,
+          insurance_id INTEGER NOT NULL,
+          tuss_id INTEGER,
+          card_number TEXT NOT NULL,
+          card_validity TEXT,
+          plan_name TEXT,
+          guide_number TEXT NOT NULL,
+          auth_date DATE,
+          valid_until DATE NOT NULL,
+          total_sessions_authorized INTEGER NOT NULL,
+          executed_sessions_count INTEGER NOT NULL DEFAULT 0,
+          doctor_referral_crm TEXT,
+          doctor_referral_name TEXT,
+          doctor_referral_cid TEXT,
+          status TEXT NOT NULL DEFAULT 'ACTIVE' CHECK(status IN ('ACTIVE', 'EXHAUSTED', 'EXPIRED', 'CANCELED')),
+          notes TEXT,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE,
+          FOREIGN KEY (insurance_id) REFERENCES health_insurances(id),
+          FOREIGN KEY (tuss_id) REFERENCES tuss_procedures(id)
+        );
+        CREATE INDEX IF NOT EXISTS idx_patient_auth_patient ON patient_authorizations(patient_id);
+        CREATE INDEX IF NOT EXISTS idx_patient_auth_status ON patient_authorizations(status);
+      `);
+      const sessInfo2 = db.exec("PRAGMA table_info(sessions);");
+      if (sessInfo2.length > 0 && sessInfo2[0].values) {
+        const sCols = sessInfo2[0].values.map((r) => r[1]);
+        if (!sCols.includes("insurance_id")) {
+          db.exec("ALTER TABLE sessions ADD COLUMN insurance_id INTEGER REFERENCES health_insurances(id);");
+        }
+        if (!sCols.includes("authorization_id")) {
+          db.exec("ALTER TABLE sessions ADD COLUMN authorization_id INTEGER REFERENCES patient_authorizations(id);");
+        }
+        if (!sCols.includes("tuss_code")) {
+          db.exec("ALTER TABLE sessions ADD COLUMN tuss_code TEXT;");
+        }
+        if (!sCols.includes("billing_modality")) {
+          db.exec("ALTER TABLE sessions ADD COLUMN billing_modality TEXT DEFAULT 'PRIVATE';");
+        }
+      }
+      const ptInfo = db.exec("PRAGMA table_info(patients);");
+      if (ptInfo.length > 0 && ptInfo[0].values) {
+        const pCols = ptInfo[0].values.map((r) => r[1]);
+        if (!pCols.includes("insurance_id")) {
+          db.exec("ALTER TABLE patients ADD COLUMN insurance_id INTEGER REFERENCES health_insurances(id);");
+        }
+        if (!pCols.includes("insurance_card_number")) {
+          db.exec("ALTER TABLE patients ADD COLUMN insurance_card_number TEXT;");
+        }
+        if (!pCols.includes("insurance_card_validity")) {
+          db.exec("ALTER TABLE patients ADD COLUMN insurance_card_validity TEXT;");
+        }
+        if (!pCols.includes("insurance_plan_name")) {
+          db.exec("ALTER TABLE patients ADD COLUMN insurance_plan_name TEXT;");
+        }
+      }
+      const tussCount = db.exec("SELECT count(*) FROM tuss_procedures;");
+      if (tussCount.length === 0 || !tussCount[0].values || Number(tussCount[0].values[0][0]) === 0) {
+        const defaultTuss = [
+          { code: "50000470", desc: "Consulta / Sess\xE3o de Psicoterapia Individual", cat: "PSICOLOGIA", min: 50, price: 150 },
+          { code: "50000488", desc: "Psicoterapia de Grupo / Familiar (por paciente)", cat: "PSICOLOGIA", min: 60, price: 100 },
+          { code: "50000569", desc: "Avalia\xE7\xE3o Neuropsicol\xF3gica (sess\xE3o / bateria)", cat: "NEUROPSICOLOGIA", min: 60, price: 280 },
+          { code: "50000143", desc: "Sess\xE3o de Reabilita\xE7\xE3o Fonoaudiol\xF3gica", cat: "FONOAUDIOLOGIA", min: 45, price: 140 },
+          { code: "50000151", desc: "Avalia\xE7\xE3o Fonoaudiol\xF3gica Completa", cat: "FONOAUDIOLOGIA", min: 60, price: 220 },
+          { code: "50000305", desc: "Atendimento em Terapia Ocupacional Individual", cat: "TERAPIA_OCUPACIONAL", min: 50, price: 150 },
+          { code: "50000321", desc: "Terapia Ocupacional Especializada (Integra\xE7\xE3o Sensorial / Neuromotora)", cat: "TERAPIA_OCUPACIONAL", min: 50, price: 200 },
+          { code: "10101012", desc: "Consulta M\xE9dica Eletiva em Consult\xF3rio (Psiquiatria)", cat: "PSIQUIATRIA", min: 50, price: 350 }
+        ];
+        for (const t of defaultTuss) {
+          db.run(`
+            INSERT OR IGNORE INTO tuss_procedures (code, description, category, standard_session_minutes, default_suggested_price)
+            VALUES (?, ?, ?, ?, ?);
+          `, [t.code, t.desc, t.cat, t.min, t.price]);
+        }
+      }
+      const insCount = db.exec("SELECT count(*) FROM health_insurances WHERE clinic_id = 1;");
+      if (insCount.length === 0 || !insCount[0].values || Number(insCount[0].values[0][0]) === 0) {
+        const defaultInsurances = [
+          { name: "Bradesco Sa\xFAde", ans: "005711", cnpj: "92.693.118/0001-60", deadline: 30, cut: 25, repasse: 55 },
+          { name: "Amil Assist\xEAncia M\xE9dica", ans: "326305", cnpj: "29.309.127/0001-79", deadline: 30, cut: 20, repasse: 50 },
+          { name: "SulAm\xE9rica Sa\xFAde", ans: "006246", cnpj: "01.685.053/0001-56", deadline: 30, cut: 25, repasse: 60 },
+          { name: "Unimed Central", ans: "305715", cnpj: "02.812.468/0001-06", deadline: 45, cut: 15, repasse: 48 },
+          { name: "Porto Sa\xFAde", ans: "000582", cnpj: "04.884.219/0001-06", deadline: 30, cut: 28, repasse: 65 },
+          { name: "Cassi", ans: "346659", cnpj: "33.719.485/0001-27", deadline: 30, cut: 20, repasse: 70 }
+        ];
+        for (const ins of defaultInsurances) {
+          db.run(`
+            INSERT INTO health_insurances (clinic_id, name, ans_code, cnpj, payment_deadline_days, submission_cut_day, repasse_default_mode, repasse_default_value)
+            VALUES (1, ?, ?, ?, ?, ?, 'FIXED', ?);
+          `, [ins.name, ins.ans, ins.cnpj, ins.deadline, ins.cut, ins.repasse]);
+        }
+      }
+    } catch (e) {
+      console.error("Error applying health insurance migrations in migrateTables:", e);
     }
   } catch (err) {
     console.error("Migration error in db:", err);
@@ -7791,6 +8004,140 @@ Responda OBRIGATORIAMENTE em JSON v\xE1lido com esta estrutura:
       plano: "Prosseguir com o protocolo terap\xEAutico na pr\xF3xima sess\xE3o regular."
     },
     retentionNotice: "\u{1F512} Zero-Retention Ativo: O \xE1udio foi processado estritamente em mem\xF3ria e descartado. Em conformidade com LGPD e C\xF3digo de \xC9tica do CFP."
+  };
+}
+async function generateInsuranceExtensionReport(params) {
+  const client = getAiClient();
+  const freq = params.frequency || "1x por semana (sess\xF5es de 50 minutos)";
+  const cidText = params.cid || "CID n\xE3o informado ou em investiga\xE7\xE3o funcional";
+  if (client) {
+    try {
+      const prompt = `Voc\xEA \xE9 um psic\xF3logo cl\xEDnico perito em documenta\xE7\xE3o para operadoras de sa\xFAde e regula\xE7\xE3o da ANS (Resolu\xE7\xF5es CFP n\xBA 01/2009 e 06/2019, RN ANS n\xBA 501/2022).
+Gere um RELAT\xD3RIO T\xC9CNICO JUSTIFICATIVO DE PRORROGA\xC7\xC3O DE SESS\xD5ES para envio \xE0 operadora de sa\xFAde/plano.
+
+DADOS DO ATENDIMENTO:
+- Paciente: ${params.patientName}
+- Operadora / Conv\xEAnio: ${params.insuranceName}
+- Procedimento TUSS: ${params.procedureCode} - ${params.procedureDescription}
+- Sess\xF5es realizadas no per\xEDodo anterior: ${params.executedSessionsCount}
+- Sess\xF5es solicitadas para o pr\xF3ximo bloco: ${params.requestedSessionsCount}
+- Frequ\xEAncia: ${freq}
+- CID de refer\xEAncia / hip\xF3tese diagn\xF3stica: ${cidText}
+- Metas / foco cl\xEDnico fornecido pelo terapeuta: ${params.clinicalGoalsSummary || "Manuten\xE7\xE3o da regula\xE7\xE3o emocional, redu\xE7\xE3o de sintomas disfuncionais e amplia\xE7\xE3o do repert\xF3rio adaptativo"}
+- M\xE9dico solicitante de refer\xEAncia: ${params.doctorReferralName || "M\xE9dico assistente"} ${params.doctorReferralCrm ? `(CRM ${params.doctorReferralCrm})` : ""}
+
+DIRETRIZES \xC9TICAS E LEGAIS OBRIGAT\xD3RIAS (BLINDAGEM CFP):
+1. SIGILO ABSOLUTO: NUNCA relate segredos \xEDntimos, nomes de familiares/amigos, detalhes de traumas ou confiss\xF5es do paciente. As operadoras n\xE3o t\xEAm direito a dados \xEDntimos do processo psicoterap\xEAutico (C\xF3digo de \xC9tica do Psic\xF3logo e Resolu\xE7\xE3o CFP n\xBA 01/2009).
+2. LINGUAGEM T\xC9CNICA E OBJETIVA: Descreva evolu\xE7\xE3o funcional, resposta \xE0s interven\xE7\xF5es e necessidade de continuidade para consolida\xE7\xE3o dos ganhos terap\xEAuticos e preven\xE7\xE3o de reca\xEDdas.
+3. CONFORMIDADE ANS: Mencione a import\xE2ncia da n\xE3o descontinuidade do cuidado em conson\xE2ncia com as diretrizes de assist\xEAncia cont\xEDnua e integral da ANS.
+
+Retorne OBRIGATORIAMENTE em JSON v\xE1lido com esta estrutura:
+{
+  "reportTitle": "RELAT\xD3RIO T\xC9CNICO PSICOL\xD3GICO - SOLICITA\xC7\xC3O DE CONTINUIDADE DE TRATAMENTO",
+  "summary": "Breve par\xE1grafo descrevendo que o paciente realizou o bloco inicial de sess\xF5es sob o c\xF3digo TUSS especificado...",
+  "clinicalJustification": "Par\xE1grafo t\xE9cnico e fundamentado justificando por que a interrup\xE7\xE3o prematura traria preju\xEDzos \xE0 estabiliza\xE7\xE3o funcional do paciente...",
+  "therapeuticGoalsNextCycle": [
+    "Meta t\xE9cnica 1 para o pr\xF3ximo bloco",
+    "Meta t\xE9cnica 2",
+    "Meta t\xE9cnica 3"
+  ],
+  "suggestedFrequency": "${freq}",
+  "requestedSessions": ${params.requestedSessionsCount},
+  "ethicalNotice": "Este documento foi elaborado em estrita conformidade com as Resolu\xE7\xF5es CFP n\xBA 01/2009 e 06/2019 e Lei Geral de Prote\xE7\xE3o de Dados (LGPD), contendo estritamente as informa\xE7\xF5es necess\xE1rias \xE0 comprova\xE7\xE3o t\xE9cnica da necessidade de continuidade do cuidado em sa\xFAde mental.",
+  "formattedFullDocument": "Texto completo j\xE1 formatado em Markdown pronto para impress\xE3o oficial, com cabe\xE7alho, dados cadastrais, justificativa, metas, frequ\xEAncia sugerida e campo de assinatura do terapeuta"
+}`;
+      const response = await generateWithGemini(client, {
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        config: { responseMimeType: "application/json" }
+      });
+      const text = (response.text || "").trim();
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const parsed = JSON.parse(jsonMatch[0]);
+        return {
+          reportTitle: parsed.reportTitle || "RELAT\xD3RIO T\xC9CNICO DE PRORROGA\xC7\xC3O DE TRATAMENTO",
+          summary: parsed.summary || "Paciente mant\xE9m acompanhamento regular com ades\xE3o terap\xEAutica satisfat\xF3ria.",
+          clinicalJustification: parsed.clinicalJustification || "A continuidade do tratamento faz-se necess\xE1ria para manuten\xE7\xE3o da estabilidade cl\xEDnica e preven\xE7\xE3o de agravamento funcional.",
+          therapeuticGoalsNextCycle: parsed.therapeuticGoalsNextCycle || [
+            "Consolida\xE7\xE3o de estrat\xE9gias de regula\xE7\xE3o emocional e manejo de ansiedade",
+            "Desenvolvimento de repert\xF3rio comportamental adaptativo em situa\xE7\xF5es de sobrecarga",
+            "Fortalecimento da autoefic\xE1cia e preven\xE7\xE3o de reca\xEDdas funcionais"
+          ],
+          suggestedFrequency: parsed.suggestedFrequency || freq,
+          requestedSessions: Number(parsed.requestedSessions) || params.requestedSessionsCount,
+          ethicalNotice: parsed.ethicalNotice || "Documento elaborado conforme Resolu\xE7\xF5es CFP n\xBA 01/2009 e 06/2019.",
+          formattedFullDocument: parsed.formattedFullDocument || text
+        };
+      }
+    } catch (err) {
+      console.warn("[AI Service] Erro ao gerar relat\xF3rio de conv\xEAnio via Gemini:", err?.message || err);
+    }
+  }
+  const formattedFallback = `# RELAT\xD3RIO T\xC9CNICO PSICOL\xD3GICO
+**SOLICITA\xC7\xC3O DE CONTINUIDADE / PRORROGA\xC7\xC3O DE TRATAMENTO PSICOTER\xC1PICO**
+
+---
+
+### 1. DADOS DE IDENTIFICA\xC7\xC3O
+- **Paciente:** ${params.patientName}
+- **Operadora / Conv\xEAnio:** ${params.insuranceName} ${params.cardNumber ? `| Carteira: ${params.cardNumber}` : ""}
+- **Procedimento TUSS:** ${params.procedureCode} - ${params.procedureDescription}
+- **Hip\xF3tese Diagn\xF3stica / CID:** ${cidText}
+- **M\xE9dico Solicitante:** ${params.doctorReferralName || "M\xE9dico Assistente"} ${params.doctorReferralCrm ? `(CRM ${params.doctorReferralCrm})` : ""}
+
+---
+
+### 2. HIST\xD3RICO DO PER\xCDODO ANTERIOR
+O(A) paciente cumpriu satisfatoriamente o bloco de **${params.executedSessionsCount} sess\xF5es** anteriormente autorizadas, apresentando frequ\xEAncia regular, pontualidade e coopera\xE7\xE3o ativa com o projeto terap\xEAutico singular estabelecido.
+
+Durante as interven\xE7\xF5es cl\xEDnicas realizadas, observou-se evolu\xE7\xE3o gradual na percep\xE7\xE3o e manejo dos sintomas associados ao quadro cl\xEDnico inicial, demonstrando receptividade \xE0s t\xE9cnicas empregadas e amplia\xE7\xE3o progressiva de repert\xF3rio adaptativo.
+
+---
+
+### 3. JUSTIFICATIVA CL\xCDNICA PARA CONTINUIDADE
+Considerando a complexidade do quadro cl\xEDnico (${cidText}) e a necessidade de consolida\xE7\xE3o dos ganhos funcionais obtidos, a interrup\xE7\xE3o precoce ou abrupta do plano terap\xEAutico acarretaria risco iminente de regress\xE3o sintom\xE1tica e desestabiliza\xE7\xE3o da funcionalidade biopsicossocial do paciente.
+
+A literatura cl\xEDnica e as diretrizes de sa\xFAde mental indicam a indispensabilidade da continuidade do cuidado longitudinal para a sedimenta\xE7\xE3o dos recursos de autorregula\xE7\xE3o e preven\xE7\xE3o de reca\xEDdas.
+
+---
+
+### 4. PLANO TERAP\xCAUTICO E METAS PARA O NOVO CICLO
+Para o pr\xF3ximo bloco de atendimento, estabelecem-se as seguintes metas priorit\xE1rias:
+1. **Consolida\xE7\xE3o de estrat\xE9gias de regula\xE7\xE3o emocional** e reestrutura\xE7\xE3o cognitiva frente a est\xEDmulos estressores cotidianos.
+2. **Amplia\xE7\xE3o da assertividade e flexibilidade comportamental** em contextos interpessoais e socioocupacionais.
+3. **Preven\xE7\xE3o de reca\xEDdas** e estrutura\xE7\xE3o de plano de manuten\xE7\xE3o de autonomia e bem-estar a m\xE9dio e longo prazo.
+
+---
+
+### 5. SOLICITA\xC7\xC3O T\xC9CNICA
+- **Sess\xF5es Solicitadas:** ${params.requestedSessionsCount} sess\xF5es adicionais
+- **Periodicidade Recomendada:** ${freq}
+
+---
+
+> **NOTA DE SIGILO PROFISSIONAL E CONFORMIDADE \xC9TICA:**
+> O presente documento foi emitido com base no C\xF3digo de \xC9tica Profissional do Psic\xF3logo e nas Resolu\xE7\xF5es do Conselho Federal de Psicologia (CFP n\xBA 01/2009 e 06/2019), bem como em conson\xE2ncia com a Lei Geral de Prote\xE7\xE3o de Dados (LGPD). As informa\xE7\xF5es aqui prestadas restringem-se ao estritamente necess\xE1rio para fins de autoriza\xE7\xE3o e auditoria t\xE9cnica pela operadora de sa\xFAde, resguardando-se o sigilo absoluto quanto ao conte\xFAdo confidencial das sess\xF5es.
+
+---
+
+**Data:** ${(/* @__PURE__ */ new Date()).toLocaleDateString("pt-BR")}
+
+___________________________________________________  
+**${params.therapistName || "Psic\xF3logo(a) Respons\xE1vel"}**  
+${params.therapistCrp ? `CRP: ${params.therapistCrp}` : "Respons\xE1vel T\xE9cnico(a)"}`;
+  return {
+    reportTitle: "RELAT\xD3RIO T\xC9CNICO PSICOL\xD3GICO - SOLICITA\xC7\xC3O DE CONTINUIDADE DE TRATAMENTO",
+    summary: `Paciente realizou o bloco inicial de ${params.executedSessionsCount} sess\xF5es com assiduidade e evolu\xE7\xE3o favor\xE1vel.`,
+    clinicalJustification: `A prorroga\xE7\xE3o do tratamento \xE9 indispens\xE1vel para evitar desestabiliza\xE7\xE3o funcional e consolidar os ganhos terap\xEAuticos obtidos sob o c\xF3digo TUSS ${params.procedureCode}.`,
+    therapeuticGoalsNextCycle: [
+      "Consolida\xE7\xE3o de estrat\xE9gias de regula\xE7\xE3o emocional e manejo de ansiedade",
+      "Desenvolvimento de repert\xF3rio comportamental adaptativo em situa\xE7\xF5es de sobrecarga",
+      "Fortalecimento da autoefic\xE1cia e preven\xE7\xE3o de reca\xEDdas funcionais"
+    ],
+    suggestedFrequency: freq,
+    requestedSessions: params.requestedSessionsCount,
+    ethicalNotice: "Documento elaborado em conformidade com as Resolu\xE7\xF5es CFP n\xBA 01/2009 e 06/2019 e LGPD.",
+    formattedFullDocument: formattedFallback
   };
 }
 
@@ -16633,6 +16980,447 @@ router.post(
     } catch (err) {
       console.error("Error in /ai/transcribe-session:", err);
       res.status(500).json({ error: "Falha ao processar transcri\xE7\xE3o da sess\xE3o com IA" });
+    }
+  }
+);
+router.get("/health-insurances", authenticateToken, (req, res) => {
+  try {
+    const insurances = queryAll(
+      `SELECT h.*, 
+        (SELECT COUNT(*) FROM health_insurance_prices WHERE insurance_id = h.id) as negotiated_procedures_count,
+        (SELECT COUNT(*) FROM patient_authorizations WHERE insurance_id = h.id AND status = 'ACTIVE') as active_guides_count
+       FROM health_insurances h
+       ORDER BY h.name ASC`
+    );
+    res.json(insurances);
+  } catch (err) {
+    console.error("Error fetching health insurances:", err);
+    res.status(500).json({ error: "Falha ao buscar operadoras de sa\xFAde" });
+  }
+});
+router.post(
+  "/health-insurances",
+  authenticateToken,
+  requireRole(["ADMIN", "SECRETARY"]),
+  (req, res) => {
+    try {
+      const { name, ans_code, cnpj, payment_deadline_days, submission_cut_day, repasse_default_mode, repasse_default_value, notes } = req.body;
+      if (!name || !name.trim()) {
+        res.status(400).json({ error: "Nome da operadora \xE9 obrigat\xF3rio" });
+        return;
+      }
+      const result = execute(
+        `INSERT INTO health_insurances (name, ans_code, cnpj, payment_deadline_days, submission_cut_day, repasse_default_mode, repasse_default_value, notes)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          name.trim(),
+          ans_code?.trim() || null,
+          cnpj?.trim() || null,
+          Number(payment_deadline_days) || 30,
+          Number(submission_cut_day) || 25,
+          repasse_default_mode || "FIXED",
+          Number(repasse_default_value) || 50,
+          notes?.trim() || null
+        ]
+      );
+      recordAuditLog(req, "CREATE_HEALTH_INSURANCE", `INSURANCE #${result.lastInsertRowid}`, `Operadora de conv\xEAnio cadastrada: ${name}`);
+      res.status(201).json({ id: result.lastInsertRowid, message: "Operadora cadastrada com sucesso" });
+    } catch (err) {
+      console.error("Error creating health insurance:", err);
+      res.status(500).json({ error: "Falha ao cadastrar operadora de sa\xFAde" });
+    }
+  }
+);
+router.put(
+  "/health-insurances/:id",
+  authenticateToken,
+  requireRole(["ADMIN", "SECRETARY"]),
+  (req, res) => {
+    try {
+      const id = Number(req.params.id);
+      const { name, ans_code, cnpj, payment_deadline_days, submission_cut_day, status, repasse_default_mode, repasse_default_value, notes } = req.body;
+      execute(
+        `UPDATE health_insurances 
+         SET name = ?, ans_code = ?, cnpj = ?, payment_deadline_days = ?, submission_cut_day = ?, status = ?, repasse_default_mode = ?, repasse_default_value = ?, notes = ?
+         WHERE id = ?`,
+        [
+          name.trim(),
+          ans_code?.trim() || null,
+          cnpj?.trim() || null,
+          Number(payment_deadline_days) || 30,
+          Number(submission_cut_day) || 25,
+          status || "ACTIVE",
+          repasse_default_mode || "FIXED",
+          Number(repasse_default_value) || 50,
+          notes?.trim() || null,
+          id
+        ]
+      );
+      recordAuditLog(req, "UPDATE_HEALTH_INSURANCE", `INSURANCE #${id}`, `Operadora atualizada: ${name}`);
+      res.json({ success: true, message: "Operadora atualizada com sucesso" });
+    } catch (err) {
+      console.error("Error updating health insurance:", err);
+      res.status(500).json({ error: "Falha ao atualizar operadora de sa\xFAde" });
+    }
+  }
+);
+router.get("/tuss-procedures", authenticateToken, (req, res) => {
+  try {
+    const category = req.query.category;
+    let query = `SELECT * FROM tuss_procedures WHERE is_active = 1`;
+    const params = [];
+    if (category) {
+      query += ` AND category = ?`;
+      params.push(category);
+    }
+    query += ` ORDER BY category ASC, code ASC`;
+    const procedures = queryAll(query, params);
+    res.json(procedures);
+  } catch (err) {
+    console.error("Error fetching TUSS procedures:", err);
+    res.status(500).json({ error: "Falha ao buscar cat\xE1logo TUSS" });
+  }
+});
+router.post(
+  "/tuss-procedures",
+  authenticateToken,
+  requireRole(["ADMIN"]),
+  (req, res) => {
+    try {
+      const { code, description, category, standard_session_minutes, default_suggested_price } = req.body;
+      if (!code || !description || !category) {
+        res.status(400).json({ error: "C\xF3digo, descri\xE7\xE3o e categoria s\xE3o obrigat\xF3rios" });
+        return;
+      }
+      const result = execute(
+        `INSERT INTO tuss_procedures (code, description, category, standard_session_minutes, default_suggested_price)
+         VALUES (?, ?, ?, ?, ?)`,
+        [
+          code.trim(),
+          description.trim(),
+          category,
+          Number(standard_session_minutes) || 50,
+          Number(default_suggested_price) || 150
+        ]
+      );
+      res.status(201).json({ id: result.lastInsertRowid, message: "Procedimento TUSS cadastrado com sucesso" });
+    } catch (err) {
+      console.error("Error creating TUSS procedure:", err);
+      res.status(500).json({ error: "Falha ao cadastrar procedimento TUSS (c\xF3digo pode j\xE1 existir)" });
+    }
+  }
+);
+router.get("/health-insurances/:id/prices", authenticateToken, (req, res) => {
+  try {
+    const insuranceId = Number(req.params.id);
+    const prices = queryAll(
+      `SELECT p.*, t.code as tuss_code, t.description as tuss_description, t.category as tuss_category, t.standard_session_minutes
+       FROM health_insurance_prices p
+       JOIN tuss_procedures t ON t.id = p.tuss_id
+       WHERE p.insurance_id = ?
+       ORDER BY t.category ASC, t.code ASC`,
+      [insuranceId]
+    );
+    res.json(prices);
+  } catch (err) {
+    console.error("Error fetching insurance prices:", err);
+    res.status(500).json({ error: "Falha ao buscar tabela de pre\xE7os da operadora" });
+  }
+});
+router.post(
+  "/health-insurances/:id/prices",
+  authenticateToken,
+  requireRole(["ADMIN", "SECRETARY"]),
+  (req, res) => {
+    try {
+      const insuranceId = Number(req.params.id);
+      const { tuss_id, agreed_price, copay_price, repasse_fixed_amount } = req.body;
+      if (!tuss_id || agreed_price === void 0) {
+        res.status(400).json({ error: "Procedimento TUSS e valor acordado s\xE3o obrigat\xF3rios" });
+        return;
+      }
+      execute(
+        `INSERT INTO health_insurance_prices (insurance_id, tuss_id, agreed_price, copay_price, repasse_fixed_amount)
+         VALUES (?, ?, ?, ?, ?)
+         ON CONFLICT(insurance_id, tuss_id) DO UPDATE SET
+           agreed_price = excluded.agreed_price,
+           copay_price = excluded.copay_price,
+           repasse_fixed_amount = excluded.repasse_fixed_amount`,
+        [
+          insuranceId,
+          Number(tuss_id),
+          Number(agreed_price),
+          Number(copay_price) || 0,
+          repasse_fixed_amount !== void 0 && repasse_fixed_amount !== null ? Number(repasse_fixed_amount) : null
+        ]
+      );
+      res.json({ success: true, message: "Pre\xE7o negociado salvo com sucesso" });
+    } catch (err) {
+      console.error("Error saving insurance price:", err);
+      res.status(500).json({ error: "Falha ao salvar pre\xE7o acordado da operadora" });
+    }
+  }
+);
+router.get("/patient-authorizations", authenticateToken, (req, res) => {
+  try {
+    const patientId = req.query.patientId ? Number(req.query.patientId) : null;
+    const status = req.query.status;
+    let query = `
+      SELECT a.*, 
+        p.full_name as patient_name, p.cpf as patient_cpf,
+        h.name as insurance_name, h.ans_code as insurance_ans_code,
+        t.code as tuss_code, t.description as tuss_description,
+        (a.total_sessions_authorized - a.executed_sessions_count) as remaining_sessions
+      FROM patient_authorizations a
+      JOIN patients p ON p.id = a.patient_id
+      JOIN health_insurances h ON h.id = a.insurance_id
+      LEFT JOIN tuss_procedures t ON t.id = a.tuss_id
+      WHERE 1=1
+    `;
+    const params = [];
+    if (patientId) {
+      query += ` AND a.patient_id = ?`;
+      params.push(patientId);
+    }
+    if (status) {
+      query += ` AND a.status = ?`;
+      params.push(status);
+    }
+    query += ` ORDER BY a.valid_until ASC, a.created_at DESC`;
+    const authorizations = queryAll(query, params);
+    res.json(authorizations);
+  } catch (err) {
+    console.error("Error fetching patient authorizations:", err);
+    res.status(500).json({ error: "Falha ao buscar autoriza\xE7\xF5es de conv\xEAnio" });
+  }
+});
+router.post(
+  "/patient-authorizations",
+  authenticateToken,
+  requireRole(["ADMIN", "SECRETARY", "PSYCHOLOGIST"]),
+  (req, res) => {
+    try {
+      const {
+        patient_id,
+        insurance_id,
+        tuss_id,
+        card_number,
+        card_validity,
+        plan_name,
+        guide_number,
+        auth_date,
+        valid_until,
+        total_sessions_authorized,
+        doctor_referral_crm,
+        doctor_referral_name,
+        doctor_referral_cid,
+        notes
+      } = req.body;
+      if (!patient_id || !insurance_id || !guide_number || !valid_until || !total_sessions_authorized) {
+        res.status(400).json({ error: "Dados obrigat\xF3rios ausentes (paciente, conv\xEAnio, n\xFAmero da guia, validade e total de sess\xF5es)" });
+        return;
+      }
+      const result = execute(
+        `INSERT INTO patient_authorizations (
+          patient_id, insurance_id, tuss_id, card_number, card_validity, plan_name,
+          guide_number, auth_date, valid_until, total_sessions_authorized, executed_sessions_count,
+          doctor_referral_crm, doctor_referral_name, doctor_referral_cid, status, notes
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, 'ACTIVE', ?)`,
+        [
+          Number(patient_id),
+          Number(insurance_id),
+          tuss_id ? Number(tuss_id) : null,
+          card_number?.trim() || "",
+          card_validity?.trim() || null,
+          plan_name?.trim() || null,
+          guide_number.trim(),
+          auth_date || (/* @__PURE__ */ new Date()).toISOString().split("T")[0],
+          valid_until,
+          Number(total_sessions_authorized),
+          doctor_referral_crm?.trim() || null,
+          doctor_referral_name?.trim() || null,
+          doctor_referral_cid?.trim() || null,
+          notes?.trim() || null
+        ]
+      );
+      execute(
+        `UPDATE patients SET 
+           insurance_id = ?, 
+           insurance_card_number = ?, 
+           insurance_card_validity = ?, 
+           insurance_plan_name = ?
+         WHERE id = ?`,
+        [
+          Number(insurance_id),
+          card_number?.trim() || null,
+          card_validity?.trim() || null,
+          plan_name?.trim() || null,
+          Number(patient_id)
+        ]
+      );
+      recordAuditLog(req, "CREATE_PATIENT_AUTHORIZATION", `AUTH #${result.lastInsertRowid}`, `Guia ${guide_number} cadastrada para paciente #${patient_id} com ${total_sessions_authorized} sess\xF5es`);
+      res.status(201).json({ id: result.lastInsertRowid, message: "Guia cadastrada com sucesso" });
+    } catch (err) {
+      console.error("Error creating patient authorization:", err);
+      res.status(500).json({ error: "Falha ao cadastrar autoriza\xE7\xE3o da guia" });
+    }
+  }
+);
+router.put(
+  "/patient-authorizations/:id",
+  authenticateToken,
+  requireRole(["ADMIN", "SECRETARY", "PSYCHOLOGIST"]),
+  (req, res) => {
+    try {
+      const id = Number(req.params.id);
+      const {
+        executed_sessions_count,
+        total_sessions_authorized,
+        valid_until,
+        status,
+        guide_number,
+        doctor_referral_cid,
+        notes
+      } = req.body;
+      const current = queryOne(`SELECT * FROM patient_authorizations WHERE id = ?`, [id]);
+      if (!current) {
+        res.status(404).json({ error: "Autoriza\xE7\xE3o n\xE3o encontrada" });
+        return;
+      }
+      const newExecuted = executed_sessions_count !== void 0 ? Number(executed_sessions_count) : current.executed_sessions_count;
+      const newTotal = total_sessions_authorized !== void 0 ? Number(total_sessions_authorized) : current.total_sessions_authorized;
+      let computedStatus = status || current.status;
+      if (!status) {
+        if (newExecuted >= newTotal) {
+          computedStatus = "EXHAUSTED";
+        } else if (new Date(valid_until || current.valid_until) < /* @__PURE__ */ new Date()) {
+          computedStatus = "EXPIRED";
+        } else {
+          computedStatus = "ACTIVE";
+        }
+      }
+      execute(
+        `UPDATE patient_authorizations SET
+          executed_sessions_count = ?,
+          total_sessions_authorized = ?,
+          valid_until = ?,
+          status = ?,
+          guide_number = ?,
+          doctor_referral_cid = ?,
+          notes = ?
+         WHERE id = ?`,
+        [
+          newExecuted,
+          newTotal,
+          valid_until || current.valid_until,
+          computedStatus,
+          guide_number || current.guide_number,
+          doctor_referral_cid !== void 0 ? doctor_referral_cid : current.doctor_referral_cid,
+          notes !== void 0 ? notes : current.notes,
+          id
+        ]
+      );
+      res.json({ success: true, message: "Autoriza\xE7\xE3o atualizada com sucesso" });
+    } catch (err) {
+      console.error("Error updating authorization:", err);
+      res.status(500).json({ error: "Falha ao atualizar autoriza\xE7\xE3o" });
+    }
+  }
+);
+router.delete(
+  "/patient-authorizations/:id",
+  authenticateToken,
+  requireRole(["ADMIN", "SECRETARY"]),
+  (req, res) => {
+    try {
+      const id = Number(req.params.id);
+      execute(`DELETE FROM patient_authorizations WHERE id = ?`, [id]);
+      recordAuditLog(req, "DELETE_PATIENT_AUTHORIZATION", `AUTH #${id}`, "Guia de autoriza\xE7\xE3o removida");
+      res.json({ success: true, message: "Autoriza\xE7\xE3o removida com sucesso" });
+    } catch (err) {
+      console.error("Error deleting authorization:", err);
+      res.status(500).json({ error: "Falha ao excluir autoriza\xE7\xE3o" });
+    }
+  }
+);
+var generateInsuranceReportSchema = import_zod.z.object({
+  patientId: import_zod.z.number(),
+  authorizationId: import_zod.z.number().optional(),
+  requestedSessionsCount: import_zod.z.number().min(1).default(12),
+  frequency: import_zod.z.string().optional().default("1x por semana (50 minutos)"),
+  clinicalGoalsSummary: import_zod.z.string().optional(),
+  cidOverride: import_zod.z.string().optional()
+});
+router.post(
+  "/ai/generate-insurance-report",
+  authenticateToken,
+  requireRole(["ADMIN", "PSYCHOLOGIST"]),
+  async (req, res) => {
+    const parse = generateInsuranceReportSchema.safeParse(req.body);
+    if (!parse.success) {
+      res.status(400).json({ error: parse.error.issues[0]?.message || "Par\xE2metros inv\xE1lidos" });
+      return;
+    }
+    const { patientId, authorizationId, requestedSessionsCount, frequency, clinicalGoalsSummary, cidOverride } = parse.data;
+    try {
+      const patient = queryOne(`SELECT * FROM patients WHERE id = ?`, [patientId]);
+      if (!patient) {
+        res.status(404).json({ error: "Paciente n\xE3o encontrado" });
+        return;
+      }
+      let auth = null;
+      if (authorizationId) {
+        auth = queryOne(
+          `SELECT a.*, h.name as insurance_name, t.code as tuss_code, t.description as tuss_description
+           FROM patient_authorizations a
+           JOIN health_insurances h ON h.id = a.insurance_id
+           LEFT JOIN tuss_procedures t ON t.id = a.tuss_id
+           WHERE a.id = ?`,
+          [authorizationId]
+        );
+      } else {
+        auth = queryOne(
+          `SELECT a.*, h.name as insurance_name, t.code as tuss_code, t.description as tuss_description
+           FROM patient_authorizations a
+           JOIN health_insurances h ON h.id = a.insurance_id
+           LEFT JOIN tuss_procedures t ON t.id = a.tuss_id
+           WHERE a.patient_id = ?
+           ORDER BY a.created_at DESC LIMIT 1`,
+          [patientId]
+        );
+      }
+      const insuranceName = auth?.insurance_name || (patient.insurance_id ? queryOne(`SELECT name FROM health_insurances WHERE id = ?`, [patient.insurance_id])?.name : "Operadora de Sa\xFAde N\xE3o Especificada");
+      const procedureCode = auth?.tuss_code || "50000470";
+      const procedureDescription = auth?.tuss_description || "Sess\xE3o de psicoterapia individual";
+      const executedSessions = auth?.executed_sessions_count || 10;
+      const cid = cidOverride || auth?.doctor_referral_cid || "F41.1 (Ansiedade Generalizada / Hip\xF3tese Funcional)";
+      const therapist = queryOne(`SELECT name, crp FROM users WHERE id = ?`, [req.user.id]);
+      const report = await generateInsuranceExtensionReport({
+        patientName: patient.full_name,
+        insuranceName,
+        cardNumber: auth?.card_number || patient.insurance_card_number,
+        procedureCode,
+        procedureDescription,
+        executedSessionsCount: executedSessions,
+        requestedSessionsCount,
+        frequency,
+        cid,
+        clinicalGoalsSummary,
+        doctorReferralName: auth?.doctor_referral_name,
+        doctorReferralCrm: auth?.doctor_referral_crm,
+        therapistName: therapist?.name || "Psic\xF3logo(a) Cl\xEDnico(a)",
+        therapistCrp: therapist?.crp || void 0
+      });
+      recordAuditLog(
+        req,
+        "AI_GENERATE_INSURANCE_EXTENSION_REPORT",
+        `PATIENT #${patientId}`,
+        `Relat\xF3rio t\xE9cnico para conv\xEAnio ${insuranceName} gerado com sucesso (TUSS ${procedureCode})`
+      );
+      res.json(report);
+    } catch (err) {
+      console.error("Error generating insurance report:", err);
+      res.status(500).json({ error: "Falha ao gerar relat\xF3rio de conv\xEAnio com IA" });
     }
   }
 );

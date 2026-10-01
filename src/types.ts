@@ -941,3 +941,86 @@ export interface RoomTimelineData {
   rooms: Room[];
   sessions: RoomTimelineSession[];
 }
+
+export interface HealthInsurance {
+  id: number;
+  clinic_id?: number;
+  name: string;
+  ans_code?: string | null;
+  cnpj?: string | null;
+  payment_deadline_days: number;
+  submission_cut_day: number;
+  status: 'ACTIVE' | 'INACTIVE';
+  repasse_default_mode: 'FIXED' | 'PERCENTAGE';
+  repasse_default_value: number;
+  notes?: string | null;
+  negotiated_procedures_count?: number;
+  active_guides_count?: number;
+  created_at?: string;
+}
+
+export interface TussProcedure {
+  id: number;
+  code: string;
+  description: string;
+  category: 'PSICOLOGIA' | 'NEUROPSICOLOGIA' | 'FONOAUDIOLOGIA' | 'TERAPIA_OCUPACIONAL' | 'PSIQUIATRIA' | 'OUTROS';
+  standard_session_minutes: number;
+  default_suggested_price: number;
+  is_active: number;
+  created_at?: string;
+}
+
+export interface HealthInsurancePrice {
+  id: number;
+  insurance_id: number;
+  tuss_id: number;
+  agreed_price: number;
+  copay_price?: number;
+  repasse_fixed_amount?: number | null;
+  tuss_code?: string;
+  tuss_description?: string;
+  tuss_category?: string;
+  standard_session_minutes?: number;
+  created_at?: string;
+}
+
+export interface PatientAuthorization {
+  id: number;
+  clinic_id?: number;
+  patient_id: number;
+  insurance_id: number;
+  tuss_id?: number | null;
+  card_number: string;
+  card_validity?: string | null;
+  plan_name?: string | null;
+  guide_number: string;
+  auth_date?: string | null;
+  valid_until: string;
+  total_sessions_authorized: number;
+  executed_sessions_count: number;
+  remaining_sessions?: number;
+  doctor_referral_crm?: string | null;
+  doctor_referral_name?: string | null;
+  doctor_referral_cid?: string | null;
+  status: 'ACTIVE' | 'EXHAUSTED' | 'EXPIRED' | 'CANCELED';
+  notes?: string | null;
+  patient_name?: string;
+  patient_cpf?: string;
+  insurance_name?: string;
+  insurance_ans_code?: string;
+  tuss_code?: string;
+  tuss_description?: string;
+  created_at?: string;
+}
+
+export interface InsuranceExtensionReport {
+  reportTitle: string;
+  summary: string;
+  clinicalJustification: string;
+  therapeuticGoalsNextCycle: string[];
+  suggestedFrequency: string;
+  requestedSessions: number;
+  ethicalNotice: string;
+  formattedFullDocument: string;
+}
+

@@ -2029,3 +2029,179 @@ Responda OBRIGATORIAMENTE em JSON válido com esta estrutura:
     retentionNotice: '🔒 Zero-Retention Ativo: O áudio foi processado estritamente em memória e descartado. Em conformidade com LGPD e Código de Ética do CFP.'
   };
 }
+
+/**
+ * 6. Relatório Técnico de Justificativa e Prorrogação de Sessões para Convênio (Sanitizado por IA)
+ * Conforme Resolução CFP nº 06/2019, Resolução CFP nº 01/2009 e RN nº 501/2022 da ANS.
+ */
+export interface InsuranceExtensionReportParams {
+  patientName: string;
+  insuranceName: string;
+  cardNumber?: string;
+  procedureCode: string;
+  procedureDescription: string;
+  executedSessionsCount: number;
+  requestedSessionsCount: number;
+  frequency?: string;
+  cid?: string;
+  clinicalGoalsSummary?: string;
+  doctorReferralName?: string;
+  doctorReferralCrm?: string;
+  therapistName?: string;
+  therapistCrp?: string;
+}
+
+export interface InsuranceExtensionReportResult {
+  reportTitle: string;
+  summary: string;
+  clinicalJustification: string;
+  therapeuticGoalsNextCycle: string[];
+  suggestedFrequency: string;
+  requestedSessions: number;
+  ethicalNotice: string;
+  formattedFullDocument: string;
+}
+
+export async function generateInsuranceExtensionReport(
+  params: InsuranceExtensionReportParams
+): Promise<InsuranceExtensionReportResult> {
+  const client = getAiClient();
+  const freq = params.frequency || '1x por semana (sessões de 50 minutos)';
+  const cidText = params.cid || 'CID não informado ou em investigação funcional';
+
+  if (client) {
+    try {
+      const prompt = `Você é um psicólogo clínico perito em documentação para operadoras de saúde e regulação da ANS (Resoluções CFP nº 01/2009 e 06/2019, RN ANS nº 501/2022).
+Gere um RELATÓRIO TÉCNICO JUSTIFICATIVO DE PRORROGAÇÃO DE SESSÕES para envio à operadora de saúde/plano.
+
+DADOS DO ATENDIMENTO:
+- Paciente: ${params.patientName}
+- Operadora / Convênio: ${params.insuranceName}
+- Procedimento TUSS: ${params.procedureCode} - ${params.procedureDescription}
+- Sessões realizadas no período anterior: ${params.executedSessionsCount}
+- Sessões solicitadas para o próximo bloco: ${params.requestedSessionsCount}
+- Frequência: ${freq}
+- CID de referência / hipótese diagnóstica: ${cidText}
+- Metas / foco clínico fornecido pelo terapeuta: ${params.clinicalGoalsSummary || 'Manutenção da regulação emocional, redução de sintomas disfuncionais e ampliação do repertório adaptativo'}
+- Médico solicitante de referência: ${params.doctorReferralName || 'Médico assistente'} ${params.doctorReferralCrm ? `(CRM ${params.doctorReferralCrm})` : ''}
+
+DIRETRIZES ÉTICAS E LEGAIS OBRIGATÓRIAS (BLINDAGEM CFP):
+1. SIGILO ABSOLUTO: NUNCA relate segredos íntimos, nomes de familiares/amigos, detalhes de traumas ou confissões do paciente. As operadoras não têm direito a dados íntimos do processo psicoterapêutico (Código de Ética do Psicólogo e Resolução CFP nº 01/2009).
+2. LINGUAGEM TÉCNICA E OBJETIVA: Descreva evolução funcional, resposta às intervenções e necessidade de continuidade para consolidação dos ganhos terapêuticos e prevenção de recaídas.
+3. CONFORMIDADE ANS: Mencione a importância da não descontinuidade do cuidado em consonância com as diretrizes de assistência contínua e integral da ANS.
+
+Retorne OBRIGATORIAMENTE em JSON válido com esta estrutura:
+{
+  "reportTitle": "RELATÓRIO TÉCNICO PSICOLÓGICO - SOLICITAÇÃO DE CONTINUIDADE DE TRATAMENTO",
+  "summary": "Breve parágrafo descrevendo que o paciente realizou o bloco inicial de sessões sob o código TUSS especificado...",
+  "clinicalJustification": "Parágrafo técnico e fundamentado justificando por que a interrupção prematura traria prejuízos à estabilização funcional do paciente...",
+  "therapeuticGoalsNextCycle": [
+    "Meta técnica 1 para o próximo bloco",
+    "Meta técnica 2",
+    "Meta técnica 3"
+  ],
+  "suggestedFrequency": "${freq}",
+  "requestedSessions": ${params.requestedSessionsCount},
+  "ethicalNotice": "Este documento foi elaborado em estrita conformidade com as Resoluções CFP nº 01/2009 e 06/2019 e Lei Geral de Proteção de Dados (LGPD), contendo estritamente as informações necessárias à comprovação técnica da necessidade de continuidade do cuidado em saúde mental.",
+  "formattedFullDocument": "Texto completo já formatado em Markdown pronto para impressão oficial, com cabeçalho, dados cadastrais, justificativa, metas, frequência sugerida e campo de assinatura do terapeuta"
+}`;
+
+      const response = await generateWithGemini(client, {
+        contents: [{ role: 'user', parts: [{ text: prompt }] }],
+        config: { responseMimeType: 'application/json' },
+      });
+
+      const text = (response.text || '').trim();
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const parsed = JSON.parse(jsonMatch[0]);
+        return {
+          reportTitle: parsed.reportTitle || 'RELATÓRIO TÉCNICO DE PRORROGAÇÃO DE TRATAMENTO',
+          summary: parsed.summary || 'Paciente mantém acompanhamento regular com adesão terapêutica satisfatória.',
+          clinicalJustification: parsed.clinicalJustification || 'A continuidade do tratamento faz-se necessária para manutenção da estabilidade clínica e prevenção de agravamento funcional.',
+          therapeuticGoalsNextCycle: parsed.therapeuticGoalsNextCycle || [
+            'Consolidação de estratégias de regulação emocional e manejo de ansiedade',
+            'Desenvolvimento de repertório comportamental adaptativo em situações de sobrecarga',
+            'Fortalecimento da autoeficácia e prevenção de recaídas funcionais'
+          ],
+          suggestedFrequency: parsed.suggestedFrequency || freq,
+          requestedSessions: Number(parsed.requestedSessions) || params.requestedSessionsCount,
+          ethicalNotice: parsed.ethicalNotice || 'Documento elaborado conforme Resoluções CFP nº 01/2009 e 06/2019.',
+          formattedFullDocument: parsed.formattedFullDocument || text,
+        };
+      }
+    } catch (err: any) {
+      console.warn('[AI Service] Erro ao gerar relatório de convênio via Gemini:', err?.message || err);
+    }
+  }
+
+  // Fallback estruturado local de alta fidelidade técnica
+  const formattedFallback = `# RELATÓRIO TÉCNICO PSICOLÓGICO
+**SOLICITAÇÃO DE CONTINUIDADE / PRORROGAÇÃO DE TRATAMENTO PSICOTERÁPICO**
+
+---
+
+### 1. DADOS DE IDENTIFICAÇÃO
+- **Paciente:** ${params.patientName}
+- **Operadora / Convênio:** ${params.insuranceName} ${params.cardNumber ? `| Carteira: ${params.cardNumber}` : ''}
+- **Procedimento TUSS:** ${params.procedureCode} - ${params.procedureDescription}
+- **Hipótese Diagnóstica / CID:** ${cidText}
+- **Médico Solicitante:** ${params.doctorReferralName || 'Médico Assistente'} ${params.doctorReferralCrm ? `(CRM ${params.doctorReferralCrm})` : ''}
+
+---
+
+### 2. HISTÓRICO DO PERÍODO ANTERIOR
+O(A) paciente cumpriu satisfatoriamente o bloco de **${params.executedSessionsCount} sessões** anteriormente autorizadas, apresentando frequência regular, pontualidade e cooperação ativa com o projeto terapêutico singular estabelecido.
+
+Durante as intervenções clínicas realizadas, observou-se evolução gradual na percepção e manejo dos sintomas associados ao quadro clínico inicial, demonstrando receptividade às técnicas empregadas e ampliação progressiva de repertório adaptativo.
+
+---
+
+### 3. JUSTIFICATIVA CLÍNICA PARA CONTINUIDADE
+Considerando a complexidade do quadro clínico (${cidText}) e a necessidade de consolidação dos ganhos funcionais obtidos, a interrupção precoce ou abrupta do plano terapêutico acarretaria risco iminente de regressão sintomática e desestabilização da funcionalidade biopsicossocial do paciente.
+
+A literatura clínica e as diretrizes de saúde mental indicam a indispensabilidade da continuidade do cuidado longitudinal para a sedimentação dos recursos de autorregulação e prevenção de recaídas.
+
+---
+
+### 4. PLANO TERAPÊUTICO E METAS PARA O NOVO CICLO
+Para o próximo bloco de atendimento, estabelecem-se as seguintes metas prioritárias:
+1. **Consolidação de estratégias de regulação emocional** e reestruturação cognitiva frente a estímulos estressores cotidianos.
+2. **Ampliação da assertividade e flexibilidade comportamental** em contextos interpessoais e socioocupacionais.
+3. **Prevenção de recaídas** e estruturação de plano de manutenção de autonomia e bem-estar a médio e longo prazo.
+
+---
+
+### 5. SOLICITAÇÃO TÉCNICA
+- **Sessões Solicitadas:** ${params.requestedSessionsCount} sessões adicionais
+- **Periodicidade Recomendada:** ${freq}
+
+---
+
+> **NOTA DE SIGILO PROFISSIONAL E CONFORMIDADE ÉTICA:**
+> O presente documento foi emitido com base no Código de Ética Profissional do Psicólogo e nas Resoluções do Conselho Federal de Psicologia (CFP nº 01/2009 e 06/2019), bem como em consonância com a Lei Geral de Proteção de Dados (LGPD). As informações aqui prestadas restringem-se ao estritamente necessário para fins de autorização e auditoria técnica pela operadora de saúde, resguardando-se o sigilo absoluto quanto ao conteúdo confidencial das sessões.
+
+---
+
+**Data:** ${new Date().toLocaleDateString('pt-BR')}
+
+___________________________________________________  
+**${params.therapistName || 'Psicólogo(a) Responsável'}**  
+${params.therapistCrp ? `CRP: ${params.therapistCrp}` : 'Responsável Técnico(a)'}`;
+
+  return {
+    reportTitle: 'RELATÓRIO TÉCNICO PSICOLÓGICO - SOLICITAÇÃO DE CONTINUIDADE DE TRATAMENTO',
+    summary: `Paciente realizou o bloco inicial de ${params.executedSessionsCount} sessões com assiduidade e evolução favorável.`,
+    clinicalJustification: `A prorrogação do tratamento é indispensável para evitar desestabilização funcional e consolidar os ganhos terapêuticos obtidos sob o código TUSS ${params.procedureCode}.`,
+    therapeuticGoalsNextCycle: [
+      'Consolidação de estratégias de regulação emocional e manejo de ansiedade',
+      'Desenvolvimento de repertório comportamental adaptativo em situações de sobrecarga',
+      'Fortalecimento da autoeficácia e prevenção de recaídas funcionais'
+    ],
+    suggestedFrequency: freq,
+    requestedSessions: params.requestedSessionsCount,
+    ethicalNotice: 'Documento elaborado em conformidade com as Resoluções CFP nº 01/2009 e 06/2019 e LGPD.',
+    formattedFullDocument: formattedFallback
+  };
+}
+

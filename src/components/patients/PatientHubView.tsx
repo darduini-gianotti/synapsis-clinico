@@ -6,6 +6,7 @@ import { PatientOverviewTab } from './PatientOverviewTab.js';
 import { PatientProfileTab } from './PatientProfileTab.js';
 import { PatientClinicalTab } from './PatientClinicalTab.js';
 import { PatientFinancialTab } from './PatientFinancialTab.js';
+import { PatientInsuranceTab } from './PatientInsuranceTab.js';
 import {
   ArrowLeft,
   LayoutDashboard,
@@ -20,6 +21,7 @@ import {
   AlertTriangle,
   HeartPulse,
   DollarSign,
+  Building2,
 } from 'lucide-react';
 
 
@@ -29,7 +31,7 @@ interface PatientHubViewProps {
   onUpdatePatient: (updated: Patient) => void;
   onCreatePatient?: (created: Patient) => void;
   onOpenSettleModal?: (patientId: number) => void;
-  initialTab?: 'overview' | 'profile' | 'clinical' | 'financial';
+  initialTab?: 'overview' | 'profile' | 'clinical' | 'financial' | 'insurance';
   initialClinicalSubTab?: 'evolutions' | 'new_evolution' | 'confidential' | 'documents' | 'scales' | 'evaluations';
 }
 
@@ -44,7 +46,7 @@ export const PatientHubView: React.FC<PatientHubViewProps> = ({
 }) => {
   const { isSecretary, canAccessClinical, hasPermission } = useAuth();
   const canViewFinancial = hasPermission('view_financial');
-  const [activeTab, setActiveTab] = useState<'overview' | 'profile' | 'clinical' | 'financial'>(patient.id === 0 ? 'profile' : initialTab);
+  const [activeTab, setActiveTab] = useState<'overview' | 'profile' | 'clinical' | 'financial' | 'insurance'>(patient.id === 0 ? 'profile' : initialTab);
   const [clinicalSubTab, setClinicalSubTab] = useState<'evolutions' | 'new_evolution' | 'confidential' | 'documents' | 'scales' | 'evaluations'>(
     initialClinicalSubTab
   );
@@ -270,6 +272,22 @@ export const PatientHubView: React.FC<PatientHubViewProps> = ({
               <span>4. Financeiro</span>
             </button>
           )}
+
+          {/* Tab 5: Convênio & Guias */}
+          {patient.id !== 0 && (
+            <button
+              type="button"
+              onClick={() => setActiveTab('insurance')}
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
+                activeTab === 'insurance'
+                  ? 'bg-teal-600 text-white shadow-xs'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+              }`}
+            >
+              <Building2 className="h-4 w-4" />
+              <span>5. Convênio & Guias</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -325,7 +343,15 @@ export const PatientHubView: React.FC<PatientHubViewProps> = ({
       {activeTab === 'financial' && canViewFinancial && (
         <PatientFinancialTab patient={patient} />
       )}
-      </div>
-    );
-  };
+
+      {/* ── Tab 5: Convênio & Guias ───────────────────────── */}
+      {activeTab === 'insurance' && (
+        <PatientInsuranceTab
+          patient={patient}
+          onUpdatePatient={onUpdatePatient}
+        />
+      )}
+    </div>
+  );
+};
 

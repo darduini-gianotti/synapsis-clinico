@@ -52,6 +52,7 @@ import {
   generateComparativeEvolution,
   generateSessionPrepInsights,
   transcribeSessionAudio,
+  generateInsuranceExtensionReport,
 } from './aiService.js';
 
 export const router = Router();
@@ -10694,4 +10695,523 @@ router.post(
   }
 );
 
+// ==========================================
+// 🏥 CONVÊNIOS & OPERADORAS DE SAÚDE (FASE 1)
+// ==========================================
+
+// Listar operadoras de saúde
+router.get('/health-insurances', authenticateToken, (req: AuthRequest, res: Response) => {
+  try {
+    const insurances = queryAll<any>(
+      `SELECT h.*, 
+        (SELECT COUNT(*) FROM health_insurance_prices WHERE insurance_id = h.id) as negotiated_procedures_count,
+        (SELECT COUNT(*) FROM patient_authorizations WHERE insurance_id = h.id AND status = 'ACTIVE') as active_guides_count
+       FROM health_insurances h
+       ORDER BY h.name ASC`
+    );
+    res.json(insurances);
+  } catch (err: any) {
+    console.error('Error fetching health insurances:', err);
+    res.status(500).json({ error: 'Falha ao buscar operadoras de saúde' });
+  }
+});
+
+// Cadastrar operadora de saúde
+router.post(
+  '/health-insurances',
+  authenticateToken,
+  requireRole(['ADMIN', 'SECRETARY']),
+  (req: AuthRequest, res: Response) => {
+    try {
+      const { name, ans_code, cnpj, payment_deadline_days, submission_cut_day, repasse_default_mode, repasse_default_value, notes } = req.body;
+      if (!name || !name.trim()) {
+        res.status(400).json({ error: 'Nome da operadora é obrigatório' });
+        return;
+      }
+
+      const result = execute(
+        `INSERT INTO health_insurances (name, ans_code, cnpj, payment_deadline_days, submission_cut_day, repasse_default_mode, repasse_default_value, notes)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          name.trim(),
+          ans_code?.trim() || null,
+          cnpj?.trim() || null,
+          Number(payment_deadline_days) || 30,
+          Number(submission_cut_day) || 25,
+          repasse_default_mode || 'FIXED',
+          Number(repasse_default_value) || 50.0,
+          notes?.trim() || null,
+        ]
+      );
+
+      recordAuditLog(req, 'CREATE_HEALTH_INSURANCE', `INSURANCE #${result.lastInsertRowid}`, `Operadora de convênio cadastrada: ${name}`);
+      res.status(201).json({ id: result.lastInsertRowid, message: 'Operadora cadastrada com sucesso' });
+    } catch (err: any) {
+      console.error('Error creating health insurance:', err);
+      res.status(500).json({ error: 'Falha ao cadastrar operadora de saúde' });
+    }
+  }
+);
+
+// Atualizar operadora de saúde
+router.put(
+  '/health-insurances/:id',
+  authenticateToken,
+  requireRole(['ADMIN', 'SECRETARY']),
+  (req: AuthRequest, res: Response) => {
+    try {
+      const id = Number(req.params.id);
+      const { name, ans_code, cnpj, payment_deadline_days, submission_cut_day, status, repasse_default_mode, repasse_default_value, notes } = req.body;
+
+      execute(
+        `UPDATE health_insurances 
+         SET name = ?, ans_code = ?, cnpj = ?, payment_deadline_days = ?, submission_cut_day = ?, status = ?, repasse_default_mode = ?, repasse_default_value = ?, notes = ?
+         WHERE id = ?`,
+        [
+          name.trim(),
+          ans_code?.trim() || null,
+          cnpj?.trim() || null,
+          Number(payment_deadline_days) || 30,
+          Number(submission_cut_day) || 25,
+          status || 'ACTIVE',
+          repasse_default_mode || 'FIXED',
+          Number(repasse_default_value) || 50.0,
+          notes?.trim() || null,
+          id,
+        ]
+      );
+
+      recordAuditLog(req, 'UPDATE_HEALTH_INSURANCE', `INSURANCE #${id}`, `Operadora atualizada: ${name}`);
+      res.json({ success: true, message: 'Operadora atualizada com sucesso' });
+    } catch (err: any) {
+      console.error('Error updating health insurance:', err);
+      res.status(500).json({ error: 'Falha ao atualizar operadora de saúde' });
+    }
+  }
+);
+
+// ==========================================
+// 📋 CATÁLOGO TUSS MULTIDISCIPLINAR
+// ==========================================
+
+// Listar catálogo de procedimentos TUSS
+router.get('/tuss-procedures', authenticateToken, (req: AuthRequest, res: Response) => {
+  try {
+    const category = req.query.category as string;
+    let query = `SELECT * FROM tuss_procedures WHERE is_active = 1`;
+    const params: any[] = [];
+    if (category) {
+      query += ` AND category = ?`;
+      params.push(category);
+    }
+    query += ` ORDER BY category ASC, code ASC`;
+
+    const procedures = queryAll<any>(query, params);
+    res.json(procedures);
+  } catch (err: any) {
+    console.error('Error fetching TUSS procedures:', err);
+    res.status(500).json({ error: 'Falha ao buscar catálogo TUSS' });
+  }
+});
+
+// Adicionar procedimento TUSS personalizado
+router.post(
+  '/tuss-procedures',
+  authenticateToken,
+  requireRole(['ADMIN']),
+  (req: AuthRequest, res: Response) => {
+    try {
+      const { code, description, category, standard_session_minutes, default_suggested_price } = req.body;
+      if (!code || !description || !category) {
+        res.status(400).json({ error: 'Código, descrição e categoria são obrigatórios' });
+        return;
+      }
+
+      const result = execute(
+        `INSERT INTO tuss_procedures (code, description, category, standard_session_minutes, default_suggested_price)
+         VALUES (?, ?, ?, ?, ?)`,
+        [
+          code.trim(),
+          description.trim(),
+          category,
+          Number(standard_session_minutes) || 50,
+          Number(default_suggested_price) || 150.0,
+        ]
+      );
+
+      res.status(201).json({ id: result.lastInsertRowid, message: 'Procedimento TUSS cadastrado com sucesso' });
+    } catch (err: any) {
+      console.error('Error creating TUSS procedure:', err);
+      res.status(500).json({ error: 'Falha ao cadastrar procedimento TUSS (código pode já existir)' });
+    }
+  }
+);
+
+// ==========================================
+// 💰 TABELA DE PREÇOS ACORDADOS POR OPERADORA
+// ==========================================
+
+// Listar tabela de preços de uma operadora
+router.get('/health-insurances/:id/prices', authenticateToken, (req: AuthRequest, res: Response) => {
+  try {
+    const insuranceId = Number(req.params.id);
+    const prices = queryAll<any>(
+      `SELECT p.*, t.code as tuss_code, t.description as tuss_description, t.category as tuss_category, t.standard_session_minutes
+       FROM health_insurance_prices p
+       JOIN tuss_procedures t ON t.id = p.tuss_id
+       WHERE p.insurance_id = ?
+       ORDER BY t.category ASC, t.code ASC`,
+      [insuranceId]
+    );
+    res.json(prices);
+  } catch (err: any) {
+    console.error('Error fetching insurance prices:', err);
+    res.status(500).json({ error: 'Falha ao buscar tabela de preços da operadora' });
+  }
+});
+
+// Salvar / atualizar preço acordado de um procedimento na operadora
+router.post(
+  '/health-insurances/:id/prices',
+  authenticateToken,
+  requireRole(['ADMIN', 'SECRETARY']),
+  (req: AuthRequest, res: Response) => {
+    try {
+      const insuranceId = Number(req.params.id);
+      const { tuss_id, agreed_price, copay_price, repasse_fixed_amount } = req.body;
+
+      if (!tuss_id || agreed_price === undefined) {
+        res.status(400).json({ error: 'Procedimento TUSS e valor acordado são obrigatórios' });
+        return;
+      }
+
+      execute(
+        `INSERT INTO health_insurance_prices (insurance_id, tuss_id, agreed_price, copay_price, repasse_fixed_amount)
+         VALUES (?, ?, ?, ?, ?)
+         ON CONFLICT(insurance_id, tuss_id) DO UPDATE SET
+           agreed_price = excluded.agreed_price,
+           copay_price = excluded.copay_price,
+           repasse_fixed_amount = excluded.repasse_fixed_amount`,
+        [
+          insuranceId,
+          Number(tuss_id),
+          Number(agreed_price),
+          Number(copay_price) || 0.0,
+          repasse_fixed_amount !== undefined && repasse_fixed_amount !== null ? Number(repasse_fixed_amount) : null,
+        ]
+      );
+
+      res.json({ success: true, message: 'Preço negociado salvo com sucesso' });
+    } catch (err: any) {
+      console.error('Error saving insurance price:', err);
+      res.status(500).json({ error: 'Falha ao salvar preço acordado da operadora' });
+    }
+  }
+);
+
+// ==========================================
+// 🛡️ AUTORIZAÇÕES & GUIAS DE PACIENTES (SALDO REGRESSIVO)
+// ==========================================
+
+// Listar autorizações/guias de pacientes
+router.get('/patient-authorizations', authenticateToken, (req: AuthRequest, res: Response) => {
+  try {
+    const patientId = req.query.patientId ? Number(req.query.patientId) : null;
+    const status = req.query.status as string;
+
+    let query = `
+      SELECT a.*, 
+        p.full_name as patient_name, p.cpf as patient_cpf,
+        h.name as insurance_name, h.ans_code as insurance_ans_code,
+        t.code as tuss_code, t.description as tuss_description,
+        (a.total_sessions_authorized - a.executed_sessions_count) as remaining_sessions
+      FROM patient_authorizations a
+      JOIN patients p ON p.id = a.patient_id
+      JOIN health_insurances h ON h.id = a.insurance_id
+      LEFT JOIN tuss_procedures t ON t.id = a.tuss_id
+      WHERE 1=1
+    `;
+    const params: any[] = [];
+
+    if (patientId) {
+      query += ` AND a.patient_id = ?`;
+      params.push(patientId);
+    }
+    if (status) {
+      query += ` AND a.status = ?`;
+      params.push(status);
+    }
+
+    query += ` ORDER BY a.valid_until ASC, a.created_at DESC`;
+
+    const authorizations = queryAll<any>(query, params);
+    res.json(authorizations);
+  } catch (err: any) {
+    console.error('Error fetching patient authorizations:', err);
+    res.status(500).json({ error: 'Falha ao buscar autorizações de convênio' });
+  }
+});
+
+// Cadastrar nova guia / autorização de paciente
+router.post(
+  '/patient-authorizations',
+  authenticateToken,
+  requireRole(['ADMIN', 'SECRETARY', 'PSYCHOLOGIST']),
+  (req: AuthRequest, res: Response) => {
+    try {
+      const {
+        patient_id,
+        insurance_id,
+        tuss_id,
+        card_number,
+        card_validity,
+        plan_name,
+        guide_number,
+        auth_date,
+        valid_until,
+        total_sessions_authorized,
+        doctor_referral_crm,
+        doctor_referral_name,
+        doctor_referral_cid,
+        notes,
+      } = req.body;
+
+      if (!patient_id || !insurance_id || !guide_number || !valid_until || !total_sessions_authorized) {
+        res.status(400).json({ error: 'Dados obrigatórios ausentes (paciente, convênio, número da guia, validade e total de sessões)' });
+        return;
+      }
+
+      const result = execute(
+        `INSERT INTO patient_authorizations (
+          patient_id, insurance_id, tuss_id, card_number, card_validity, plan_name,
+          guide_number, auth_date, valid_until, total_sessions_authorized, executed_sessions_count,
+          doctor_referral_crm, doctor_referral_name, doctor_referral_cid, status, notes
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, 'ACTIVE', ?)`,
+        [
+          Number(patient_id),
+          Number(insurance_id),
+          tuss_id ? Number(tuss_id) : null,
+          card_number?.trim() || '',
+          card_validity?.trim() || null,
+          plan_name?.trim() || null,
+          guide_number.trim(),
+          auth_date || new Date().toISOString().split('T')[0],
+          valid_until,
+          Number(total_sessions_authorized),
+          doctor_referral_crm?.trim() || null,
+          doctor_referral_name?.trim() || null,
+          doctor_referral_cid?.trim() || null,
+          notes?.trim() || null,
+        ]
+      );
+
+      // Também sincroniza dados de convênio no cadastro do paciente para conveniência
+      execute(
+        `UPDATE patients SET 
+           insurance_id = ?, 
+           insurance_card_number = ?, 
+           insurance_card_validity = ?, 
+           insurance_plan_name = ?
+         WHERE id = ?`,
+        [
+          Number(insurance_id),
+          card_number?.trim() || null,
+          card_validity?.trim() || null,
+          plan_name?.trim() || null,
+          Number(patient_id),
+        ]
+      );
+
+      recordAuditLog(req, 'CREATE_PATIENT_AUTHORIZATION', `AUTH #${result.lastInsertRowid}`, `Guia ${guide_number} cadastrada para paciente #${patient_id} com ${total_sessions_authorized} sessões`);
+
+      res.status(201).json({ id: result.lastInsertRowid, message: 'Guia cadastrada com sucesso' });
+    } catch (err: any) {
+      console.error('Error creating patient authorization:', err);
+      res.status(500).json({ error: 'Falha ao cadastrar autorização da guia' });
+    }
+  }
+);
+
+// Atualizar autorização (ex: registrar sessão executada ou editar dados)
+router.put(
+  '/patient-authorizations/:id',
+  authenticateToken,
+  requireRole(['ADMIN', 'SECRETARY', 'PSYCHOLOGIST']),
+  (req: AuthRequest, res: Response) => {
+    try {
+      const id = Number(req.params.id);
+      const {
+        executed_sessions_count,
+        total_sessions_authorized,
+        valid_until,
+        status,
+        guide_number,
+        doctor_referral_cid,
+        notes,
+      } = req.body;
+
+      const current = queryOne<any>(`SELECT * FROM patient_authorizations WHERE id = ?`, [id]);
+      if (!current) {
+        res.status(404).json({ error: 'Autorização não encontrada' });
+        return;
+      }
+
+      const newExecuted = executed_sessions_count !== undefined ? Number(executed_sessions_count) : current.executed_sessions_count;
+      const newTotal = total_sessions_authorized !== undefined ? Number(total_sessions_authorized) : current.total_sessions_authorized;
+      
+      let computedStatus = status || current.status;
+      if (!status) {
+        if (newExecuted >= newTotal) {
+          computedStatus = 'EXHAUSTED';
+        } else if (new Date(valid_until || current.valid_until) < new Date()) {
+          computedStatus = 'EXPIRED';
+        } else {
+          computedStatus = 'ACTIVE';
+        }
+      }
+
+      execute(
+        `UPDATE patient_authorizations SET
+          executed_sessions_count = ?,
+          total_sessions_authorized = ?,
+          valid_until = ?,
+          status = ?,
+          guide_number = ?,
+          doctor_referral_cid = ?,
+          notes = ?
+         WHERE id = ?`,
+        [
+          newExecuted,
+          newTotal,
+          valid_until || current.valid_until,
+          computedStatus,
+          guide_number || current.guide_number,
+          doctor_referral_cid !== undefined ? doctor_referral_cid : current.doctor_referral_cid,
+          notes !== undefined ? notes : current.notes,
+          id,
+        ]
+      );
+
+      res.json({ success: true, message: 'Autorização atualizada com sucesso' });
+    } catch (err: any) {
+      console.error('Error updating authorization:', err);
+      res.status(500).json({ error: 'Falha ao atualizar autorização' });
+    }
+  }
+);
+
+// Excluir autorização
+router.delete(
+  '/patient-authorizations/:id',
+  authenticateToken,
+  requireRole(['ADMIN', 'SECRETARY']),
+  (req: AuthRequest, res: Response) => {
+    try {
+      const id = Number(req.params.id);
+      execute(`DELETE FROM patient_authorizations WHERE id = ?`, [id]);
+      recordAuditLog(req, 'DELETE_PATIENT_AUTHORIZATION', `AUTH #${id}`, 'Guia de autorização removida');
+      res.json({ success: true, message: 'Autorização removida com sucesso' });
+    } catch (err: any) {
+      console.error('Error deleting authorization:', err);
+      res.status(500).json({ error: 'Falha ao excluir autorização' });
+    }
+  }
+);
+
+// ==========================================
+// 🤖 GERADOR DE RELATÓRIO TÉCNICO DE PRORROGAÇÃO SANITIZADO (IA)
+// ==========================================
+const generateInsuranceReportSchema = z.object({
+  patientId: z.number(),
+  authorizationId: z.number().optional(),
+  requestedSessionsCount: z.number().min(1).default(12),
+  frequency: z.string().optional().default('1x por semana (50 minutos)'),
+  clinicalGoalsSummary: z.string().optional(),
+  cidOverride: z.string().optional(),
+});
+
+router.post(
+  '/ai/generate-insurance-report',
+  authenticateToken,
+  requireRole(['ADMIN', 'PSYCHOLOGIST']),
+  async (req: AuthRequest, res: Response) => {
+    const parse = generateInsuranceReportSchema.safeParse(req.body);
+    if (!parse.success) {
+      res.status(400).json({ error: parse.error.issues[0]?.message || 'Parâmetros inválidos' });
+      return;
+    }
+
+    const { patientId, authorizationId, requestedSessionsCount, frequency, clinicalGoalsSummary, cidOverride } = parse.data;
+
+    try {
+      const patient = queryOne<any>(`SELECT * FROM patients WHERE id = ?`, [patientId]);
+      if (!patient) {
+        res.status(404).json({ error: 'Paciente não encontrado' });
+        return;
+      }
+
+      let auth: any = null;
+      if (authorizationId) {
+        auth = queryOne<any>(
+          `SELECT a.*, h.name as insurance_name, t.code as tuss_code, t.description as tuss_description
+           FROM patient_authorizations a
+           JOIN health_insurances h ON h.id = a.insurance_id
+           LEFT JOIN tuss_procedures t ON t.id = a.tuss_id
+           WHERE a.id = ?`,
+          [authorizationId]
+        );
+      } else {
+        // Pega a autorização ativa mais recente
+        auth = queryOne<any>(
+          `SELECT a.*, h.name as insurance_name, t.code as tuss_code, t.description as tuss_description
+           FROM patient_authorizations a
+           JOIN health_insurances h ON h.id = a.insurance_id
+           LEFT JOIN tuss_procedures t ON t.id = a.tuss_id
+           WHERE a.patient_id = ?
+           ORDER BY a.created_at DESC LIMIT 1`,
+          [patientId]
+        );
+      }
+
+      const insuranceName = auth?.insurance_name || (patient.insurance_id ? queryOne<any>(`SELECT name FROM health_insurances WHERE id = ?`, [patient.insurance_id])?.name : 'Operadora de Saúde Não Especificada');
+      const procedureCode = auth?.tuss_code || '50000470';
+      const procedureDescription = auth?.tuss_description || 'Sessão de psicoterapia individual';
+      const executedSessions = auth?.executed_sessions_count || 10;
+      const cid = cidOverride || auth?.doctor_referral_cid || 'F41.1 (Ansiedade Generalizada / Hipótese Funcional)';
+
+      const therapist = queryOne<any>(`SELECT name, crp_number FROM users WHERE id = ?`, [req.user!.id]);
+
+      const report = await generateInsuranceExtensionReport({
+        patientName: patient.full_name,
+        insuranceName,
+        cardNumber: auth?.card_number || patient.insurance_card_number,
+        procedureCode,
+        procedureDescription,
+        executedSessionsCount: executedSessions,
+        requestedSessionsCount,
+        frequency,
+        cid,
+        clinicalGoalsSummary,
+        doctorReferralName: auth?.doctor_referral_name,
+        doctorReferralCrm: auth?.doctor_referral_crm,
+        therapistName: therapist?.name || 'Psicólogo(a) Clínico(a)',
+        therapistCrp: therapist?.crp_number || undefined,
+      });
+
+      recordAuditLog(
+        req,
+        'AI_GENERATE_INSURANCE_EXTENSION_REPORT',
+        `PATIENT #${patientId}`,
+        `Relatório técnico para convênio ${insuranceName} gerado com sucesso (TUSS ${procedureCode})`
+      );
+
+      res.json(report);
+    } catch (err: any) {
+      console.error('Error generating insurance report:', err);
+      res.status(500).json({ error: 'Falha ao gerar relatório de convênio com IA' });
+    }
+  }
+);
+
 export default router;
+

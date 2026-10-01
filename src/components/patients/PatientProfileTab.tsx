@@ -43,6 +43,7 @@ import {
   Send,
   Share2,
   ExternalLink,
+  Building2,
   Lock,
   Unlock,
 } from 'lucide-react';
@@ -215,6 +216,22 @@ export const PatientProfileTab: React.FC<PatientProfileTabProps> = ({
   );
   const [sessionPrice, setSessionPrice] = useState<number>(patient.session_price || 180);
 
+  // Insurance / Convênio
+  const [insuranceId, setInsuranceId] = useState<number | null>(patient.insurance_id || null);
+  const [insuranceCardNumber, setInsuranceCardNumber] = useState<string>(patient.insurance_card_number || '');
+  const [insuranceCardValidity, setInsuranceCardValidity] = useState<string>(patient.insurance_card_validity || '');
+  const [insurancePlanName, setInsurancePlanName] = useState<string>(patient.insurance_plan_name || '');
+  const [availableInsurances, setAvailableInsurances] = useState<Array<{ id: number; name: string }>>([]);
+
+  useEffect(() => {
+    api.get<any[]>('/health-insurances').then((res) => {
+      setAvailableInsurances(res.data || []);
+      if (!patient.insurance_id && res.data?.length > 0) {
+        setInsuranceId(res.data[0].id);
+      }
+    }).catch((err) => console.warn('Erro ao carregar lista de convênios:', err));
+  }, []);
+
   // Notes
   const [notesBasic, setNotesBasic] = useState(patient.notes_basic || '');
 
@@ -360,6 +377,10 @@ export const PatientProfileTab: React.FC<PatientProfileTabProps> = ({
         ...(canViewFinancial ? {
           financial_plan_type: financialPlan,
           session_price: Number(sessionPrice) || 0,
+          insurance_id: financialPlan === 'Convênio' ? insuranceId : null,
+          insurance_card_number: financialPlan === 'Convênio' ? insuranceCardNumber.trim() : null,
+          insurance_card_validity: financialPlan === 'Convênio' ? insuranceCardValidity.trim() : null,
+          insurance_plan_name: financialPlan === 'Convênio' ? insurancePlanName.trim() : null,
         } : {}),
         address: {
           cep: cep.trim(),
@@ -448,6 +469,10 @@ export const PatientProfileTab: React.FC<PatientProfileTabProps> = ({
     setEmergency2Phone(patient.emergency_contacts?.[1]?.phone || '');
     setFinancialPlan(patient.financial_plan_type || 'Por Sessão');
     setSessionPrice(patient.session_price || 180);
+    setInsuranceId(patient.insurance_id || null);
+    setInsuranceCardNumber(patient.insurance_card_number || '');
+    setInsuranceCardValidity(patient.insurance_card_validity || '');
+    setInsurancePlanName(patient.insurance_plan_name || '');
     setNotesBasic(patient.notes_basic || '');
 
     setCepFeedback(null);
@@ -1724,6 +1749,82 @@ export const PatientProfileTab: React.FC<PatientProfileTabProps> = ({
                 </p>
               )}
             </div>
+
+            {/* Bloco de Campos Específicos de Convênio */}
+            {financialPlan === 'Convênio' && (
+              <div className="col-span-1 sm:col-span-2 pt-3 border-t border-slate-100 dark:border-slate-800 space-y-3">
+                <div className="flex items-center gap-2">
+                  <Building2 className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+                  <span className="font-bold text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                    Dados do Convênio & Carteirinha
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-500 dark:text-slate-400 mb-1">
+                      Operadora Parceira
+                    </label>
+                    {isEditing ? (
+                      <select
+                        value={insuranceId || ''}
+                        onChange={(e) => setInsuranceId(Number(e.target.value) || null)}
+                        className="w-full rounded-xl border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800 px-3 py-2 text-xs font-semibold text-slate-800 dark:text-white focus:outline-hidden"
+                      >
+                        <option value="">Selecione a operadora...</option>
+                        {availableInsurances.map((ins) => (
+                          <option key={ins.id} value={ins.id}>
+                            {ins.name}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <p className="font-bold text-slate-800 dark:text-slate-200">
+                        {availableInsurances.find((i) => i.id === insuranceId)?.name || 'Não selecionada'}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-500 dark:text-slate-400 mb-1">
+                      Número da Carteirinha
+                    </label>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        placeholder="Ex: 0023.9485.1203"
+                        value={insuranceCardNumber}
+                        onChange={(e) => setInsuranceCardNumber(e.target.value)}
+                        className="w-full rounded-xl border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800 px-3 py-2 text-xs font-mono font-semibold text-slate-800 dark:text-white focus:outline-hidden"
+                      />
+                    ) : (
+                      <p className="font-mono font-bold text-slate-800 dark:text-slate-200">
+                        {insuranceCardNumber || '—'}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-500 dark:text-slate-400 mb-1">
+                      Plano / Categoria
+                    </label>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        placeholder="Ex: Top Nacional Plus"
+                        value={insurancePlanName}
+                        onChange={(e) => setInsurancePlanName(e.target.value)}
+                        className="w-full rounded-xl border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800 px-3 py-2 text-xs font-semibold text-slate-800 dark:text-white focus:outline-hidden"
+                      />
+                    ) : (
+                      <p className="font-medium text-slate-800 dark:text-slate-200">
+                        {insurancePlanName || '—'}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

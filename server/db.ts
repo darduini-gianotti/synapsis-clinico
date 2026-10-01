@@ -758,6 +758,78 @@ function initTables(db: any) {
       FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE,
       FOREIGN KEY (psychologist_id) REFERENCES users(id)
     );
+
+    -- 27. Convênios & Operadoras de Saúde (Fase 1)
+    CREATE TABLE IF NOT EXISTS health_insurances (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      clinic_id INTEGER DEFAULT 1,
+      name TEXT NOT NULL,
+      ans_code TEXT,
+      cnpj TEXT,
+      payment_deadline_days INTEGER DEFAULT 30,
+      submission_cut_day INTEGER DEFAULT 25,
+      status TEXT DEFAULT 'ACTIVE' CHECK(status IN ('ACTIVE', 'INACTIVE')),
+      repasse_default_mode TEXT DEFAULT 'FIXED' CHECK(repasse_default_mode IN ('FIXED', 'PERCENTAGE')),
+      repasse_default_value REAL DEFAULT 50.0,
+      notes TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_health_insurances_clinic ON health_insurances(clinic_id);
+
+    -- 28. Catálogo TUSS Multidisciplinar (ANS)
+    CREATE TABLE IF NOT EXISTS tuss_procedures (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      code TEXT NOT NULL UNIQUE,
+      description TEXT NOT NULL,
+      category TEXT NOT NULL CHECK(category IN ('PSICOLOGIA', 'NEUROPSICOLOGIA', 'FONOAUDIOLOGIA', 'TERAPIA_OCUPACIONAL', 'PSIQUIATRIA', 'OUTROS')),
+      standard_session_minutes INTEGER DEFAULT 50,
+      default_suggested_price REAL DEFAULT 150.00,
+      is_active INTEGER NOT NULL DEFAULT 1,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_tuss_code ON tuss_procedures(code);
+
+    -- 29. Tabela de Preços e Prazos por Operadora
+    CREATE TABLE IF NOT EXISTS health_insurance_prices (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      insurance_id INTEGER NOT NULL,
+      tuss_id INTEGER NOT NULL,
+      agreed_price REAL NOT NULL,
+      copay_price REAL DEFAULT 0.00,
+      repasse_fixed_amount REAL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (insurance_id) REFERENCES health_insurances(id) ON DELETE CASCADE,
+      FOREIGN KEY (tuss_id) REFERENCES tuss_procedures(id) ON DELETE CASCADE,
+      UNIQUE(insurance_id, tuss_id)
+    );
+
+    -- 30. Autorizações e Guias dos Pacientes (Saldo Regressivo & Preditivo)
+    CREATE TABLE IF NOT EXISTS patient_authorizations (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      clinic_id INTEGER DEFAULT 1,
+      patient_id INTEGER NOT NULL,
+      insurance_id INTEGER NOT NULL,
+      tuss_id INTEGER,
+      card_number TEXT NOT NULL,
+      card_validity TEXT,
+      plan_name TEXT,
+      guide_number TEXT NOT NULL,
+      auth_date DATE,
+      valid_until DATE NOT NULL,
+      total_sessions_authorized INTEGER NOT NULL,
+      executed_sessions_count INTEGER NOT NULL DEFAULT 0,
+      doctor_referral_crm TEXT,
+      doctor_referral_name TEXT,
+      doctor_referral_cid TEXT,
+      status TEXT NOT NULL DEFAULT 'ACTIVE' CHECK(status IN ('ACTIVE', 'EXHAUSTED', 'EXPIRED', 'CANCELED')),
+      notes TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE,
+      FOREIGN KEY (insurance_id) REFERENCES health_insurances(id),
+      FOREIGN KEY (tuss_id) REFERENCES tuss_procedures(id)
+    );
+    CREATE INDEX IF NOT EXISTS idx_patient_auth_patient ON patient_authorizations(patient_id);
+    CREATE INDEX IF NOT EXISTS idx_patient_auth_status ON patient_authorizations(status);
   `);
 }
 
@@ -2640,6 +2712,159 @@ function migrateTables(db: any) {
 
     } catch (e) {
       console.error('Error applying multi-tenancy migrations in migrateTables:', e);
+    }
+
+    // 19. Convênios, Tabela TUSS Multidisciplinar e Autorizações de Guias (Fase 1)
+    try {
+      db.exec(`
+        CREATE TABLE IF NOT EXISTS health_insurances (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          clinic_id INTEGER DEFAULT 1,
+          name TEXT NOT NULL,
+          ans_code TEXT,
+          cnpj TEXT,
+          payment_deadline_days INTEGER DEFAULT 30,
+          submission_cut_day INTEGER DEFAULT 25,
+          status TEXT DEFAULT 'ACTIVE' CHECK(status IN ('ACTIVE', 'INACTIVE')),
+          repasse_default_mode TEXT DEFAULT 'FIXED' CHECK(repasse_default_mode IN ('FIXED', 'PERCENTAGE')),
+          repasse_default_value REAL DEFAULT 50.0,
+          notes TEXT,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE INDEX IF NOT EXISTS idx_health_insurances_clinic ON health_insurances(clinic_id);
+
+        CREATE TABLE IF NOT EXISTS tuss_procedures (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          code TEXT NOT NULL UNIQUE,
+          description TEXT NOT NULL,
+          category TEXT NOT NULL CHECK(category IN ('PSICOLOGIA', 'NEUROPSICOLOGIA', 'FONOAUDIOLOGIA', 'TERAPIA_OCUPACIONAL', 'PSIQUIATRIA', 'OUTROS')),
+          standard_session_minutes INTEGER DEFAULT 50,
+          default_suggested_price REAL DEFAULT 150.00,
+          is_active INTEGER NOT NULL DEFAULT 1,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE INDEX IF NOT EXISTS idx_tuss_code ON tuss_procedures(code);
+
+        CREATE TABLE IF NOT EXISTS health_insurance_prices (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          insurance_id INTEGER NOT NULL,
+          tuss_id INTEGER NOT NULL,
+          agreed_price REAL NOT NULL,
+          copay_price REAL DEFAULT 0.00,
+          repasse_fixed_amount REAL,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (insurance_id) REFERENCES health_insurances(id) ON DELETE CASCADE,
+          FOREIGN KEY (tuss_id) REFERENCES tuss_procedures(id) ON DELETE CASCADE,
+          UNIQUE(insurance_id, tuss_id)
+        );
+
+        CREATE TABLE IF NOT EXISTS patient_authorizations (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          clinic_id INTEGER DEFAULT 1,
+          patient_id INTEGER NOT NULL,
+          insurance_id INTEGER NOT NULL,
+          tuss_id INTEGER,
+          card_number TEXT NOT NULL,
+          card_validity TEXT,
+          plan_name TEXT,
+          guide_number TEXT NOT NULL,
+          auth_date DATE,
+          valid_until DATE NOT NULL,
+          total_sessions_authorized INTEGER NOT NULL,
+          executed_sessions_count INTEGER NOT NULL DEFAULT 0,
+          doctor_referral_crm TEXT,
+          doctor_referral_name TEXT,
+          doctor_referral_cid TEXT,
+          status TEXT NOT NULL DEFAULT 'ACTIVE' CHECK(status IN ('ACTIVE', 'EXHAUSTED', 'EXPIRED', 'CANCELED')),
+          notes TEXT,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE,
+          FOREIGN KEY (insurance_id) REFERENCES health_insurances(id),
+          FOREIGN KEY (tuss_id) REFERENCES tuss_procedures(id)
+        );
+        CREATE INDEX IF NOT EXISTS idx_patient_auth_patient ON patient_authorizations(patient_id);
+        CREATE INDEX IF NOT EXISTS idx_patient_auth_status ON patient_authorizations(status);
+      `);
+
+      // Colunas em sessions para suporte a convênio
+      const sessInfo = db.exec("PRAGMA table_info(sessions);");
+      if (sessInfo.length > 0 && sessInfo[0].values) {
+        const sCols = sessInfo[0].values.map((r: any[]) => r[1]);
+        if (!sCols.includes('insurance_id')) {
+          db.exec("ALTER TABLE sessions ADD COLUMN insurance_id INTEGER REFERENCES health_insurances(id);");
+        }
+        if (!sCols.includes('authorization_id')) {
+          db.exec("ALTER TABLE sessions ADD COLUMN authorization_id INTEGER REFERENCES patient_authorizations(id);");
+        }
+        if (!sCols.includes('tuss_code')) {
+          db.exec("ALTER TABLE sessions ADD COLUMN tuss_code TEXT;");
+        }
+        if (!sCols.includes('billing_modality')) {
+          db.exec("ALTER TABLE sessions ADD COLUMN billing_modality TEXT DEFAULT 'PRIVATE';");
+        }
+      }
+
+      // Colunas em patients para atalhos de convênio
+      const ptInfo = db.exec("PRAGMA table_info(patients);");
+      if (ptInfo.length > 0 && ptInfo[0].values) {
+        const pCols = ptInfo[0].values.map((r: any[]) => r[1]);
+        if (!pCols.includes('insurance_id')) {
+          db.exec("ALTER TABLE patients ADD COLUMN insurance_id INTEGER REFERENCES health_insurances(id);");
+        }
+        if (!pCols.includes('insurance_card_number')) {
+          db.exec("ALTER TABLE patients ADD COLUMN insurance_card_number TEXT;");
+        }
+        if (!pCols.includes('insurance_card_validity')) {
+          db.exec("ALTER TABLE patients ADD COLUMN insurance_card_validity TEXT;");
+        }
+        if (!pCols.includes('insurance_plan_name')) {
+          db.exec("ALTER TABLE patients ADD COLUMN insurance_plan_name TEXT;");
+        }
+      }
+
+      // Seed do Catálogo TUSS Multidisciplinar Inicial
+      const tussCount = db.exec("SELECT count(*) FROM tuss_procedures;");
+      if (tussCount.length === 0 || !tussCount[0].values || Number(tussCount[0].values[0][0]) === 0) {
+        const defaultTuss = [
+          { code: '50000470', desc: 'Consulta / Sessão de Psicoterapia Individual', cat: 'PSICOLOGIA', min: 50, price: 150 },
+          { code: '50000488', desc: 'Psicoterapia de Grupo / Familiar (por paciente)', cat: 'PSICOLOGIA', min: 60, price: 100 },
+          { code: '50000569', desc: 'Avaliação Neuropsicológica (sessão / bateria)', cat: 'NEUROPSICOLOGIA', min: 60, price: 280 },
+          { code: '50000143', desc: 'Sessão de Reabilitação Fonoaudiológica', cat: 'FONOAUDIOLOGIA', min: 45, price: 140 },
+          { code: '50000151', desc: 'Avaliação Fonoaudiológica Completa', cat: 'FONOAUDIOLOGIA', min: 60, price: 220 },
+          { code: '50000305', desc: 'Atendimento em Terapia Ocupacional Individual', cat: 'TERAPIA_OCUPACIONAL', min: 50, price: 150 },
+          { code: '50000321', desc: 'Terapia Ocupacional Especializada (Integração Sensorial / Neuromotora)', cat: 'TERAPIA_OCUPACIONAL', min: 50, price: 200 },
+          { code: '10101012', desc: 'Consulta Médica Eletiva em Consultório (Psiquiatria)', cat: 'PSIQUIATRIA', min: 50, price: 350 },
+        ];
+
+        for (const t of defaultTuss) {
+          db.run(`
+            INSERT OR IGNORE INTO tuss_procedures (code, description, category, standard_session_minutes, default_suggested_price)
+            VALUES (?, ?, ?, ?, ?);
+          `, [t.code, t.desc, t.cat, t.min, t.price]);
+        }
+      }
+
+      // Seed das Principais Operadoras de Saúde
+      const insCount = db.exec("SELECT count(*) FROM health_insurances WHERE clinic_id = 1;");
+      if (insCount.length === 0 || !insCount[0].values || Number(insCount[0].values[0][0]) === 0) {
+        const defaultInsurances = [
+          { name: 'Bradesco Saúde', ans: '005711', cnpj: '92.693.118/0001-60', deadline: 30, cut: 25, repasse: 55.0 },
+          { name: 'Amil Assistência Médica', ans: '326305', cnpj: '29.309.127/0001-79', deadline: 30, cut: 20, repasse: 50.0 },
+          { name: 'SulAmérica Saúde', ans: '006246', cnpj: '01.685.053/0001-56', deadline: 30, cut: 25, repasse: 60.0 },
+          { name: 'Unimed Central', ans: '305715', cnpj: '02.812.468/0001-06', deadline: 45, cut: 15, repasse: 48.0 },
+          { name: 'Porto Saúde', ans: '000582', cnpj: '04.884.219/0001-06', deadline: 30, cut: 28, repasse: 65.0 },
+          { name: 'Cassi', ans: '346659', cnpj: '33.719.485/0001-27', deadline: 30, cut: 20, repasse: 70.0 },
+        ];
+
+        for (const ins of defaultInsurances) {
+          db.run(`
+            INSERT INTO health_insurances (clinic_id, name, ans_code, cnpj, payment_deadline_days, submission_cut_day, repasse_default_mode, repasse_default_value)
+            VALUES (1, ?, ?, ?, ?, ?, 'FIXED', ?);
+          `, [ins.name, ins.ans, ins.cnpj, ins.deadline, ins.cut, ins.repasse]);
+        }
+      }
+    } catch (e) {
+      console.error('Error applying health insurance migrations in migrateTables:', e);
     }
   } catch (err) {
     console.error('Migration error in db:', err);

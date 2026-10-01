@@ -11,7 +11,7 @@ import { MOCK_SANDBOX_PATIENTS } from './academy/mockData.js';
 interface PatientsAndRecordsProps {
   initialPatientId?: number | null;
   initialAction?: 'none' | 'new_evolution';
-  initialTab?: 'overview' | 'profile' | 'clinical';
+  initialTab?: 'overview' | 'profile' | 'clinical' | 'financial' | 'insurance';
   initialClinicalSubTab?: 'evolutions' | 'new_evolution' | 'confidential' | 'documents' | 'scales' | 'evaluations';
 }
 
@@ -39,7 +39,7 @@ export const PatientsAndRecords: React.FC<PatientsAndRecordsProps> = ({
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
 
   // Hub initial tab routing
-  const [hubTab, setHubTab] = useState<'overview' | 'profile' | 'clinical'>(initialTab);
+  const [hubTab, setHubTab] = useState<'overview' | 'profile' | 'clinical' | 'financial' | 'insurance'>(initialTab);
   const [hubClinicalSubTab, setHubClinicalSubTab] = useState<'evolutions' | 'new_evolution' | 'confidential' | 'documents' | 'scales' | 'evaluations'>(
     initialClinicalSubTab
   );

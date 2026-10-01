@@ -9,6 +9,7 @@ import type { Room, UserFiscalSettings } from '../types.js';
 import { UniversalMigratorModal } from './patients/UniversalMigratorModal.js';
 import { DEFAULT_INVOICE_CANCEL_TEMPLATE } from './fiscal/InvoiceCancelNotifyModal.js';
 import { SubscriptionTab } from './subscription/SubscriptionTab.js';
+import { InsuranceSettingsTab } from './insurance/InsuranceSettingsTab.js';
 
 interface AddressObj {
   cep: string;
@@ -76,7 +77,7 @@ const DEFAULT_NF_TEMPLATE = DEFAULT_SESSIONS_TEMPLATE;
 
 export const SettingsModule: React.FC = () => {
   const { clinicSettings, refreshClinicSettings, user } = useAuth();
-  const [activeTab, setActiveTab] = useState<'geral' | 'modulos' | 'gateway' | 'fiscal' | 'contabilidade' | 'auditoria' | 'migracao' | 'assinatura'>('geral');
+  const [activeTab, setActiveTab] = useState<'geral' | 'modulos' | 'convenios' | 'gateway' | 'fiscal' | 'contabilidade' | 'auditoria' | 'migracao' | 'assinatura'>('geral');
   const [isMigratorModalOpen, setIsMigratorModalOpen] = useState<boolean>(false);
   
   // Fiscal States (Carnê-Leão & Perfil Tributário)
@@ -986,6 +987,19 @@ export const SettingsModule: React.FC = () => {
           <div className="flex items-center gap-2">
             <Sliders className="h-4 w-4" />
             Perfil & Módulos
+          </div>
+        </button>
+        <button
+          onClick={() => setActiveTab('convenios')}
+          className={`pb-3 text-sm font-semibold border-b-2 transition-colors cursor-pointer ${
+            activeTab === 'convenios'
+              ? 'border-teal-500 text-teal-600 dark:text-teal-400'
+              : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
+          }`}
+        >
+          <div className="flex items-center gap-2">
+            <Building2 className="h-4 w-4" />
+            Convênios & TUSS
           </div>
         </button>
         <button
@@ -3561,6 +3575,10 @@ export const SettingsModule: React.FC = () => {
           </div>
         </div>
       ) : null}
+
+      {activeTab === 'convenios' && (
+        <InsuranceSettingsTab />
+      )}
 
       {activeTab === 'assinatura' && (
         <SubscriptionTab />

@@ -51,7 +51,7 @@ import { PrepaidReallocationModal } from './calendar/PrepaidReallocationModal.js
 interface AgendaProps {
   onStartSession: (patientId: number, sessionId: number) => void;
   onNavigateToFinancial?: (subTab: 'revenues' | 'expenses') => void;
-  onNavigateToPatient?: (patientId: number, tab?: 'overview' | 'profile' | 'clinical') => void;
+  onNavigateToPatient?: (patientId: number, tab?: 'overview' | 'profile' | 'clinical' | 'financial' | 'insurance') => void;
 }
 
 type ViewMode = 'month' | 'week' | 'day';
@@ -2727,6 +2727,26 @@ export const Agenda: React.FC<AgendaProps> = ({
                         ? 'Pacote de Avaliação Neuropsicológica'
                         : `R$ ${selectedSessionForDetails.price.toFixed(2)}`}
                     </span>
+                  </div>
+                )}
+
+                {/* Atendimento por Convênio & Atalho para Guia */}
+                {selectedSessionForDetails.patient_id && onNavigateToPatient && (
+                  <div className="mb-3.5 px-3 py-2 rounded-xl bg-teal-950/40 border border-teal-800/60 flex items-center justify-between text-xs text-teal-200">
+                    <div className="flex items-center gap-2">
+                      <ShieldCheck className="h-4 w-4 text-teal-400 shrink-0" />
+                      <span>Convênio & Autorizações do Paciente</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onNavigateToPatient(selectedSessionForDetails.patient_id, 'insurance');
+                        handleCloseDetailsModal();
+                      }}
+                      className="text-[11px] font-bold text-teal-300 hover:text-white underline cursor-pointer"
+                    >
+                      Acessar Guias & Saldo →
+                    </button>
                   </div>
                 )}
 

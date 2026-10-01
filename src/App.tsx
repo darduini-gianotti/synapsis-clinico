@@ -72,7 +72,7 @@ const AppContent: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
   const [selectedPatientIdForClinical, setSelectedPatientIdForClinical] = useState<number | null>(null);
   const [initialClinicalAction, setInitialClinicalAction] = useState<'none' | 'new_evolution'>('none');
-  const [initialPatientTab, setInitialPatientTab] = useState<'overview' | 'profile' | 'clinical'>('overview');
+  const [initialPatientTab, setInitialPatientTab] = useState<'overview' | 'profile' | 'clinical' | 'financial' | 'insurance'>('overview');
   const [initialClinicalSubTab, setInitialClinicalSubTab] = useState<'evolutions' | 'new_evolution' | 'confidential' | 'documents' | 'scales' | 'evaluations'>('evolutions');
   const [restrictedModalFeature, setRestrictedModalFeature] = useState<string | null>(null);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -282,8 +282,8 @@ interface MainAppLayoutProps {
   setSelectedPatientIdForClinical: React.Dispatch<React.SetStateAction<number | null>>;
   initialClinicalAction: 'none' | 'new_evolution';
   setInitialClinicalAction: React.Dispatch<React.SetStateAction<'none' | 'new_evolution'>>;
-  initialPatientTab: 'overview' | 'profile' | 'clinical';
-  setInitialPatientTab: React.Dispatch<React.SetStateAction<'overview' | 'profile' | 'clinical'>>;
+  initialPatientTab: 'overview' | 'profile' | 'clinical' | 'financial' | 'insurance';
+  setInitialPatientTab: React.Dispatch<React.SetStateAction<'overview' | 'profile' | 'clinical' | 'financial' | 'insurance'>>;
   initialClinicalSubTab: 'evolutions' | 'new_evolution' | 'confidential' | 'documents' | 'scales' | 'evaluations';
   setInitialClinicalSubTab: React.Dispatch<React.SetStateAction<'evolutions' | 'new_evolution' | 'confidential' | 'documents' | 'scales' | 'evaluations'>>;
   handleStartSession: (patientId: number, sessionId: number) => void;
