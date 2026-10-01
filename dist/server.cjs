@@ -17516,8 +17516,16 @@ async function startServer() {
     app.use(vite.middlewares);
   } else {
     const distPath = import_path3.default.join(process.cwd(), "dist");
-    app.use(import_express3.default.static(distPath, { maxAge: "1y", immutable: true }));
+    app.use("/assets", import_express3.default.static(import_path3.default.join(distPath, "assets"), { maxAge: "1y", immutable: true }));
+    app.use(import_express3.default.static(distPath, {
+      setHeaders: (res, filePath) => {
+        if (filePath.endsWith(".html")) {
+          res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        }
+      }
+    }));
     app.get("*", (req, res) => {
+      res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
       res.sendFile(import_path3.default.join(distPath, "index.html"));
     });
   }
