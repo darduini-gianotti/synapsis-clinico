@@ -90,6 +90,7 @@
       scrollbar-width: none;
     }
   </style>
+  <script src="/landing/landingVariants.js"></script>
 </head>
 <body class="bg-slate-900 text-slate-100 font-sans antialiased selection:bg-brand-500 selection:text-white">
 
@@ -110,13 +111,16 @@
             <span class="text-base sm:text-lg xl:text-xl font-light text-teal-400 tracking-tight ml-1">Clínico</span>
           </div>
           <span class="text-[8px] xl:text-[9px] text-slate-400 font-semibold tracking-wider uppercase hidden xl:block">
-            Psicologia • Neuropsicologia • Gestão
+            Psicologia • Fonoaudiologia • T.O. • Psicopedagogia
           </span>
         </div>
       </a>
 
       <!-- Desktop Nav: Links Diretos, Fluidos e 100% Livres de Truncamento -->
-      <nav class="hidden lg:flex items-center gap-1 xl:gap-2 2xl:gap-3.5 text-xs xl:text-sm font-medium text-slate-300">
+      <nav class="hidden lg:flex items-center gap-1 xl:gap-2 2xl:gap-3 text-xs xl:text-sm font-medium text-slate-300">
+        <a href="#especialidades" class="hover:text-teal-300 px-1.5 xl:px-2 py-1 rounded-lg hover:bg-slate-800/40 transition shrink-0 font-semibold text-teal-300">4 Conselhos</a>
+        <a href="#pts" class="hover:text-indigo-300 px-1.5 xl:px-2 py-1 rounded-lg hover:bg-slate-800/40 transition shrink-0 font-semibold text-indigo-300">PTS Integrado</a>
+        <a href="#kids" class="hover:text-pink-300 font-bold text-pink-300 px-2 py-1 rounded-lg bg-pink-950/40 border border-pink-500/30 hover:border-pink-500/50 transition shrink-0" title="Synapsis Kids • Rotina Visual Gratuita">Kids Grátis 🎁</a>
         <a href="#diferenciais" class="hover:text-brand-400 px-1.5 xl:px-2 py-1 rounded-lg hover:bg-slate-800/40 transition shrink-0">Diferenciais</a>
         <a href="#recursos" class="hover:text-teal-300 px-1.5 xl:px-2 py-1 rounded-lg hover:bg-slate-800/40 transition shrink-0">Telas Reais</a>
         
@@ -127,12 +131,6 @@
           <span class="xl:hidden">Demos</span>
         </a>
 
-        <a href="#ecossistema" class="hover:text-purple-300 font-semibold text-purple-300 px-2 py-1 rounded-lg bg-purple-950/40 border border-purple-500/30 hover:border-purple-500/50 transition shrink-0">
-          <span class="hidden xl:inline">Ecossistema 360°</span>
-          <span class="xl:hidden">Ecossistema</span>
-        </a>
-
-        <a href="#comparativo" class="hover:text-brand-400 px-1.5 xl:px-2 py-1 rounded-lg hover:bg-slate-800/40 transition shrink-0">Comparativo</a>
         <a href="#planos" class="hover:text-teal-300 font-bold text-teal-300 px-2 py-1 rounded-lg bg-teal-950/40 border border-teal-500/30 hover:border-teal-500/50 transition shrink-0">Planos</a>
         <a href="#faq" class="hover:text-brand-400 px-1.5 xl:px-2 py-1 rounded-lg hover:bg-slate-800/40 transition shrink-0" title="Perguntas Frequentes">FAQ</a>
       </nav>
@@ -168,6 +166,15 @@
     <!-- Mobile Drawer / Menu Responsivo Suspenso com Fundo Totalmente Sólido -->
     <div id="mobileMenu" class="hidden lg:hidden bg-slate-950 border-b border-slate-800 px-4 pt-3 pb-6 space-y-3 shadow-2xl">
       <div class="grid grid-cols-2 gap-2 text-xs font-medium text-slate-300 pb-2 border-b border-slate-800">
+        <a href="#especialidades" onclick="closeMobileMenu()" class="p-2.5 rounded-xl bg-teal-950/40 border border-teal-500/30 flex items-center gap-2 text-teal-300 font-bold">
+          <span>🎓</span> 4 Conselhos
+        </a>
+        <a href="#pts" onclick="closeMobileMenu()" class="p-2.5 rounded-xl bg-indigo-950/40 border border-indigo-500/30 flex items-center gap-2 text-indigo-300 font-bold">
+          <span>🧩</span> PTS Integrado
+        </a>
+        <a href="#kids" onclick="closeMobileMenu()" class="p-2.5 rounded-xl bg-pink-950/40 border border-pink-500/30 flex items-center gap-2 text-pink-300 font-bold col-span-2">
+          <span>🎁</span> Synapsis Kids • Rotina Visual Grátis
+        </a>
         <a href="#diferenciais" onclick="closeMobileMenu()" class="p-2.5 rounded-xl bg-slate-800/60 hover:bg-slate-800 flex items-center gap-2 text-white">
           <span>🛡️</span> Diferenciais
         </a>
@@ -176,12 +183,6 @@
         </a>
         <a href="#microdemos" onclick="closeMobileMenu()" class="p-2.5 rounded-xl bg-emerald-950/40 border border-emerald-500/30 flex items-center gap-2 text-emerald-300 font-bold">
           <span>⚡</span> Demos ao Vivo
-        </a>
-        <a href="#ecossistema" onclick="closeMobileMenu()" class="p-2.5 rounded-xl bg-purple-950/40 border border-purple-500/30 flex items-center gap-2 text-purple-300 font-bold">
-          <span>✨</span> Ecossistema 360°
-        </a>
-        <a href="#comparativo" onclick="closeMobileMenu()" class="p-2.5 rounded-xl bg-slate-800/60 hover:bg-slate-800 flex items-center gap-2 text-white">
-          <span>📊</span> Comparativo
         </a>
         <a href="#planos" onclick="closeMobileMenu()" class="p-2.5 rounded-xl bg-teal-950/40 border border-teal-500/30 flex items-center gap-2 text-teal-300 font-bold">
           <span>🏷️</span> Planos & Preços
@@ -213,25 +214,25 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
       <div class="text-center max-w-3xl mx-auto space-y-4 sm:space-y-6">
         <!-- Pill Tag: Clube das Fundadoras & Turma Pioneira -->
-        <div class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-indigo-500/20 border border-teal-500/40 text-teal-300 text-[11px] sm:text-xs font-bold shadow-inner">
+        <div id="heroPillTag" class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-indigo-500/20 border border-teal-500/40 text-teal-300 text-[11px] sm:text-xs font-bold shadow-inner">
           <span class="flex h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-emerald-400 badge-pulse"></span>
-          <span>✨ Clube das Fundadoras • Turma Pioneira</span>
-          <span class="hidden sm:inline-block px-2 py-0.5 rounded-full bg-emerald-400/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider">3 Meses Grátis</span>
+          <span>✨ O Ecossistema Clínico Multiprofissional Definitivo</span>
+          <span class="hidden sm:inline-block px-2 py-0.5 rounded-full bg-emerald-400/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider">CFP • CFFa • COFFITO • ABPp</span>
         </div>
 
         <!-- Main Headline -->
-        <h1 class="text-2xl sm:text-4xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.2] sm:leading-[1.15]">
-          Ciência Clínica, Neuropsicologia e Gestão em <span class="bg-clip-text text-transparent bg-gradient-to-r from-brand-400 via-teal-300 to-neuro-500">Perfeita Sintonia</span>.
+        <h1 id="heroMainHeadline" class="text-2xl sm:text-4xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.2] sm:leading-[1.15]">
+          Psicologia, Fonoaudiologia, T.O. e Psicopedagogia em <span class="bg-clip-text text-transparent bg-gradient-to-r from-brand-400 via-teal-300 to-neuro-500">Perfeita Sintonia</span>.
         </h1>
 
         <!-- Subheadline -->
-        <p class="text-xs sm:text-base lg:text-lg text-slate-300 leading-relaxed max-w-2xl mx-auto">
-          O software definitivo com Prontuário <strong>CFP 06/2019 imutável (Hash SHA-256)</strong>, Módulo <strong>Neuropsicológico exclusivo</strong> e automação financeira completa.
+        <p id="heroSubheadline" class="text-xs sm:text-base lg:text-lg text-slate-300 leading-relaxed max-w-2xl mx-auto">
+          O único software no Brasil com prontuários nativos para <strong>CFP, CFFa, COFFITO e ABPp</strong>, <strong>Projeto Terapêutico Singular (PTS)</strong> compartilhado, cálculo de percentis e prova digital pericial <strong>Hash SHA-256</strong>.
         </p>
 
         <!-- CTA Buttons: Clube das Fundadoras + Contrato Blindado -->
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2 sm:pt-4">
-          <button onclick="openWaitlistModal()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-teal-400 via-emerald-400 to-teal-500 hover:from-teal-300 hover:to-emerald-300 text-slate-950 font-black text-xs sm:text-sm shadow-xl shadow-teal-500/30 transition transform hover:-translate-y-0.5 cursor-pointer">
+          <button id="heroMainCtaBtn" onclick="openWaitlistModal()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-teal-400 via-emerald-400 to-teal-500 hover:from-teal-300 hover:to-emerald-300 text-slate-950 font-black text-xs sm:text-sm shadow-xl shadow-teal-500/30 transition transform hover:-translate-y-0.5 cursor-pointer">
             <span>👑 Entrar no Clube das Fundadoras (20 Vagas)</span>
             <svg class="w-4 h-4 text-slate-950 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
           </button>
@@ -286,12 +287,12 @@
                 <span class="text-[9px] sm:text-[10px] text-emerald-400 font-medium">9 confirmadas</span>
               </div>
               <div class="hidden sm:block p-4 rounded-xl bg-slate-800/60 border border-slate-700/60">
-                <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Equipe em Sala</span>
+                <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Equipe Multidisciplinar</span>
                 <div class="flex items-center gap-2 mt-1">
                   <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 badge-pulse"></span>
-                  <p class="text-lg font-bold text-white">3 em atendimento</p>
+                  <p class="text-lg font-bold text-white">4 em atendimento</p>
                 </div>
-                <span class="text-[10px] text-slate-400">Dr. Marcos, Dra. Helena</span>
+                <span class="text-[10px] text-slate-400">Psico, Fono, T.O. e Psicoped.</span>
               </div>
               <div class="p-3 sm:p-4 rounded-xl bg-slate-800/60 border border-slate-700/60">
                 <span class="text-[9px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Repasse Apurado</span>
@@ -304,7 +305,7 @@
                   <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
                   Hash SHA-256 Ativo
                 </p>
-                <span class="text-[10px] text-slate-400">CFP 06/2019 Compliance</span>
+                <span class="text-[10px] text-slate-400">Padrão Pericial Conforme</span>
               </div>
             </div>
 
@@ -336,40 +337,347 @@
       <div class="flex overflow-x-auto no-scrollbar snap-x gap-2.5 sm:grid sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 sm:gap-4 lg:gap-5 text-center pb-2 sm:pb-0">
         <div class="min-w-[130px] shrink-0 snap-center p-2.5 sm:p-3 rounded-xl bg-slate-900/60 sm:bg-transparent border border-slate-800/80 sm:border-0">
           <span class="text-brand-400 font-black text-base sm:text-xl block">CFP 06/2019</span>
-          <span class="text-[10px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 block">5 seções obrigatórias</span>
+          <span class="text-[10px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 block">Psicologia & Neuro</span>
         </div>
         <div class="min-w-[130px] shrink-0 snap-center p-2.5 sm:p-3 rounded-xl bg-slate-900/60 sm:bg-transparent border border-slate-800/80 sm:border-0">
-          <span class="text-emerald-400 font-black text-base sm:text-xl block">Hash SHA-256</span>
-          <span class="text-[10px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 block">Valor pericial</span>
+          <span class="text-teal-400 font-black text-base sm:text-xl block">CFFa nº 613</span>
+          <span class="text-[10px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 block">PAC & Linguagem</span>
         </div>
         <div class="min-w-[130px] shrink-0 snap-center p-2.5 sm:p-3 rounded-xl bg-slate-900/60 sm:bg-transparent border border-slate-800/80 sm:border-0">
-          <span class="text-orange-400 font-black text-base sm:text-xl block">Nuvem AWS</span>
-          <span class="text-[10px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 block">São Paulo • LGPD</span>
+          <span class="text-emerald-400 font-black text-base sm:text-xl block">COFFITO 414</span>
+          <span class="text-[10px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 block">7 Sentidos & AVDs</span>
         </div>
         <div class="min-w-[130px] shrink-0 snap-center p-2.5 sm:p-3 rounded-xl bg-slate-900/60 sm:bg-transparent border border-slate-800/80 sm:border-0">
-          <span class="text-amber-400 font-black text-base sm:text-xl block">NFS-e Direta</span>
-          <span class="text-[10px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 block">Certificado A1</span>
+          <span class="text-indigo-400 font-black text-base sm:text-xl block">ABPp & 14.254</span>
+          <span class="text-[10px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 block">Piaget, EOCA & PEI</span>
         </div>
         <div class="min-w-[130px] shrink-0 snap-center p-2.5 sm:p-3 rounded-xl bg-slate-900/60 sm:bg-transparent border border-slate-800/80 sm:border-0">
-          <span class="text-teal-400 font-black text-base sm:text-xl block">IN RFB 1.531</span>
-          <span class="text-[10px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 block">Carnê-Leão e-CAC</span>
+          <span class="text-neuro-400 font-black text-base sm:text-xl block">PTS Integrado</span>
+          <span class="text-[10px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 block">Cuidado Conjunto</span>
         </div>
         <div class="min-w-[130px] shrink-0 snap-center p-2.5 sm:p-3 rounded-xl bg-slate-900/60 sm:bg-transparent border border-slate-800/80 sm:border-0">
-          <span class="text-cyan-400 font-black text-base sm:text-xl block">Asaas PIX</span>
-          <span class="text-[10px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 block">Baixa automática</span>
+          <span class="text-orange-400 font-black text-base sm:text-xl block">Nuvem AWS SP</span>
+          <span class="text-[10px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 block">Soberania LGPD</span>
         </div>
         <div class="min-w-[130px] shrink-0 snap-center p-2.5 sm:p-3 rounded-xl bg-slate-900/60 sm:bg-transparent border border-slate-800/80 sm:border-0">
-          <span class="text-neuro-400 font-black text-base sm:text-xl block">Migrador</span>
-          <span class="text-[10px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 block">Troca em 1 clique</span>
+          <span class="text-amber-400 font-black text-base sm:text-xl block">NFS-e & Carnê</span>
+          <span class="text-[10px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 block">PJ & Livro-Caixa</span>
         </div>
         <div class="min-w-[130px] shrink-0 snap-center p-2.5 sm:p-3 rounded-xl bg-slate-900/60 sm:bg-transparent border border-slate-800/80 sm:border-0">
-          <span class="text-indigo-400 font-black text-base sm:text-xl block">Copiloto IA</span>
-          <span class="text-[10px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 block">Ajuda clínica 24/7</span>
+          <span class="text-cyan-400 font-black text-base sm:text-xl block">Hash SHA-256</span>
+          <span class="text-[10px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 block">Prova Pericial</span>
         </div>
         <div class="min-w-[130px] shrink-0 snap-center p-2.5 sm:p-3 rounded-xl bg-slate-900/60 sm:bg-transparent border border-slate-800/80 sm:border-0">
-          <span class="text-purple-400 font-black text-base sm:text-xl block">PWA Paciente</span>
-          <span class="text-[10px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 block">Acesso web sem loja</span>
+          <span class="text-pink-400 font-black text-base sm:text-xl block">Synapsis Kids</span>
+          <span class="text-[10px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 block">Rotina Visual Grátis</span>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SEÇÃO: AS 4 ESPECIALIDADES DOS CONSELHOS DE CLASSE ==================== -->
+  <section id="especialidades" class="py-20 sm:py-24 relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800">
+    <div class="absolute -top-32 left-1/4 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-32 right-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div class="text-center max-w-3xl mx-auto space-y-4 mb-14 sm:mb-16">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-950/80 border border-teal-500/40 text-teal-300 text-xs font-bold">
+          <span>🎓 O Fim dos Prontuários em Branco</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
+          Especialização Nativa por <span class="bg-clip-text text-transparent bg-gradient-to-r from-teal-400 via-brand-300 to-indigo-400">Conselho de Classe</span>
+        </h2>
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+          Chega de adaptar seu conhecimento a softwares genéricos feitos para médicos. Suas provas clínicas, tabelas normativas e terminologias técnicas já vêm prontas de fábrica.
+        </p>
+      </div>
+
+      <!-- Grid com os 4 Conselhos -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
+        
+        <!-- Especialidade 1: Psicologia & Neuropsicologia -->
+        <div class="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-teal-500/60 transition group flex flex-col justify-between shadow-xl">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="w-12 h-12 rounded-2xl bg-teal-500/15 text-teal-300 flex items-center justify-center text-2xl group-hover:scale-110 transition border border-teal-500/30">
+                🧠
+              </div>
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-teal-950 text-teal-300 border border-teal-500/40">
+                CFP 06/2019
+              </span>
+            </div>
+            <div>
+              <h3 class="text-lg font-extrabold text-white">Psicologia &amp; Neuropsicologia</h3>
+              <p class="text-xs text-slate-400 mt-1">Psicoterapia clínica, avaliação neuropsicológica e psicometria.</p>
+            </div>
+            <ul class="space-y-2 text-xs text-slate-300 pt-3 border-t border-slate-800">
+              <li class="flex items-start gap-2">
+                <span class="text-teal-400 font-bold shrink-0">✓</span>
+                <span>As 5 seções resolutivas do CFP com Hash SHA-256</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-teal-400 font-bold shrink-0">✓</span>
+                <span>Cálculo automático de escores Z e percentis (WISC, WAIS, BPA)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-teal-400 font-bold shrink-0">✓</span>
+                <span>Laudos estruturados com CID-11 e DSM-5</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-teal-400 font-bold shrink-0">✓</span>
+                <span>Catálogo de testes Satepsi com controle de validade</span>
+              </li>
+            </ul>
+          </div>
+          <div class="pt-5 mt-4 border-t border-slate-800/80">
+            <span class="text-[11px] font-semibold text-teal-300">Blindagem contra autuações do CRP</span>
+          </div>
+        </div>
+
+        <!-- Especialidade 2: Fonoaudiologia -->
+        <div class="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-cyan-500/60 transition group flex flex-col justify-between shadow-xl">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="w-12 h-12 rounded-2xl bg-cyan-500/15 text-cyan-300 flex items-center justify-center text-2xl group-hover:scale-110 transition border border-cyan-500/30">
+                🗣️
+              </div>
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-cyan-950 text-cyan-300 border border-cyan-500/40">
+                CFFa nº 613/2021
+              </span>
+            </div>
+            <div>
+              <h3 class="text-lg font-extrabold text-white">Fonoaudiologia</h3>
+              <p class="text-xs text-slate-400 mt-1">Linguagem, fala, motricidade orofacial e processamento auditivo.</p>
+            </div>
+            <ul class="space-y-2 text-xs text-slate-300 pt-3 border-t border-slate-800">
+              <li class="flex items-start gap-2">
+                <span class="text-cyan-400 font-bold shrink-0">✓</span>
+                <span>Protocolo de Processamento Auditivo Central (PAC)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-cyan-400 font-bold shrink-0">✓</span>
+                <span>Inventário Fonético &amp; Triagem de Fala em 3 cliques</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-cyan-400 font-bold shrink-0">✓</span>
+                <span>Avaliação de Motricidade Orofacial (MBGR simplificado)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-cyan-400 font-bold shrink-0">✓</span>
+                <span>Laudos e encaminhamentos normatizados pelo CFFa</span>
+              </li>
+            </ul>
+          </div>
+          <div class="pt-5 mt-4 border-t border-slate-800/80">
+            <span class="text-[11px] font-semibold text-cyan-300">Zero perda de tempo digitando laudos repetitivos</span>
+          </div>
+        </div>
+
+        <!-- Especialidade 3: Terapia Ocupacional -->
+        <div class="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-emerald-500/60 transition group flex flex-col justify-between shadow-xl">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-300 flex items-center justify-center text-2xl group-hover:scale-110 transition border border-emerald-500/30">
+                🖐️
+              </div>
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-950 text-emerald-300 border border-emerald-500/40">
+                COFFITO nº 414
+              </span>
+            </div>
+            <div>
+              <h3 class="text-lg font-extrabold text-white">Terapia Ocupacional</h3>
+              <p class="text-xs text-slate-400 mt-1">Integração sensorial, independência em AVDs e funcionalidade.</p>
+            </div>
+            <ul class="space-y-2 text-xs text-slate-300 pt-3 border-t border-slate-800">
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-400 font-bold shrink-0">✓</span>
+                <span>Mapeamento dos 7 Sistemas Sensoriais de Ayres</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-400 font-bold shrink-0">✓</span>
+                <span>Inventário de AVDs e AIVDs com régua de independência</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-400 font-bold shrink-0">✓</span>
+                <span>Plano de Adaptação Escolar e Domiciliar estruturado</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-400 font-bold shrink-0">✓</span>
+                <span>Conformidade ética estrita com as diretrizes COFFITO</span>
+              </li>
+            </ul>
+          </div>
+          <div class="pt-5 mt-4 border-t border-slate-800/80">
+            <span class="text-[11px] font-semibold text-emerald-300">O primeiro prontuário verdadeiramente ocupacional</span>
+          </div>
+        </div>
+
+        <!-- Especialidade 4: Psicopedagogia -->
+        <div class="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-indigo-500/60 transition group flex flex-col justify-between shadow-xl">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="w-12 h-12 rounded-2xl bg-indigo-500/15 text-indigo-300 flex items-center justify-center text-2xl group-hover:scale-110 transition border border-indigo-500/30">
+                📚
+              </div>
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-indigo-950 text-indigo-300 border border-indigo-500/40">
+                ABPp • Lei 14.254
+              </span>
+            </div>
+            <div>
+              <h3 class="text-lg font-extrabold text-white">Psicopedagogia</h3>
+              <p class="text-xs text-slate-400 mt-1">Dificuldades de aprendizagem, EOCA, provas operatórias e PEI.</p>
+            </div>
+            <ul class="space-y-2 text-xs text-slate-300 pt-3 border-t border-slate-800">
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-400 font-bold shrink-0">✓</span>
+                <span>Provas Operatórias Piagetianas (POP) tabuladas nativamente</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-400 font-bold shrink-0">✓</span>
+                <span>Entrevista Operativa Centrada na Aprendizagem (EOCA Visca)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-400 font-bold shrink-0">✓</span>
+                <span>Relatórios automatizados para PEI Escolar (Lei 14.254/2021)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-400 font-bold shrink-0">✓</span>
+                <span>Conformidade com o Código de Ética ABPp</span>
+              </li>
+            </ul>
+          </div>
+          <div class="pt-5 mt-4 border-t border-slate-800/80">
+            <span class="text-[11px] font-semibold text-indigo-300">A tecnologia que a Psicopedagogia sempre esperou</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SEÇÃO: PROJETO TERAPÊUTICO SINGULAR (PTS) ==================== -->
+  <section id="pts" class="py-20 sm:py-24 relative overflow-hidden bg-slate-900 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+        
+        <!-- Coluna Esquerda: O Conceito do PTS -->
+        <div class="lg:col-span-6 space-y-6">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-xs font-bold">
+            <span>🧩 Governança Multidisciplinar Integrada</span>
+          </div>
+
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
+            Projeto Terapêutico Singular (PTS): O Mesmo Paciente, Um Só Plano de Cuidado.
+          </h2>
+
+          <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+            Acabe com a desarticulação em clínicas de neurodesenvolvimento e saúde mental. O Synapsis conecta <strong>psicólogos, fonoaudiólogos, terapeutas ocupacionais e psicopedagogos</strong> em uma matriz clínica unificada.
+          </p>
+
+          <div class="space-y-4 pt-2">
+            <div class="p-4 rounded-2xl bg-slate-800/80 border border-slate-700/80 flex items-start gap-3.5">
+              <div class="w-9 h-9 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center font-bold text-lg shrink-0">
+                🎯
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-white">Metas Terapêuticas Compartilhadas</h4>
+                <p class="text-xs text-slate-400 mt-0.5">A equipe define objetivos conjuntos para fala, cognição, regulação sensorial e aprendizagem escolar em tempo real.</p>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-slate-800/80 border border-slate-700/80 flex items-start gap-3.5">
+              <div class="w-9 h-9 rounded-xl bg-indigo-500/20 text-indigo-300 flex items-center justify-center font-bold text-lg shrink-0">
+                🔒
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-white">Sigilo Ético Absoluto por Conselho</h4>
+                <p class="text-xs text-slate-400 mt-0.5">Metas do PTS são colaborativas, mas as anotações confidenciais e prontuários permanecem blindados e restritos ao respectivo conselho de classe.</p>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-slate-800/80 border border-slate-700/80 flex items-start gap-3.5">
+              <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold text-lg shrink-0">
+                🏫
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-white">Ponte Oficial com a Escola (Lei 14.254/2021)</h4>
+                <p class="text-xs text-slate-400 mt-0.5">Gere com 1 clique o dossiê multiprofissional com orientações claras para os professores e coordenadores pedagógicos elaborarem o PEI.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coluna Direita: Mockup Visual do PTS -->
+        <div class="lg:col-span-6 relative">
+          <div class="p-6 sm:p-8 rounded-3xl bg-slate-950/90 border border-indigo-500/30 shadow-2xl space-y-5">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+              <div class="flex items-center gap-3">
+                <span class="w-3 h-3 rounded-full bg-emerald-400 animate-ping"></span>
+                <span class="text-xs font-bold text-white">PTS Ativo • Paciente: Lucas M. (8 anos)</span>
+              </div>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-950 text-indigo-300 border border-indigo-800">
+                Equipe Integrada
+              </span>
+            </div>
+
+            <!-- Cartões de Especialidades no PTS -->
+            <div class="space-y-3">
+              <div class="p-3.5 rounded-2xl bg-slate-900 border border-teal-500/30 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-lg">🧠</span>
+                  <div>
+                    <span class="text-xs font-bold text-white block">Psicologia • Dra. Camila</span>
+                    <span class="text-[11px] text-slate-400">Meta: Manejo de rigidez cognitiva e transições</span>
+                  </div>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-teal-950 text-teal-300">Evoluindo</span>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-slate-900 border border-cyan-500/30 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-lg">🗣️</span>
+                  <div>
+                    <span class="text-xs font-bold text-white block">Fonoaudiologia • Dra. Beatriz</span>
+                    <span class="text-[11px] text-slate-400">Meta: Ampliação de vocabulário expressivo e pragmática</span>
+                  </div>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-cyan-950 text-cyan-300">Concluída</span>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-slate-900 border border-emerald-500/30 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-lg">🖐️</span>
+                  <div>
+                    <span class="text-xs font-bold text-white block">Terapia Ocupacional • Dra. Juliana</span>
+                    <span class="text-[11px] text-slate-400">Meta: Modulação tátil e autonomia para vestir o uniforme</span>
+                  </div>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-950 text-emerald-300">Evoluindo</span>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-slate-900 border border-indigo-500/30 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-lg">📚</span>
+                  <div>
+                    <span class="text-xs font-bold text-white block">Psicopedagogia • Dra. Fernanda</span>
+                    <span class="text-[11px] text-slate-400">Meta: Adaptação de provas e adequação do PEI na escola</span>
+                  </div>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-indigo-950 text-indigo-300">Em análise</span>
+              </div>
+            </div>
+
+            <!-- Rodapé do Mockup -->
+            <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+              <span>Linha do tempo multiprofissional única</span>
+              <button onclick="openWaitlistModal()" class="text-teal-400 hover:text-teal-300 font-bold transition">
+                Experimentar PTS →
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -2161,6 +2469,214 @@
       </div>
 
     </div>
+  <!-- ==================== SEÇÃO: SYNAPSIS KIDS & ROTINA VISUAL (LEAD MAGNET & ENGAJAMENTO FAMILIAR) ==================== -->
+  <section id="kids" class="py-20 sm:py-24 relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-t border-slate-800">
+    <!-- Ambient Glows -->
+    <div class="absolute top-1/4 left-10 w-[500px] h-[500px] bg-pink-600/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-10 right-10 w-[500px] h-[500px] bg-teal-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto space-y-4 mb-14 sm:mb-16">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-500/20 text-pink-300 border border-pink-500/30 text-xs font-bold">
+          <span class="w-2 h-2 rounded-full bg-pink-400 animate-ping"></span>
+          <span>🎁 Programa Gratuito para Pais, Crianças e Clínicas • Synapsis Kids</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
+          Prescreva Rotinas Visuais para as Famílias: <span class="bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-300 to-teal-400">100% Gratuito</span>
+        </h2>
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+          O aplicativo do ecossistema Synapsis que conecta o consultório à casa do paciente. Apoio visual e comunicação alternativa (CAA/ARASAAC) para crianças com <strong>TEA, TDAH, atrasos de fala e dificuldades sensoriais</strong> — sem nenhum custo para a família e sem custo para a clínica.
+        </p>
+      </div>
+
+      <!-- Grid com 3 Pilares do Synapsis Kids -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        
+        <!-- Card 1: Para Terapeutas -->
+        <div class="p-6 sm:p-7 rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-pink-500/50 transition group flex flex-col justify-between shadow-xl">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="w-12 h-12 rounded-2xl bg-pink-500/15 text-pink-300 flex items-center justify-center text-2xl group-hover:scale-110 transition border border-pink-500/30">
+                👩‍⚕️
+              </div>
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-pink-950 text-pink-300 border border-pink-500/40">
+                Prescrição Terapêutica
+              </span>
+            </div>
+            <div>
+              <h3 class="text-lg font-extrabold text-white">Para Fono, TO, Psico e Psicoped</h3>
+              <p class="text-xs text-slate-400 mt-1">Generalização do tratamento no ambiente doméstico e escolar.</p>
+            </div>
+            <ul class="space-y-2 text-xs text-slate-300 pt-3 border-t border-slate-800">
+              <li class="flex items-start gap-2">
+                <span class="text-pink-400 font-bold shrink-0">✓</span>
+                <span>Prescreva quadros visuais de desfralde, sono, alimentação e tarefas escolares</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-pink-400 font-bold shrink-0">✓</span>
+                <span>Reforce em casa as metas trabalhadas no Projeto Terapêutico Singular (PTS)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-pink-400 font-bold shrink-0">✓</span>
+                <span>Adeus folhinhas de papel soltas: entregue um aplicativo moderno à família</span>
+              </li>
+            </ul>
+          </div>
+          <div class="pt-5 mt-4 border-t border-slate-800/80">
+            <span class="text-[11px] font-semibold text-pink-300">Valor percebido imediato na primeira consulta</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Para Pais e Crianças -->
+        <div class="p-6 sm:p-7 rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-purple-500/50 transition group flex flex-col justify-between shadow-xl">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="w-12 h-12 rounded-2xl bg-purple-500/15 text-purple-300 flex items-center justify-center text-2xl group-hover:scale-110 transition border border-purple-500/30">
+                👨‍👩‍👧
+              </div>
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-purple-950 text-purple-300 border border-purple-500/40">
+                Paz na Rotina Familiar
+              </span>
+            </div>
+            <div>
+              <h3 class="text-lg font-extrabold text-white">Para as Famílias e Crianças</h3>
+              <p class="text-xs text-slate-400 mt-1">Previsibilidade, autonomia e redução drástica de crises.</p>
+            </div>
+            <ul class="space-y-2 text-xs text-slate-300 pt-3 border-t border-slate-800">
+              <li class="flex items-start gap-2">
+                <span class="text-purple-400 font-bold shrink-0">✓</span>
+                <span>Cronômetros visuais e reforços positivos em cada tarefa cumprida</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-purple-400 font-bold shrink-0">✓</span>
+                <span>Pictogramas oficiais ARASAAC de fácil compreensão para não-verbais</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-purple-400 font-bold shrink-0">✓</span>
+                <span>Sem propagandas, sem pegadinhas e 100% gratuito para sempre</span>
+              </li>
+            </ul>
+          </div>
+          <div class="pt-5 mt-4 border-t border-slate-800/80">
+            <span class="text-[11px] font-semibold text-purple-300">Transições sem choro: acordar, banho, lição e dormir</span>
+          </div>
+        </div>
+
+        <!-- Card 3: Lead Magnet & PLG -->
+        <div class="p-6 sm:p-7 rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-teal-500/50 transition group flex flex-col justify-between shadow-xl">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="w-12 h-12 rounded-2xl bg-teal-500/15 text-teal-300 flex items-center justify-center text-2xl group-hover:scale-110 transition border border-teal-500/30">
+                🧲
+              </div>
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-teal-950 text-teal-300 border border-teal-500/40">
+                Ímã de Fidelização (PLG)
+              </span>
+            </div>
+            <div>
+              <h3 class="text-lg font-extrabold text-white">O Diferencial da Sua Clínica</h3>
+              <p class="text-xs text-slate-400 mt-1">Atração orgânica de novos pacientes e autoridade de mercado.</p>
+            </div>
+            <ul class="space-y-2 text-xs text-slate-300 pt-3 border-t border-slate-800">
+              <li class="flex items-start gap-2">
+                <span class="text-teal-400 font-bold shrink-0">✓</span>
+                <span>Entregue aos pais antes mesmo da primeira sessão como acolhimento</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-teal-400 font-bold shrink-0">✓</span>
+                <span>Boca a boca poderoso entre mães atípicas em grupos e escolas</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-teal-400 font-bold shrink-0">✓</span>
+                <span>Conexão direta com o prontuário eletrônico do Synapsis Clínico</span>
+              </li>
+            </ul>
+          </div>
+          <div class="pt-5 mt-4 border-t border-slate-800/80">
+            <span class="text-[11px] font-semibold text-teal-300">A melhor propaganda é entregar valor real de graça</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Showcase Visual: Simulação da Rotina Visual Interativa -->
+      <div class="max-w-4xl mx-auto rounded-3xl border border-pink-500/30 bg-slate-950/90 p-5 sm:p-8 shadow-2xl relative overflow-hidden">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-slate-800">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-pink-500/20 text-pink-300 flex items-center justify-center font-bold text-xl">
+              🧩
+            </div>
+            <div>
+              <h4 class="text-sm sm:text-base font-bold text-white">Synapsis Kids: Rotina da Tarde em Execução</h4>
+              <p class="text-[11px] text-slate-400">Paciente: Lucas M. (7 anos) • Prescrito por Terapia Ocupacional &amp; Fono</p>
+            </div>
+          </div>
+          <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-pink-950 text-pink-300 border border-pink-700">
+            Gratuito para a Família
+          </span>
+        </div>
+
+        <!-- Sequência de Cartões de Rotina -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 py-5">
+          
+          <div class="p-3.5 rounded-2xl bg-slate-900 border border-emerald-500/40 text-center space-y-1.5 relative overflow-hidden">
+            <span class="absolute top-1.5 right-1.5 text-xs text-emerald-400">✅</span>
+            <div class="text-2xl">🏫</div>
+            <span class="text-xs font-bold text-white block">Chegada da Escola</span>
+            <span class="text-[10px] text-emerald-400 font-medium">12:30 • Concluído</span>
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-slate-900 border border-emerald-500/40 text-center space-y-1.5 relative overflow-hidden">
+            <span class="absolute top-1.5 right-1.5 text-xs text-emerald-400">✅</span>
+            <div class="text-2xl">🍽️</div>
+            <span class="text-xs font-bold text-white block">Almoço</span>
+            <span class="text-[10px] text-emerald-400 font-medium">13:00 • Concluído</span>
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-pink-950/30 border-2 border-pink-500 text-center space-y-1.5 relative overflow-hidden shadow-lg shadow-pink-500/20">
+            <span class="absolute top-1.5 right-1.5 text-xs text-pink-400 animate-pulse">⏳</span>
+            <div class="text-2xl">🧠</div>
+            <span class="text-xs font-bold text-white block">Sessão de Terapia</span>
+            <span class="text-[10px] text-pink-300 font-bold">14:30 • Em Andamento</span>
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 text-center space-y-1.5 relative overflow-hidden opacity-75">
+            <span class="absolute top-1.5 right-1.5 text-xs text-slate-500">📌</span>
+            <div class="text-2xl">📚</div>
+            <span class="text-xs font-bold text-slate-300 block">Lição de Casa</span>
+            <span class="text-[10px] text-slate-400">16:30 • Próximo</span>
+          </div>
+
+        </div>
+
+        <!-- Footer do Card com Links -->
+        <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-xs text-slate-400 text-center sm:text-left">
+            <span>Disponível em qualquer navegador de smartphone, tablet ou computador.</span>
+          </div>
+          <div class="flex flex-col sm:flex-row items-center gap-2.5 w-full sm:w-auto">
+            <a 
+              href="https://synapsis-kids.vercel.app?utm_source=synapsis_landing&utm_medium=kids_section&utm_campaign=lead_magnet" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-pink-600 hover:bg-pink-500 text-white font-bold text-xs text-center shadow-lg shadow-pink-600/30 transition flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <span>Abrir Synapsis Kids Grátis Agora</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </a>
+            <button 
+              onclick="openWaitlistModal()" 
+              class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-750 text-slate-200 border border-slate-700 hover:border-teal-400/50 font-bold text-xs transition cursor-pointer"
+            >
+              Integrar à Minha Clínica
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </section>
 
 <!-- ==================== SEÇÃO 6: TABELA COMPARATIVA DE MERCADO ==================== -->
@@ -3403,6 +3919,9 @@
               <select id="pageProfile" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white focus:border-teal-400 focus:outline-none transition cursor-pointer">
                 <option value="Psicóloga Clínica Autônoma">Psicóloga(o) Clínica Autônoma(o)</option>
                 <option value="Neuropsicóloga / Avaliação">Neuropsicóloga(o) / Avaliação</option>
+                <option value="Fonoaudióloga">Fonoaudióloga(o)</option>
+                <option value="Terapeuta Ocupacional">Terapeuta Ocupacional</option>
+                <option value="Psicopedagoga">Psicopedagoga(o) / Neuropsicopedagoga(o)</option>
                 <option value="Consultório em Parceria (2-3)">Consultório em Parceria (2 a 3 profissionais)</option>
                 <option value="Dona / Gestora de Clínica">Dona(o) ou Gestora de Clínica Multiprofissional</option>
               </select>
@@ -3421,9 +3940,9 @@
             <div>
               <label class="block font-semibold text-slate-300 mb-1">Plano de Interesse</label>
               <select id="pagePlan" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white focus:border-teal-400 focus:outline-none transition cursor-pointer">
-                <option value="Solo">Plano Solo / Neuro Solo (R$ 69/mês)</option>
+                <option value="Solo">Plano Solo Especialidades (R$ 69/mês)</option>
                 <option value="Parceria PJ" selected>Plano Consultório Parceria / PJ (R$ 99/mês)</option>
-                <option value="Clínica">Plano Clínica & Equipes (R$ 129/mês)</option>
+                <option value="Clínica">Plano Clínica Multiprofissional & Equipes (R$ 129/mês)</option>
               </select>
             </div>
           </div>
@@ -4140,12 +4659,11 @@
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
       }
-      if (planName && planName !== 'contrato') {
-        const modalPlan = document.getElementById('modalPlan');
-        if (modalPlan) modalPlan.value = planName;
-        const pagePlan = document.getElementById('pagePlan');
-        if (pagePlan) pagePlan.value = planName;
-      }
+      const targetPlan = planName && planName !== 'contrato' ? planName : (window.__SYNAPSIS_DEFAULT_PLAN__ || 'MULTI');
+      const modalPlan = document.getElementById('modalPlan');
+      if (modalPlan) modalPlan.value = targetPlan;
+      const pagePlan = document.getElementById('pagePlan');
+      if (pagePlan) pagePlan.value = targetPlan;
     }
 
     function closeWaitlistModal() {
@@ -4355,21 +4873,65 @@
       const btnSubmit = document.getElementById(isModal ? 'modalBtnSubmit' : 'pageBtnSubmit');
       const successBox = document.getElementById(isModal ? 'modalSuccess' : 'pageSuccess');
 
+      const passwordInput = document.getElementById(isModal ? 'modalPassword' : '');
+      const councilInput = document.getElementById(isModal ? 'modalCouncil' : '');
+
       const leadData = {
         name: nameInput ? nameInput.value.trim() : '',
         whatsapp: whatsappInput ? whatsappInput.value.trim() : '',
         email: emailInput ? emailInput.value.trim() : '',
         profile: profileInput ? profileInput.value : '',
         current_software: softwareInput ? softwareInput.value : '',
-        interested_plan: planInput ? planInput.value : 'Parceria PJ'
+        interested_plan: planInput ? planInput.value : (window.__SYNAPSIS_DEFAULT_PLAN__ || 'MULTI')
       };
 
       if (btnSubmit) {
         btnSubmit.disabled = true;
-        btnSubmit.innerHTML = '<span>Salvando sua vaga...</span>';
+        btnSubmit.innerHTML = '<span>Ativando seu acesso imediato...</span>';
       }
 
-      // 1. Enviar diretamente para a caixa oficial contato@synapsisclinico.com.br via FormSubmit
+      // Se for submissão pelo Modal e tiver senha preenchida, cria conta imediatamente na API
+      let registeredUser = null;
+      if (isModal && passwordInput && passwordInput.value) {
+        try {
+          const regRes = await fetch('/api/auth/register-trial', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: leadData.name,
+              email: leadData.email,
+              password: passwordInput.value,
+              phone: leadData.whatsapp,
+              council_number: councilInput ? councilInput.value.trim() : undefined,
+              plan_tier: leadData.interested_plan
+            })
+          });
+
+          if (regRes.ok) {
+            const regData = await regRes.json();
+            if (regData.token && regData.user) {
+              localStorage.setItem('psico_token', regData.token);
+              localStorage.setItem('psico_user', JSON.stringify(regData.user));
+              registeredUser = regData.user;
+            }
+          } else {
+            const errData = await regRes.json().catch(() => ({}));
+            if (errData.error && errData.error.includes('já está cadastrado')) {
+              alert(errData.error);
+              if (btnSubmit) {
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = '<span>Entrar no Sistema</span>';
+                btnSubmit.onclick = () => { window.location.href = '/'; };
+              }
+              return;
+            }
+          }
+        } catch (apiErr) {
+          console.warn('[Landing] Erro ao provisionar trial automático:', apiErr);
+        }
+      }
+
+      // 1. Enviar lead para a caixa oficial contato@synapsisclinico.com.br via FormSubmit
       try {
         await fetch('https://formsubmit.co/ajax/contato@synapsisclinico.com.br', {
           method: 'POST',
@@ -4378,7 +4940,7 @@
             'Accept': 'application/json'
           },
           body: JSON.stringify({
-            _subject: '👑 Novo Lead - Clube das Fundadoras (Synapsis Clínico)',
+            _subject: '👑 Novo Lead / Trial Ativado - Turma Pioneira (Synapsis Clínico)',
             _template: 'table',
             _captcha: 'false',
             Nome: leadData.name,
@@ -4394,7 +4956,7 @@
         console.warn('Erro ao despachar lead por FormSubmit:', err);
       }
 
-      // 2. Se houver backend local rodando, replica na API
+      // 2. Se houver backend local rodando, replica na waitlist
       try {
         await fetch('/api/waitlist', {
           method: 'POST',
@@ -4413,10 +4975,17 @@
       if (btnSubmit) btnSubmit.classList.add('hidden');
       if (successBox) successBox.classList.remove('hidden');
 
-      // 4. Abre o Contrato Blindado automaticamente em nova aba após 1.2s
-      setTimeout(() => {
-        window.open('contrato-blindado-avaliacao-psicoterapia.html', '_blank');
-      }, 1200);
+      // Se registrou e obteve token, redireciona diretamente para o aplicativo em 1.5s
+      if (registeredUser) {
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 1500);
+      } else {
+        // Abre o Contrato Blindado automaticamente em nova aba após 1.2s
+        setTimeout(() => {
+          window.open('contrato-blindado-avaliacao-psicoterapia.html', '_blank');
+        }, 1200);
+      }
     }
 
     // Toggle da Gaveta Retrátil de Auditoria Técnica
@@ -4486,12 +5055,26 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
           <div>
+            <label class="block font-semibold text-slate-300 mb-1">Crie sua Senha de Acesso *</label>
+            <input type="password" id="modalPassword" required minlength="6" placeholder="Mínimo 6 caracteres" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white focus:border-teal-400 focus:outline-none transition">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Registro no Conselho (Opcional)</label>
+            <input type="text" id="modalCouncil" placeholder="ex: CRP 06/12345 ou CREFITO" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white focus:border-teal-400 focus:outline-none transition">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
             <label class="block font-semibold text-slate-300 mb-1">Perfil Profissional</label>
             <select id="modalProfile" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white focus:border-teal-400 focus:outline-none transition cursor-pointer">
               <option value="Psicóloga Clínica Autônoma">Psicóloga(o) Clínica Autônoma(o)</option>
               <option value="Neuropsicóloga / Avaliação">Neuropsicóloga(o) / Avaliação</option>
+              <option value="Fonoaudióloga">Fonoaudióloga(o)</option>
+              <option value="Terapeuta Ocupacional">Terapeuta Ocupacional</option>
+              <option value="Psicopedagoga">Psicopedagoga(o) / Neuropsicopedagoga(o)</option>
               <option value="Consultório em Parceria (2-3)">Consultório em Parceria (2 a 3)</option>
-              <option value="Dona / Gestora de Clínica">Dona(o) / Gestora de Clínica</option>
+              <option value="Dona / Gestora de Clínica">Dona(o) / Gestora de Clínica Multiprofissional</option>
             </select>
           </div>
           <div>
@@ -4507,9 +5090,13 @@
         <div>
           <label class="block font-semibold text-slate-300 mb-1">Plano de Interesse para os 3 Meses Grátis</label>
           <select id="modalPlan" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white focus:border-teal-400 focus:outline-none transition cursor-pointer">
-            <option value="Solo">Plano Solo / Neuro Solo (R$ 69/mês)</option>
-            <option value="Parceria PJ" selected>Plano Consultório Parceria / PJ (R$ 99/mês)</option>
-            <option value="Clínica">Plano Clínica & Equipes (R$ 129/mês)</option>
+            <option value="PSICO_SOLO">Psicologia Solo (R$ 69/mês - 3 Meses Grátis)</option>
+            <option value="NEURO_SOLO">Neuropsicologia Solo (R$ 69/mês - 3 Meses Grátis)</option>
+            <option value="FONO_SOLO">Fonoaudiologia Solo (R$ 69/mês - 3 Meses Grátis)</option>
+            <option value="TO_SOLO">Terapia Ocupacional Solo (R$ 69/mês - 3 Meses Grátis)</option>
+            <option value="PSICOPED_SOLO">Psicopedagogia Solo (R$ 69/mês - 3 Meses Grátis)</option>
+            <option value="PARCERIA_PJ">Consultório Parceria / PJ (R$ 99/mês)</option>
+            <option value="MULTI" selected>Clínica Multidisciplinar (Psico + Fono + TO + Psicoped + PTS)</option>
           </select>
         </div>
 
