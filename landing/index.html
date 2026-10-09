@@ -3324,16 +3324,24 @@
             </div>
 
             <!-- Bloco de Preço Dinâmico Solo -->
-            <div class="p-5 rounded-2xl bg-slate-800/60 border border-slate-700/70 space-y-1">
-              <div class="flex items-baseline gap-2">
-                <span class="text-slate-400 text-sm font-semibold">R$</span>
-                <span id="priceSolo" class="text-4xl sm:text-5xl font-black text-white tracking-tight">49</span>
-                <span class="text-slate-400 text-xs sm:text-sm font-medium">/mês</span>
+            <div class="p-5 rounded-2xl bg-slate-800/60 border border-slate-700/70 space-y-2">
+              <div class="flex items-baseline justify-between gap-2">
+                <div class="flex items-baseline gap-1.5">
+                  <span class="text-slate-400 text-sm font-semibold">R$</span>
+                  <span id="priceSolo" class="text-4xl sm:text-5xl font-black text-white tracking-tight">49</span>
+                  <span class="text-slate-400 text-xs sm:text-sm font-medium">/mês</span>
+                </div>
+                <span id="tagPlanSolo" class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30">Plano Anual</span>
               </div>
-              <p id="periodNoteSolo" class="text-[11px] text-teal-400 font-semibold">
-                Cobrado anualmente (12x de R$ 49,00 ou R$ 588/ano) • Lote Promocional
-              </p>
-              <div class="mt-2.5 pt-2.5 border-t border-slate-700/50 text-[11px] text-slate-300 flex items-center justify-between">
+              <div class="space-y-0.5 text-left">
+                <p id="periodNoteSolo" class="text-xs text-teal-300 font-semibold">
+                  Total de R$ 588/ano (em até 12x de R$ 49)
+                </p>
+                <p id="altNoteSolo" class="text-[11px] text-slate-400">
+                  Ou <strong class="text-slate-200">R$ 69/mês</strong> no plano mensal sem fidelidade
+                </p>
+              </div>
+              <div class="mt-2 pt-2 border-t border-slate-700/50 text-[11px] text-slate-300 flex items-center justify-between">
                 <span>1 Terapeuta (Qualquer Especialidade)</span>
                 <span class="text-emerald-400 font-bold">+ 1 Secretária inclusa grátis</span>
               </div>
@@ -3427,16 +3435,24 @@
             </div>
 
             <!-- Bloco de Preço Dinâmico Parceria -->
-            <div class="p-4 sm:p-5 rounded-2xl bg-indigo-950/30 border border-indigo-500/40 space-y-1 relative">
-              <div class="flex items-baseline gap-2">
-                <span class="text-slate-400 text-sm font-semibold">R$</span>
-                <span id="priceParceria" class="text-4xl sm:text-5xl font-black text-indigo-300 tracking-tight">89</span>
-                <span class="text-slate-400 text-xs sm:text-sm font-medium">/mês</span>
+            <div class="p-4 sm:p-5 rounded-2xl bg-indigo-950/30 border border-indigo-500/40 space-y-2 relative">
+              <div class="flex items-baseline justify-between gap-2">
+                <div class="flex items-baseline gap-1.5">
+                  <span class="text-slate-400 text-sm font-semibold">R$</span>
+                  <span id="priceParceria" class="text-4xl sm:text-5xl font-black text-indigo-300 tracking-tight">89</span>
+                  <span class="text-slate-400 text-xs sm:text-sm font-medium">/mês</span>
+                </div>
+                <span id="tagPlanParceria" class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Plano Anual</span>
               </div>
-              <p id="periodNoteParceria" class="text-[11px] text-indigo-300 font-semibold">
-                Cobrado anualmente (12x de R$ 89,00 ou R$ 1.068/ano) • Lote Promocional
-              </p>
-              <div class="mt-2.5 pt-2.5 border-t border-indigo-500/20 text-[11px] text-slate-300 flex items-center justify-between">
+              <div class="space-y-0.5 text-left">
+                <p id="periodNoteParceria" class="text-xs text-indigo-300 font-semibold">
+                  Total de R$ 1.068/ano (em até 12x de R$ 89)
+                </p>
+                <p id="altNoteParceria" class="text-[11px] text-slate-400">
+                  Ou <strong class="text-slate-200">R$ 119/mês</strong> no plano mensal sem fidelidade
+                </p>
+              </div>
+              <div class="mt-2 pt-2 border-t border-indigo-500/20 text-[11px] text-slate-300 flex items-center justify-between">
                 <span>Até 3 Terapeutas inclusos</span>
                 <span class="text-indigo-400 font-bold">+ até 2 Secretárias inclusas</span>
               </div>
@@ -3518,16 +3534,24 @@
             </div>
 
             <!-- Bloco de Preço Dinâmico Clínica -->
-            <div class="p-4 sm:p-5 rounded-2xl bg-teal-950/30 border border-teal-500/40 space-y-1 relative">
-              <div class="flex items-baseline gap-2">
-                <span class="text-slate-400 text-sm font-semibold">R$</span>
-                <span id="priceClinica" class="text-4xl sm:text-5xl font-black text-teal-300 tracking-tight">179</span>
-                <span class="text-slate-400 text-xs sm:text-sm font-medium">/mês</span>
+            <div class="p-4 sm:p-5 rounded-2xl bg-teal-950/30 border border-teal-500/40 space-y-2 relative">
+              <div class="flex items-baseline justify-between gap-2">
+                <div class="flex items-baseline gap-1.5">
+                  <span class="text-slate-400 text-sm font-semibold">R$</span>
+                  <span id="priceClinica" class="text-4xl sm:text-5xl font-black text-teal-300 tracking-tight">179</span>
+                  <span class="text-slate-400 text-xs sm:text-sm font-medium">/mês</span>
+                </div>
+                <span id="tagPlanClinica" class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30">Plano Anual</span>
               </div>
-              <p id="periodNoteClinica" class="text-[11px] text-teal-300 font-semibold">
-                Cobrado anualmente (12x de R$ 179,00 ou R$ 2.148/ano) • Lote Promocional
-              </p>
-              <div class="mt-2.5 pt-2.5 border-t border-teal-500/20 text-[11px] text-slate-300 flex items-center justify-between">
+              <div class="space-y-0.5 text-left">
+                <p id="periodNoteClinica" class="text-xs text-teal-300 font-semibold">
+                  Total de R$ 2.148/ano (em até 12x de R$ 179)
+                </p>
+                <p id="altNoteClinica" class="text-[11px] text-slate-400">
+                  Ou <strong class="text-slate-200">R$ 229/mês</strong> no plano mensal sem fidelidade
+                </p>
+              </div>
+              <div class="mt-2 pt-2 border-t border-teal-500/20 text-[11px] text-slate-300 flex items-center justify-between">
                 <span>Gestor + até 5 Terapeutas inclusos</span>
                 <span class="text-teal-400 font-bold">Secretárias ILIMITADAS</span>
               </div>
@@ -4723,33 +4747,84 @@
       const circle = document.getElementById('billingToggleCircle');
       const labelM = document.getElementById('labelMensal');
       const labelA = document.getElementById('labelAnual');
+      
       const priceSolo = document.getElementById('priceSolo');
+      const tagPlanSolo = document.getElementById('tagPlanSolo');
       const noteSolo = document.getElementById('periodNoteSolo');
+      const altNoteSolo = document.getElementById('altNoteSolo');
+      
       const priceParceria = document.getElementById('priceParceria');
+      const tagPlanParceria = document.getElementById('tagPlanParceria');
       const noteParceria = document.getElementById('periodNoteParceria');
+      const altNoteParceria = document.getElementById('altNoteParceria');
+      
       const priceClinica = document.getElementById('priceClinica');
+      const tagPlanClinica = document.getElementById('tagPlanClinica');
       const noteClinica = document.getElementById('periodNoteClinica');
+      const altNoteClinica = document.getElementById('altNoteClinica');
 
       if (isBillingAnnual) {
         if (circle) circle.className = 'w-6 h-6 rounded-full bg-teal-400 shadow-md transform transition-transform duration-300 translate-x-6';
         if (labelM) labelM.className = 'text-xs sm:text-sm font-medium text-slate-400 transition';
         if (labelA) labelA.className = 'text-xs sm:text-sm font-extrabold text-teal-300 transition';
+        
+        // Solo
         if (priceSolo) priceSolo.innerText = '49';
-        if (noteSolo) noteSolo.innerText = 'Cobrado anualmente (12x de R$ 49,00 ou R$ 588/ano) • Lote Promocional';
+        if (tagPlanSolo) {
+          tagPlanSolo.innerText = 'Plano Anual';
+          tagPlanSolo.className = 'text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30';
+        }
+        if (noteSolo) noteSolo.innerHTML = 'Total de R$ 588/ano (em até 12x de R$ 49)';
+        if (altNoteSolo) altNoteSolo.innerHTML = 'Ou <strong class="text-slate-200">R$ 69/mês</strong> no plano mensal sem fidelidade';
+        
+        // Parceria
         if (priceParceria) priceParceria.innerText = '89';
-        if (noteParceria) noteParceria.innerText = 'Cobrado anualmente (12x de R$ 89,00 ou R$ 1.068/ano) • Lote Promocional';
+        if (tagPlanParceria) {
+          tagPlanParceria.innerText = 'Plano Anual';
+          tagPlanParceria.className = 'text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30';
+        }
+        if (noteParceria) noteParceria.innerHTML = 'Total de R$ 1.068/ano (em até 12x de R$ 89)';
+        if (altNoteParceria) altNoteParceria.innerHTML = 'Ou <strong class="text-slate-200">R$ 119/mês</strong> no plano mensal sem fidelidade';
+        
+        // Clínica
         if (priceClinica) priceClinica.innerText = '179';
-        if (noteClinica) noteClinica.innerText = 'Cobrado anualmente (12x de R$ 179,00 ou R$ 2.148/ano) • Lote Promocional';
+        if (tagPlanClinica) {
+          tagPlanClinica.innerText = 'Plano Anual';
+          tagPlanClinica.className = 'text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30';
+        }
+        if (noteClinica) noteClinica.innerHTML = 'Total de R$ 2.148/ano (em até 12x de R$ 179)';
+        if (altNoteClinica) altNoteClinica.innerHTML = 'Ou <strong class="text-slate-200">R$ 229/mês</strong> no plano mensal sem fidelidade';
       } else {
         if (circle) circle.className = 'w-6 h-6 rounded-full bg-slate-400 shadow-md transform transition-transform duration-300 translate-x-0';
         if (labelM) labelM.className = 'text-xs sm:text-sm font-extrabold text-teal-300 transition';
         if (labelA) labelA.className = 'text-xs sm:text-sm font-medium text-slate-400 transition';
+        
+        // Solo
         if (priceSolo) priceSolo.innerText = '69';
-        if (noteSolo) noteSolo.innerText = 'Faturamento mensal recorrente • Cancele quando quiser sem fidelidade';
+        if (tagPlanSolo) {
+          tagPlanSolo.innerText = 'Plano Mensal';
+          tagPlanSolo.className = 'text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-slate-700 text-slate-300 border border-slate-600';
+        }
+        if (noteSolo) noteSolo.innerHTML = 'Cobrança mensal avulsa • Cancele quando quiser';
+        if (altNoteSolo) altNoteSolo.innerHTML = '💡 No plano anual sai por apenas <strong class="text-teal-300">R$ 49/mês</strong> (-29%)';
+        
+        // Parceria
         if (priceParceria) priceParceria.innerText = '119';
-        if (noteParceria) noteParceria.innerText = 'Faturamento mensal recorrente • Cancele quando quiser sem fidelidade';
+        if (tagPlanParceria) {
+          tagPlanParceria.innerText = 'Plano Mensal';
+          tagPlanParceria.className = 'text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-slate-700 text-slate-300 border border-slate-600';
+        }
+        if (noteParceria) noteParceria.innerHTML = 'Cobrança mensal avulsa • Cancele quando quiser';
+        if (altNoteParceria) altNoteParceria.innerHTML = '💡 No plano anual sai por apenas <strong class="text-indigo-300">R$ 89/mês</strong> (-25%)';
+        
+        // Clínica
         if (priceClinica) priceClinica.innerText = '229';
-        if (noteClinica) noteClinica.innerText = 'Faturamento mensal recorrente • Cancele quando quiser sem fidelidade';
+        if (tagPlanClinica) {
+          tagPlanClinica.innerText = 'Plano Mensal';
+          tagPlanClinica.className = 'text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-slate-700 text-slate-300 border border-slate-600';
+        }
+        if (noteClinica) noteClinica.innerHTML = 'Cobrança mensal avulsa • Cancele quando quiser';
+        if (altNoteClinica) altNoteClinica.innerHTML = '💡 No plano anual sai por apenas <strong class="text-teal-300">R$ 179/mês</strong> (-22%)';
       }
     }
 
