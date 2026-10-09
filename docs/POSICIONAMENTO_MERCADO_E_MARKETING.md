@@ -107,3 +107,27 @@ A plataforma atende com perfeição tanto o **profissional autônomo** (que nece
 
 ### 6.4 Visão de Futuro (Roadmap Fase 2)
 - Reavaliar entrada em módulo médico apenas após a consolidação da Turma Pioneira das 4 especialidades, planejando parceiros homologados de prescrição médica digital (Memed/Mevo) e assinatura ICP-Brasil.
+
+---
+
+## 7. Estrutura Oficial de Precificação & Posicionamento Agressivo (Lançamento)
+
+### 7.1 Racional Estratégico (Brainstorming 09/10/2026)
+- **Ataque à concorrência:** Preço de entrada agressivo no Solo para penetração rápida de mercado (~45% mais barato que o plano padrão do PsicoManager de R$ 89).
+- **Captura do nicho de Duplas/Trios:** Parceria Multi com PTS incluso a R$ 89/mês (custa menos do que uma única assinatura Plus de R$ 119 do concorrente).
+- **Monetização de Alto LTV em Clínicas:** Plano Clínica Multidisciplinar a R$ 179/mês ancorado em repasses com Trava de Ouro, Torre de TV e expansão escalável via Packs de Terapeutas.
+
+### 7.2 Tabela Oficial de Planos
+
+| Plano | Público | Preço Anual (12x) | Preço Mensal | Principais Diferenciais |
+| :--- | :--- | :--- | :--- | :--- |
+| **Solo Especialista** | 1 Profissional (qualquer um dos 4 conselhos) + 1 Recepção grátis | **R$ 49/mês** *(R$ 588/ano)* | **R$ 69/mês** | Prontuário CFP/CFFa/COFFITO/ABPp, Carnê-Leão e DARF 0190, WhatsApp ilimitado, Copiloto IA, portal PWA. |
+| **Parceria & Duplas Multi** | Até 3 Profissionais (equipe mista) + até 2 Recepções | **R$ 89/mês** *(R$ 1.068/ano)* | **R$ 119/mês** | **Matriz PTS Integrada**, emissão de NFS-e Municipal (Certificado A1), pacotes em até 12x Asaas, rateio de salas. |
+| **Clínica Multidisciplinar** | Gestor + até 5 Terapeutas + **Recepção Ilimitada** | **R$ 179/mês** *(R$ 2.148/ano)* | **R$ 229/mês** | PTS em grande escala, Repasses automáticos com Trava de Ouro, fechamento de lotes em PDF, Torre de TV, portal Zero-Knowledge. |
+
+### 7.3 Mecânica de Expansão (Booster Packs de Terapeutas)
+- **Terapeuta Avulso Adicional:** `+R$ 29/mês` cada.
+- **Pack Equipe (+5 Terapeutas):** `+R$ 79/mês` (equivalente a **R$ 15,80 por terapeuta**, gerando quase 40% de economia percebida e faturamento previsível para a plataforma).
+
+### 7.4 Benefício de Lançamento (Turma Pioneira / Clube das Fundadoras)
+- **20 Vagas:** 3 meses de gratuidade total em qualquer plano + 50% de desconto vitalício na continuidade.
