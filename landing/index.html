@@ -110,8 +110,8 @@
             <span class="text-base sm:text-lg xl:text-xl font-extrabold text-white tracking-tight group-hover:text-slate-100 transition">Synapsis</span>
             <span class="text-base sm:text-lg xl:text-xl font-light text-teal-400 tracking-tight ml-1">Clínico</span>
           </div>
-          <span class="text-[8px] xl:text-[9px] text-slate-400 font-semibold tracking-wider uppercase hidden xl:block">
-            Psicologia • Fonoaudiologia • T.O. • Psicopedagogia
+          <span class="text-[7.5px] sm:text-[8px] xl:text-[8.5px] text-slate-400 font-semibold tracking-wider uppercase hidden sm:block">
+            Psicologia • Fonoaudiologia • T.O. • Psicopedagogia • Multidisciplinar
           </span>
         </div>
       </a>
@@ -120,7 +120,13 @@
       <nav class="hidden lg:flex items-center gap-1 xl:gap-2 2xl:gap-3 text-xs xl:text-sm font-medium text-slate-300">
         <a href="#especialidades" class="hover:text-teal-300 px-1.5 xl:px-2 py-1 rounded-lg hover:bg-slate-800/40 transition shrink-0 font-semibold text-teal-300">4 Conselhos</a>
         <a href="#pts" class="hover:text-indigo-300 px-1.5 xl:px-2 py-1 rounded-lg hover:bg-slate-800/40 transition shrink-0 font-semibold text-indigo-300">PTS Integrado</a>
-        <a href="#kids" class="hover:text-pink-300 font-bold text-pink-300 px-2 py-1 rounded-lg bg-pink-950/40 border border-pink-500/30 hover:border-pink-500/50 transition shrink-0" title="Synapsis Kids • Rotina Visual Gratuita">Kids Grátis 🎁</a>
+        
+        <!-- Botão Rotina Kids Grátis em 2 Linhas Compactas -->
+        <a href="#kids" class="hover:text-pink-300 font-bold text-pink-300 px-2.5 py-1 rounded-lg bg-pink-950/40 border border-pink-500/30 hover:border-pink-500/50 transition shrink-0 text-center flex flex-col justify-center items-center leading-tight shadow-sm" title="Synapsis Kids • Rotina Visual Gratuita">
+          <span class="text-[11px] xl:text-xs font-extrabold text-pink-300 leading-tight">Rotina Kids</span>
+          <span class="text-[9px] xl:text-[10px] text-pink-400 font-bold leading-none">Grátis 🎁</span>
+        </a>
+
         <a href="#diferenciais" class="hover:text-brand-400 px-1.5 xl:px-2 py-1 rounded-lg hover:bg-slate-800/40 transition shrink-0">Diferenciais</a>
         <a href="#recursos" class="hover:text-teal-300 px-1.5 xl:px-2 py-1 rounded-lg hover:bg-slate-800/40 transition shrink-0">Telas Reais</a>
         
@@ -173,7 +179,7 @@
           <span>🧩</span> PTS Integrado
         </a>
         <a href="#kids" onclick="closeMobileMenu()" class="p-2.5 rounded-xl bg-pink-950/40 border border-pink-500/30 flex items-center gap-2 text-pink-300 font-bold col-span-2">
-          <span>🎁</span> Synapsis Kids • Rotina Visual Grátis
+          <span>🎁</span> Rotina Kids Grátis • Synapsis Kids
         </a>
         <a href="#diferenciais" onclick="closeMobileMenu()" class="p-2.5 rounded-xl bg-slate-800/60 hover:bg-slate-800 flex items-center gap-2 text-white">
           <span>🛡️</span> Diferenciais
@@ -3611,37 +3617,138 @@
       <div class="text-center space-y-3 mb-12">
         <span class="text-brand-400 text-xs font-bold uppercase tracking-wider">Tire Suas Dúvidas</span>
         <h2 class="text-3xl font-extrabold text-white">
-          Perguntas Frequentes de Clínicas e Gestores
+          Perguntas Frequentes de Clínicas, Gestores e Terapeutas
         </h2>
+        <p class="text-xs sm:text-sm text-slate-400 max-w-2xl mx-auto">
+          Tire suas dúvidas sobre o Projeto Terapêutico Singular (PTS), o sigilo ético entre os conselhos (CFP, CFFa, COFFITO, ABPp), a Rotina Kids e o suporte fiscal.
+        </p>
       </div>
 
       <div class="space-y-4 text-xs sm:text-sm">
-        <!-- FAQ 1 -->
+        <!-- FAQ PTS -->
+        <div class="rounded-2xl border border-indigo-500/40 bg-indigo-950/20 overflow-hidden">
+          <button onclick="toggleFaq('faq-pts')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
+            <span class="flex items-center gap-2">
+              <span class="text-indigo-400 text-base">🧩</span>
+              <span>1. O que significa a sigla PTS e como funciona o Projeto Terapêutico Singular no Synapsis Clínico?</span>
+            </span>
+            <span id="faqIcon-faq-pts" class="text-indigo-400 font-mono text-lg shrink-0 ml-2">+</span>
+          </button>
+          <div id="faqAnswer-faq-pts" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
+            <strong>PTS é a sigla para Projeto Terapêutico Singular.</strong> Trata-se de uma metodologia clínica consagrada e essencial no acompanhamento do neurodesenvolvimento e saúde mental (especialmente para crianças com TEA, TDAH, atrasos de fala, dificuldades de aprendizagem ou transtornos sensoriais). Em vez de atendimentos fragmentados onde cada profissional anota em folhas isoladas, o PTS reúne <strong>Psicologia, Fonoaudiologia, Terapia Ocupacional e Psicopedagogia</strong> em torno de uma <strong>matriz unificada de metas terapêuticas</strong>. Toda a equipe visualiza a evolução do paciente em tempo real, coordenando ações com a escola e a família com total transparência e zero retrabalho.
+          </div>
+        </div>
+
+        <!-- FAQ SIGILO -->
+        <div class="rounded-2xl border border-teal-500/40 bg-teal-950/20 overflow-hidden">
+          <button onclick="toggleFaq('faq-sigilo')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
+            <span class="flex items-center gap-2">
+              <span class="text-teal-400 text-base">🔒</span>
+              <span>2. Em uma clínica multiprofissional, um terapeuta pode ler o prontuário de outra especialidade? Como fica o sigilo ético?</span>
+            </span>
+            <span id="faqIcon-faq-sigilo" class="text-teal-400 font-mono text-lg shrink-0 ml-2">+</span>
+          </button>
+          <div id="faqAnswer-faq-sigilo" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
+            <strong>O sigilo ético é absoluto, inviolável e isolado por conselho de classe.</strong> O Synapsis Clínico aplica o princípio de isolamento técnico de segurança: enquanto as <em>metas gerais e marcos de evolução do PTS são colaborativos</em>, as anotações íntimas de sessão, evoluções clínicas diárias, hipóteses diagnósticas e testes aplicados são <strong>blindados e visíveis exclusivamente para os profissionais da respectiva especialidade</strong>. O Psicólogo (CRP) só enxerga as notas de psicologia; a Fonoaudióloga (CRFa) só enxerga os dados fonoaudiológicos; e assim sucessivamente para T.O. (CREFITO) e Psicopedagogia (ABPp). Além disso, recepcionistas e secretárias possuem perfil com bloqueio total aos prontuários clínicos.
+          </div>
+        </div>
+
+        <!-- FAQ FONOAUDIOLOGIA -->
+        <div class="rounded-2xl border border-cyan-500/40 bg-cyan-950/20 overflow-hidden">
+          <button onclick="toggleFaq('faq-fono')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
+            <span class="flex items-center gap-2">
+              <span class="text-cyan-400 text-base">🗣️</span>
+              <span>3. Sou Fonoaudiólogo(a). O que o prontuário oferece para a minha rotina clínica (CFFa nº 613/2021)?</span>
+            </span>
+            <span id="faqIcon-faq-fono" class="text-cyan-400 font-mono text-lg shrink-0 ml-2">+</span>
+          </button>
+          <div id="faqAnswer-faq-fono" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
+            O Synapsis Clínico é o primeiro software no país desenhado para a Fonoaudiologia em estrita conformidade com a <strong>Resolução CFFa nº 613/2021</strong>, eliminando a frustração de preencher campos genéricos de medicina. O módulo conta com <strong>Protocolo de Processamento Auditivo Central (PAC)</strong>, <strong>Inventário Fonético e Triagem de Fala em 3 cliques</strong>, avaliação de <strong>Motricidade Orofacial (protocolo MBGR simplificado)</strong>, acompanhamento de voz e fluência, além de laudos normatizados prontos para impressão com prova digital Hash SHA-256 e envio seguro por WhatsApp.
+          </div>
+        </div>
+
+        <!-- FAQ TERAPIA OCUPACIONAL -->
+        <div class="rounded-2xl border border-emerald-500/40 bg-emerald-950/20 overflow-hidden">
+          <button onclick="toggleFaq('faq-to')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
+            <span class="flex items-center gap-2">
+              <span class="text-emerald-400 text-base">🖐️</span>
+              <span>4. Sou Terapeuta Ocupacional. Como o sistema atende as normas do COFFITO nº 414/2012 e a Integração Sensorial?</span>
+            </span>
+            <span id="faqIcon-faq-to" class="text-emerald-400 font-mono text-lg shrink-0 ml-2">+</span>
+          </button>
+          <div id="faqAnswer-faq-to" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
+            O módulo foi construído sob as diretrizes da <strong>Resolução COFFITO nº 414/2012</strong>. Ele oferece o mapeamento digital dos <strong>7 Sistemas Sensoriais de Ayres</strong> (tátil, vestibular, proprioceptivo, auditivo, visual, gustativo e olfativo), inventário estruturado de <strong>Atividades de Vida Diária (AVDs) e Instrumentais (AIVDs)</strong> com régua visual de independência funcional, e gerador de relatórios de adaptação domiciliar e escolar para orientar pais e professores.
+          </div>
+        </div>
+
+        <!-- FAQ PSICOPEDAGOGIA -->
+        <div class="rounded-2xl border border-indigo-500/40 bg-indigo-950/20 overflow-hidden">
+          <button onclick="toggleFaq('faq-psicoped')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
+            <span class="flex items-center gap-2">
+              <span class="text-indigo-400 text-base">📚</span>
+              <span>5. Como o Synapsis apoia Psicopedagogos e as adequações escolares exigidas pela Lei 14.254/2021?</span>
+            </span>
+            <span id="faqIcon-faq-psicoped" class="text-indigo-400 font-mono text-lg shrink-0 ml-2">+</span>
+          </button>
+          <div id="faqAnswer-faq-psicoped" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
+            Em total conformidade com o Código de Ética da Associação Brasileira de Psicopedagogia (ABPp) e a <strong>Lei Federal nº 14.254/2021</strong> (que assegura suporte educacional integral a educandos com TDAH, dislexia e transtornos de aprendizagem), a plataforma inclui tabulação nativa das <strong>Provas Operatórias Piagetianas (POP)</strong>, roteiro da <strong>Entrevista Operativa Centrada na Aprendizagem (EOCA de Jorge Visca)</strong> e gera em 1 clique o relatório técnico para subsidiar o <strong>Plano Educacional Individualizado (PEI)</strong> elaborado pela escola.
+          </div>
+        </div>
+
+        <!-- FAQ SOLO VS CLINICA -->
+        <div class="rounded-2xl border border-slate-700 bg-slate-800/60 overflow-hidden">
+          <button onclick="toggleFaq('faq-solo')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
+            <span class="flex items-center gap-2">
+              <span class="text-teal-400 text-base">👤</span>
+              <span>6. Atendo sozinho(a) em consultório particular. O sistema funciona para mim ou é exclusivo para clínicas grandes?</span>
+            </span>
+            <span id="faqIcon-faq-solo" class="text-teal-400 font-mono text-lg shrink-0 ml-2">+</span>
+          </button>
+          <div id="faqAnswer-faq-solo" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
+            <strong>O sistema é perfeito para você e adapta-se ao seu consultório solo!</strong> No <strong>Plano Solo</strong> (disponível para Psicologia, Neuropsicologia, Fonoaudiologia, T.O. ou Psicopedagogia por apenas R$ 69/mês), a interface assume exclusivamente a identidade da sua área. Abas de repasse e termos de outras profissões ficam ocultos. Você ganha prontuário normativo, controle financeiro (Carnê-Leão e-CAC para PF ou NFS-e para PJ), cobranças com baixa automática por PIX e o aplicativo gratuito <strong>Synapsis Kids</strong> para prescrever aos seus pacientes.
+          </div>
+        </div>
+
+        <!-- FAQ ROTINA KIDS GRATIS -->
+        <div class="rounded-2xl border border-pink-500/40 bg-pink-950/20 overflow-hidden">
+          <button onclick="toggleFaq('faq-kids')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
+            <span class="flex items-center gap-2">
+              <span class="text-pink-400 text-base">🎁</span>
+              <span>7. O que é a Rotina Kids Grátis (Synapsis Kids) e como prescrevo aos pacientes? Tem algum custo extra?</span>
+            </span>
+            <span id="faqIcon-faq-kids" class="text-pink-400 font-mono text-lg shrink-0 ml-2">+</span>
+          </button>
+          <div id="faqAnswer-faq-kids" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
+            O <strong>Synapsis Kids</strong> é o aplicativo gratuito de <strong>Rotina Visual e Comunicação Alternativa (CAA com pictogramas ARASAAC)</strong> do nosso ecossistema. <strong>Ele é 100% gratuito para sempre</strong>, sem cobrança de assinaturas e sem anúncios. O terapeuta prescreve a sequência de rotinas (sono, desfralde, alimentação, lição e terapia) e os pais executam no celular ou tablet com cronômetro visual e reforços sonoros acolhedores. Isso acelera a generalização dos ganhos da terapia e se torna um grande diferencial de acolhimento para sua clínica.
+          </div>
+        </div>
+
+        <!-- FAQ 8 (Anterior 1) -->
         <div class="rounded-2xl border border-slate-700 bg-slate-800/60 overflow-hidden">
           <button onclick="toggleFaq('faq1')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
-            <span>1. O software que uso atualmente pode se recusar a exportar meus dados?</span>
+            <span>8. O software que uso atualmente pode se recusar a exportar meus dados?</span>
             <span id="faqIcon-faq1" class="text-brand-400 font-mono text-lg">+</span>
           </button>
           <div id="faqAnswer-faq1" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
-            Não. Conforme o Artigo 18, Inciso V da LGPD e as diretrizes do Conselho Federal de Psicologia, os dados pertencem privativamente ao paciente e à clínica. O sistema que você utiliza hoje é apenas o operador dos dados e tem o dever legal de disponibilizar a exportação integral. Nossa equipe técnica auxilia sua clínica em todas as etapas da solicitação e importação.
+            Não. Conforme o Artigo 18, Inciso V da LGPD e as diretrizes dos Conselhos de Classe, os dados pertencem privativamente ao paciente e à clínica. O sistema que você utiliza hoje é apenas o operador dos dados e tem o dever legal de disponibilizar a exportação integral. Nossa equipe técnica auxilia sua clínica em todas as etapas da solicitação e importação.
           </div>
         </div>
 
-        <!-- FAQ 2 -->
+        <!-- FAQ 9 (Anterior 2) -->
         <div class="rounded-2xl border border-slate-700 bg-slate-800/60 overflow-hidden">
           <button onclick="toggleFaq('faq2')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
-            <span>2. Como funciona a garantia do Hash SHA-256 no prontuário?</span>
+            <span>9. Como funciona a garantia do Hash SHA-256 no prontuário?</span>
             <span id="faqIcon-faq2" class="text-brand-400 font-mono text-lg">+</span>
           </button>
           <div id="faqAnswer-faq2" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
-            A Resolução CFP 06/2019 exige que documentos e prontuários psicológicos não possam ser alterados retroativamente. No Synapsis Clínico, ao assinar a evolução, o sistema calcula uma impressão digital criptográfica (SHA-256) que une os dados da sessão, o CRP do terapeuta e o texto. Isso serve como prova jurídica pericial de que o prontuário é autêntico e não foi adulterado.
+            As resoluções profissionais exigem que documentos e prontuários clínicos não possam ser alterados retroativamente. No Synapsis Clínico, ao assinar a evolução, o sistema calcula uma impressão digital criptográfica (SHA-256) que une os dados da sessão, o registro profissional do terapeuta e o texto. Isso serve como prova jurídica pericial de que o prontuário é autêntico e não foi adulterado.
           </div>
         </div>
 
-        <!-- FAQ 3 -->
+        <!-- FAQ 10 -->
         <div class="rounded-2xl border border-slate-700 bg-slate-800/60 overflow-hidden">
           <button onclick="toggleFaq('faq3')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
-            <span>3. Minha clínica é pequena e não faz repasses. O sistema serve para mim?</span>
+            <span>10. Minha clínica é pequena e não faz repasses. O sistema serve para mim?</span>
             <span id="faqIcon-faq3" class="text-brand-400 font-mono text-lg">+</span>
           </button>
           <div id="faqAnswer-faq3" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
@@ -3649,32 +3756,32 @@
           </div>
         </div>
 
-        <!-- FAQ 4 -->
+        <!-- FAQ 11 -->
         <div class="rounded-2xl border border-slate-700 bg-slate-800/60 overflow-hidden">
           <button onclick="toggleFaq('faq4')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
-            <span>4. A secretária consegue ler os prontuários dos psicólogos?</span>
+            <span>11. A secretária consegue ler os prontuários dos psicólogos ou terapeutas?</span>
             <span id="faqIcon-faq4" class="text-brand-400 font-mono text-lg">+</span>
           </button>
           <div id="faqAnswer-faq4" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
-            De forma alguma. O Synapsis Clínico aplica o protocolo estrito de "Zero-Knowledge" baseado na Resolução CFP 01/2009. Perfis de secretária têm acesso à agenda, cadastro e cobranças, mas são completamente bloqueados com aviso legal se tentarem acessar evoluções clínicas ou prontuários.
+            De forma alguma. O Synapsis Clínico aplica o protocolo estrito de "Zero-Knowledge" baseado nas resoluções deontológicas profissionais. Perfis de secretária têm acesso à agenda, cadastro e cobranças, mas são completamente bloqueados com aviso legal se tentarem acessar evoluções clínicas ou prontuários.
           </div>
         </div>
 
-        <!-- FAQ 5 -->
+        <!-- FAQ 12 -->
         <div class="rounded-2xl border border-slate-700 bg-slate-800/60 overflow-hidden">
           <button onclick="toggleFaq('faq5')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
-            <span>5. Por que o repasse só ocorre sobre sessões pagas?</span>
+            <span>12. Por que o repasse só ocorre sobre sessões pagas?</span>
             <span id="faqIcon-faq5" class="text-brand-400 font-mono text-lg">+</span>
           </button>
           <div id="faqAnswer-faq5" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
-            Essa é a maior fonte de prejuízo em clínicas de saúde mental: a clínica comissiona o terapeuta por uma consulta que o paciente nunca pagou. No Synapsis Clínico, o sistema rastreia o status de pagamento e só inclui a sessão no lote de comissão quando o paciente quitar. Assim que o pagamento entra, o repasse é liberado automaticamente.
+            Essa é a maior fonte de prejuízo em clínicas de saúde mental e reabilitação: a clínica comissiona o profissional por uma consulta que o paciente nunca pagou. No Synapsis Clínico, o sistema rastreia o status de pagamento e só inclui a sessão no lote de comissão quando o paciente quitar. Assim que o pagamento entra, o repasse é liberado automaticamente.
           </div>
         </div>
 
-        <!-- FAQ 6 -->
+        <!-- FAQ 13 -->
         <div class="rounded-2xl border border-slate-700 bg-slate-800/60 overflow-hidden">
           <button onclick="toggleFaq('faq6')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
-            <span>6. O que o Módulo de Avaliação Neuropsicológica tem a mais?</span>
+            <span>13. O que o Módulo de Avaliação Neuropsicológica tem a mais?</span>
             <span id="faqIcon-faq6" class="text-brand-400 font-mono text-lg">+</span>
           </button>
           <div id="faqAnswer-faq6" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
@@ -3682,32 +3789,32 @@
           </div>
         </div>
 
-        <!-- FAQ 7 -->
+        <!-- FAQ 14 -->
         <div class="rounded-2xl border border-slate-700 bg-slate-800/60 overflow-hidden">
           <button onclick="toggleFaq('faq7')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
-            <span>7. Como o Synapsis Clínico resolve o Carnê-Leão e o Livro-Caixa para quem atende como Pessoa Física ou em Consultório Compartilhado?</span>
+            <span>14. Como o Synapsis Clínico resolve o Carnê-Leão e o Livro-Caixa para quem atende como Pessoa Física ou em Consultório Compartilhado?</span>
             <span id="faqIcon-faq7" class="text-brand-400 font-mono text-lg">+</span>
           </button>
           <div id="faqAnswer-faq7" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
-            Mais de 80% dos psicólogos no Brasil atuam como autônomos (Pessoa Física) e sofrem com a bitributação e o medo da malha fina. O Synapsis Clínico possui um <strong>motor fiscal tributário nativo</strong> que: (1) aplica a IN RFB nº 1.531/2015 separando o CPF do responsável pagador do CPF do paciente beneficiário; (2) calcula a DARF 0190 em tempo real pela tabela progressiva oficial; (3) deduz automaticamente as retenções de sublocação de salas e o rateio de despesas comuns no Livro-Caixa (Contas 3010, 3020, 3050); e (4) exporta os arquivos CSV oficiais homologados para importação direta no Carnê-Leão Web do e-CAC em apenas 1 clique, com emissão de DRE Fiscal timbrado e assinado com selo criptográfico SHA-256 para guarda legal de 5 anos.
+            Mais de 80% dos terapeutas no Brasil atuam como autônomos (Pessoa Física) e sofrem com a bitributação e o medo da malha fina. O Synapsis Clínico possui um <strong>motor fiscal tributário nativo</strong> que: (1) aplica a IN RFB nº 1.531/2015 separando o CPF do responsável pagador do CPF do paciente beneficiário; (2) calcula a DARF 0190 em tempo real pela tabela progressiva oficial; (3) deduz automaticamente as retenções de sublocação de salas e o rateio de despesas comuns no Livro-Caixa (Contas 3010, 3020, 3050); e (4) exporta os arquivos CSV oficiais homologados para importação direta no Carnê-Leão Web do e-CAC em apenas 1 clique, com emissão de DRE Fiscal timbrado e assinado com selo criptográfico SHA-256 para guarda legal de 5 anos.
           </div>
         </div>
 
-        <!-- FAQ 8 -->
+        <!-- FAQ 15 -->
         <div class="rounded-2xl border border-slate-700 bg-slate-800/60 overflow-hidden">
           <button onclick="toggleFaq('faq8')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
-            <span>8. Como funciona a Emissão Direta de Notas Fiscais (NFS-e) pelo Synapsis Clínico? Preciso de Certificado Digital?</span>
+            <span>15. Como funciona a Emissão Direta de Notas Fiscais (NFS-e) pelo Synapsis Clínico? Preciso de Certificado Digital?</span>
             <span id="faqIcon-faq8" class="text-brand-400 font-mono text-lg">+</span>
           </button>
           <div id="faqAnswer-faq8" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
-            Para clínicas e psicólogos constituídos como Pessoa Jurídica (Simples Nacional, Lucro Presumido ou MEI), o Synapsis Clínico integra-se diretamente com as prefeituras de todo o Brasil através do seu <strong>Certificado Digital A1 (.pfx)</strong>. O arquivo e a senha são protegidos em nosso cofre com criptografia AES-256-GCM de padrão pericial. Ao dar baixa em uma consulta, basta 1 clique para autorizar a nota na prefeitura. O sistema baixa o <strong>DANFSE em PDF</strong> e o <strong>XML assinado</strong>, arquiva no prontuário do paciente com selo SHA-256 e disponibiliza o envio instantâneo para o WhatsApp do paciente ou responsável legal, com discriminação analítica dos atendimentos (Item 04.16 - Psicologia) para aprovação imediata de reembolso em planos de saúde.
+            Para clínicas e profissionais constituídos como Pessoa Jurídica (Simples Nacional, Lucro Presumido ou MEI), o Synapsis Clínico integra-se diretamente com as prefeituras de todo o Brasil através do seu <strong>Certificado Digital A1 (.pfx)</strong>. O arquivo e a senha são protegidos em nosso cofre com criptografia AES-256-GCM de padrão pericial. Ao dar baixa em uma consulta, basta 1 clique para autorizar a nota na prefeitura. O sistema baixa o <strong>DANFSE em PDF</strong> e o <strong>XML assinado</strong>, arquiva no prontuário do paciente com selo SHA-256 e disponibiliza o envio instantâneo para o WhatsApp do paciente ou responsável legal, com discriminação analítica dos atendimentos para aprovação imediata de reembolso em planos de saúde.
           </div>
         </div>
 
-        <!-- FAQ 9: WhatsApp sem Pegadinhas de Créditos -->
+        <!-- FAQ 16: WhatsApp sem Pegadinhas de Créditos -->
         <div class="rounded-2xl border border-teal-500/40 bg-teal-950/20 overflow-hidden">
           <button onclick="toggleFaq('faq9')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
-            <span>9. Existe limite de envio ou cobrança extra por mensagens de WhatsApp?</span>
+            <span>16. Existe limite de envio ou cobrança extra por mensagens de WhatsApp?</span>
             <span id="faqIcon-faq9" class="text-teal-400 font-mono text-lg">+</span>
           </button>
           <div id="faqAnswer-faq9" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
@@ -3715,21 +3822,21 @@
           </div>
         </div>
 
-        <!-- FAQ 10: Teste Grátis de 14 Dias -->
+        <!-- FAQ 17: Teste Grátis de 14 Dias -->
         <div class="rounded-2xl border border-slate-700 bg-slate-800/60 overflow-hidden">
           <button onclick="toggleFaq('faq10')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
-            <span>10. Como funciona o teste gratuito de 14 dias? Preciso cadastrar cartão de crédito?</span>
+            <span>17. Como funciona o teste gratuito de 14 dias? Preciso cadastrar cartão de crédito?</span>
             <span id="faqIcon-faq10" class="text-brand-400 font-mono text-lg">+</span>
           </button>
           <div id="faqAnswer-faq10" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
-            O período de teste de 14 dias é <strong>totalmente gratuito e sem cartão de crédito</strong>. Você cria seu acesso em menos de 1 minuto e tem liberação imediata a todas as funcionalidades: prontuário CFP com prova SHA-256, módulo de avaliação neuropsicológica, agendas, controle de salas e fechamento de repasses. Não há cobrança automática ao fim do período.
+            O período de teste de 14 dias é <strong>totalmente gratuito e sem cartão de crédito</strong>. Você cria seu acesso em menos de 1 minuto e tem liberação imediata a todas as funcionalidades: prontuários normativos dos 4 conselhos com prova SHA-256, PTS integrado, agendas, controle de salas e fechamento de repasses. Não há cobrança automática ao fim do período.
           </div>
         </div>
 
-        <!-- FAQ 11: Coexistência e Transição Segura -->
+        <!-- FAQ 18: Coexistência e Transição Segura -->
         <div class="rounded-2xl border border-slate-700 bg-slate-800/60 overflow-hidden">
           <button onclick="toggleFaq('faq11')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
-            <span>11. Posso usar o Synapsis Clínico em paralelo com meu sistema antigo no primeiro mês?</span>
+            <span>18. Posso usar o Synapsis Clínico em paralelo com meu sistema antigo no primeiro mês?</span>
             <span id="faqIcon-faq11" class="text-brand-400 font-mono text-lg">+</span>
           </button>
           <div id="faqAnswer-faq11" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
@@ -3737,21 +3844,21 @@
           </div>
         </div>
 
-        <!-- FAQ 12: Suporte com Agentes de IA -->
+        <!-- FAQ 19: Suporte com Agentes de IA -->
         <div class="rounded-2xl border border-slate-700 bg-slate-800/60 overflow-hidden">
           <button onclick="toggleFaq('faq12')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
-            <span>12. Como funciona o suporte 24/7 com Agentes de IA e especialistas humanos?</span>
+            <span>19. Como funciona o suporte 24/7 com Agentes de IA e especialistas humanos?</span>
             <span id="faqIcon-faq12" class="text-brand-400 font-mono text-lg">+</span>
           </button>
           <div id="faqAnswer-faq12" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
-            Nossos <strong>Agentes de IA Especializados</strong> foram treinados em toda a documentação da plataforma, regras do Conselho Federal de Psicologia (CFP), fechamento de repasses e configurações de WhatsApp. Eles respondem a mais de 90% das dúvidas instantaneamente em qualquer horário. Para parametrizações fiscais complexas ou apoio avançado na migração, nossa equipe humana de especialistas assume o chamado com prioridade.
+            Nossos <strong>Agentes de IA Especializados</strong> foram treinados em toda a documentação da plataforma, regras dos conselhos (CFP, CFFa, COFFITO, ABPp), fechamento de repasses e configurações de WhatsApp. Eles respondem a mais de 90% das dúvidas instantaneamente em qualquer horário. Para parametrizações fiscais complexas ou apoio avançado na migração, nossa equipe humana de especialistas assume o chamado com prioridade.
           </div>
         </div>
 
-        <!-- FAQ 13: Cobrança Asaas Webhook -->
+        <!-- FAQ 20: Cobrança Asaas Webhook -->
         <div class="rounded-2xl border border-emerald-500/40 bg-emerald-950/20 overflow-hidden">
           <button onclick="toggleFaq('faq13')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
-            <span>13. Como funciona a Cobrança Inteligente via Asaas e a conciliação bancária por Webhook? Preciso conferir extrato?</span>
+            <span>20. Como funciona a Cobrança Inteligente via Asaas e a conciliação bancária por Webhook? Preciso conferir extrato?</span>
             <span id="faqIcon-faq13" class="text-emerald-400 font-mono text-lg">+</span>
           </button>
           <div id="faqAnswer-faq13" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
@@ -3759,10 +3866,10 @@
           </div>
         </div>
 
-        <!-- FAQ 14: Migrador Universal -->
+        <!-- FAQ 21: Migrador Universal -->
         <div class="rounded-2xl border border-teal-500/40 bg-teal-950/20 overflow-hidden">
           <button onclick="toggleFaq('faq14')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
-            <span>14. Já utilizo outro software de psicologia há anos. Como funciona a migração em 1 clique e o saneamento de dados?</span>
+            <span>21. Já utilizo outro software há anos. Como funciona a migração em 1 clique e o saneamento de dados?</span>
             <span id="faqIcon-faq14" class="text-teal-400 font-mono text-lg">+</span>
           </button>
           <div id="faqAnswer-faq14" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
@@ -3770,32 +3877,32 @@
           </div>
         </div>
 
-        <!-- FAQ 15: Copiloto IA & Central de Ajuda -->
+        <!-- FAQ 22: Copiloto IA & Central de Ajuda -->
         <div class="rounded-2xl border border-indigo-500/40 bg-indigo-950/20 overflow-hidden">
           <button onclick="toggleFaq('faq15')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
-            <span>15. Como funciona o Copiloto Clínico com IA? Preciso parar a clínica para treinar novos psicólogos ou secretárias?</span>
+            <span>22. Como funciona o Copiloto Clínico com IA? Preciso parar a clínica para treinar novos profissionais ou secretárias?</span>
             <span id="faqIcon-faq15" class="text-indigo-400 font-mono text-lg">+</span>
           </button>
           <div id="faqAnswer-faq15" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
-            <strong>Você não precisa parar ninguém nem perder horas ensinando!</strong> O Synapsis Clínico possui um <strong>Copiloto de IA Generativa integrado</strong> pronto para uso imediato em todos os planos, sem necessidade de configurar chaves de nuvem ou pagar taxas extras de API. Seus colaboradores contam com duas formas inteligentes de aprender: (1) O <em>Modo Lente</em>, onde basta apontar e clicar em qualquer botão ou elemento da tela para receber uma explicação instantânea do que ele faz e de seu enquadre no CFP e na Receita Federal; e (2) O <em>Tira-Dúvidas Conversacional</em>, onde qualquer pergunta operacional (ex: como ratear despesas entre psicólogos, emitir NFS-e ou cobrar faltas) é respondida em segundos com passo a passo numerado e botões de atalho direto para a tela indicada.
+            <strong>Você não precisa parar ninguém nem perder horas ensinando!</strong> O Synapsis Clínico possui um <strong>Copiloto de IA Generativa integrado</strong> pronto para uso imediato em todos os planos, sem necessidade de configurar chaves de nuvem ou pagar taxas extras de API. Seus colaboradores contam com duas formas inteligentes de aprender: (1) O <em>Modo Lente</em>, onde basta apontar e clicar em qualquer botão ou elemento da tela para receber uma explicação instantânea do que ele faz e de seu enquadre técnico e normativo; e (2) O <em>Tira-Dúvidas Conversacional</em>, onde qualquer pergunta operacional (ex: como ratear despesas entre terapeutas, emitir NFS-e ou cobrar faltas) é respondida em segundos com passo a passo numerado e botões de atalho direto para a tela indicada.
           </div>
         </div>
 
-        <!-- FAQ 16: Blindagem Ética CFP no Portal do Paciente -->
+        <!-- FAQ 23: Blindagem Ética no Portal do Paciente -->
         <div class="rounded-2xl border border-purple-500/40 bg-purple-950/20 overflow-hidden">
           <button onclick="toggleFaq('faq16')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
-            <span>16. O paciente consegue ver o que eu escrevo no prontuário ou as anotações confidenciais da sessão?</span>
+            <span>23. O paciente consegue ver o que eu escrevo no prontuário ou as anotações confidenciais da sessão?</span>
             <span id="faqIcon-faq16" class="text-purple-400 font-mono text-lg">+</span>
           </button>
           <div id="faqAnswer-faq16" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
-            <strong>Não! O sigilo profissional e a guarda técnica são 100% blindados pelas Resoluções CFP 01/2009 e 06/2019.</strong> O Synapsis Clínico possui uma separação técnica estrita: o paciente tem acesso exclusivamente aos <em>documentos formais emitidos para ele</em> (atestados, declarações de comparecimento e relatórios assinados com Hash SHA-256) e aos seus recibos fiscais com chave PIX. As suas hipóteses diagnósticas de trabalho, evoluções clínicas, notas íntimas de sessão e impressões técnicas permanecem restritas ao ambiente do psicólogo, garantindo tranquilidade jurídica absoluta ao terapeuta.
+            <strong>Não! O sigilo profissional e a guarda técnica são 100% blindados pelas resoluções deontológicas de cada conselho.</strong> O Synapsis Clínico possui uma separação técnica estrita: o paciente tem acesso exclusivamente aos <em>documentos formais emitidos para ele</em> (atestados, declarações de comparecimento e relatórios assinados com Hash SHA-256) e aos seus recibos fiscais com chave PIX. As suas hipóteses diagnósticas de trabalho, evoluções clínicas, notas íntimas de sessão e impressões técnicas permanecem restritas ao ambiente do terapeuta, garantindo tranquilidade jurídica absoluta.
           </div>
         </div>
 
-        <!-- FAQ 17: PWA Sem App Store -->
+        <!-- FAQ 24: PWA Sem App Store -->
         <div class="rounded-2xl border border-purple-500/40 bg-purple-950/20 overflow-hidden">
           <button onclick="toggleFaq('faq17')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
-            <span>17. Meu paciente precisa baixar algum aplicativo na Apple Store ou Google Play para acessar o portal?</span>
+            <span>24. Meu paciente precisa baixar algum aplicativo na Apple Store ou Google Play para acessar o portal?</span>
             <span id="faqIcon-faq17" class="text-purple-400 font-mono text-lg">+</span>
           </button>
           <div id="faqAnswer-faq17" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
@@ -3803,14 +3910,14 @@
           </div>
         </div>
 
-        <!-- FAQ 18: Hospedagem AWS e LGPD -->
+        <!-- FAQ 25: Hospedagem AWS e LGPD -->
         <div class="rounded-2xl border border-orange-500/40 bg-orange-950/20 overflow-hidden">
           <button onclick="toggleFaq('faq18')" class="w-full p-5 text-left font-bold text-white flex items-center justify-between cursor-pointer">
-            <span>18. Onde ficam armazenados os dados e prontuários da minha clínica? A hospedagem cumpre a LGPD?</span>
+            <span>25. Onde ficam armazenados os dados e prontuários da minha clínica? A hospedagem cumpre a LGPD?</span>
             <span id="faqIcon-faq18" class="text-orange-400 font-mono text-lg">+</span>
           </button>
           <div id="faqAnswer-faq18" class="px-5 pb-5 text-slate-300 hidden leading-relaxed border-t border-slate-700/60 pt-3">
-            <strong>100% dos dados, prontuários clínicos e históricos fiscais são hospedados na infraestrutura em nuvem da Amazon Web Services (AWS) no Brasil (Data Center de São Paulo, Região sa-east-1).</strong> Isso garante soberania jurídica e atende integralmente ao Artigo 33 da LGPD, impedindo que prontuários de pacientes brasileiros sejam transferidos para servidores estrangeiros. Todos os dados são protegidos por criptografia de padrão bancário (AES-256 em repouso e TLS 1.3 em trânsito), com rotinas diárias de backup redundante que asseguram a guarda legal de 5 anos exigida pelo Conselho Federal de Psicologia (Resoluções CFP nº 01/2009 e 06/2019).
+            <strong>100% dos dados, prontuários clínicos e históricos fiscais são hospedados na infraestrutura em nuvem da Amazon Web Services (AWS) no Brasil (Data Center de São Paulo, Região sa-east-1).</strong> Isso garante soberania jurídica e atende integralmente ao Artigo 33 da LGPD, impedindo que prontuários de pacientes brasileiros sejam transferidos para servidores estrangeiros. Todos os dados são protegidos por criptografia de padrão bancário (AES-256 em repouso e TLS 1.3 em trânsito), com rotinas diárias de backup redundante que asseguram a guarda legal exigida pelos conselhos profissionais.
           </div>
         </div>
       </div>
